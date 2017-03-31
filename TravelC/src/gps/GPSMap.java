@@ -40,7 +40,12 @@ public class GPSMap {
 	}
 	
 	public String toString() {
-		return "GPSMap ["+map+"]";
+		String elt = "|";
+		for(Place place : map.values())
+			{
+			elt+= place+"|";
+			}
+		return elt;
 	}
 	
 }

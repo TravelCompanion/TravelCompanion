@@ -9,22 +9,22 @@ import tools.math.MathComparator;
 
 public class ListTools {
 	public static ArrayList<Double> sortListByNumberDesc(ListTools listTools,ArrayList<Double> list){
-		 list.sort(MathComparator.getDouble(MathComparator.SUP_DOUBLE));
+		 list.sort(MathComparator.getByNameDouble(">="));
 		 return list;
 	}
 	
 	public static ArrayList<String> sortListByStringDesc(ListTools listTools,ArrayList<String> list){
-		 list.sort(MathComparator.getDouble(MathComparator.SUP_STRING));
+		 list.sort(MathComparator.getByNameString(">="));
 		 return list;
 	}
 	
 	public static ArrayList<Double> sortListByNumberAsc(ListTools listTools,ArrayList<Double> list){
-		 list.sort(MathComparator.getDouble(MathComparator.INF_DOUBLE));
+		 list.sort(MathComparator.getByNameDouble("<="));
 		 return list;
 	}
 	
 	public static ArrayList<String> sortListByStringAsc(ListTools listTools,ArrayList<String> list){
-		 list.sort(MathComparator.getDouble(MathComparator.INF_STRING));
+		 list.sort(MathComparator.getByNameString("<="));
 		 return list;
 	}
 	
@@ -103,5 +103,14 @@ public class ListTools {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> ArrayList<T>[] createTabList(int sizeTab){
+		Object tab = new Object[sizeTab];
+		ArrayList<T>[] tabOfList = (ArrayList<T>[])tab;
+		for(int x = 0;x < sizeTab; x++)
+			tabOfList[x] = new ArrayList<T>();
+		return tabOfList;
+		
+	}
 }
 

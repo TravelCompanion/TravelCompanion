@@ -1,5 +1,6 @@
 package ia;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import cte.Constants;
@@ -7,14 +8,14 @@ import cte.PlaceType;
 import gps.GPSMap;
 import gps.Place;
 import tools.math.CoordinatesDouble;
-import tools.math.RandomDouble;
+import tools.math.random.RandomDouble;
 
 public class IAManager {
 	
-	public static CoordinatesDouble choosePlace(TheoricUser user,GPSMap map){
-		double val = -1000; 
+	public static CoordinatesDouble choosePlace(TheoricUser user){
+		double val = -ConstantIA.INFINITE; 
 		CoordinatesDouble c = user.getPosition();
-		for(Place place: map.getPlaces().values()){
+		for(Place place: GPSMap.getPlaces().values()){
 			if(CoordinatesDouble.eq(user.getPosition(), place.getCoords() )|| user.hasVisited(place.getCoords()))continue;
 			double v = calculateDistance(user,place);
 			if(val < v);
@@ -24,6 +25,14 @@ public class IAManager {
 				}
 		}
 		return c;		
+	}
+	
+	public static HashMap<PlaceType, Double> getErrorByPlaceType(){
+		return null;		
+	}
+	
+	public static double getGlobalError(HashMap<PlaceType, Double> errors){
+		return 0;
 	}
 	
 	public static double notePlace(TheoricUser user,Place place){
@@ -46,6 +55,14 @@ public class IAManager {
 		return val;
 	}
 	
+	public static void perceptronChoise(){
+		
+	}
+	
+	public static void majorityJudgment(){
+		
+	}
+	
 	public static void learn(TheoricUser user, Place place, double note,double step){
 		for(PlaceType type : place.getPlaceTypes())
 			user.getPreferences().replace(type, simpleAdapt(user.getPreferences().get(type), note, step));
@@ -54,4 +71,7 @@ public class IAManager {
 	private static double simpleAdapt(double oldValue,double note,double step){
 			return oldValue + (step*(note - oldValue));
 	}
+
 }
+
+

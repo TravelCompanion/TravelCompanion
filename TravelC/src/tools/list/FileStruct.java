@@ -2,8 +2,6 @@ package tools.list;
 
 import java.util.ArrayList;
 
-import tools.math.CoordinatesDouble;
-
 public class FileStruct<T> {
 	private ArrayList<T> list = new ArrayList<T>();
 
@@ -37,11 +35,11 @@ public class FileStruct<T> {
 		return elt;
 	}
 
+	public boolean contains(T elt){
+		return list.contains(elt);
+	}
+	
 	public int size() {
 		return list.size();
-	}
-
-	public boolean contains(T elt) {
-		return list.contains(elt);
 	}
 }

@@ -12,6 +12,7 @@ public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDo
 	private String name = "place";
 	private double x, y;
 	private ArrayList<PlaceType> types = new ArrayList<PlaceType>();
+	//private double note;
 	public TempDataDB(){};
 	public TempDataDB(String name, double x, double y) {
 		this.x = x;

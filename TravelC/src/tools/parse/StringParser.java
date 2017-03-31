@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,10 +15,10 @@ public class StringParser {
 	 * object into String, write file
 	 */
 	// Log Operations
-	public static ArrayList<String> logDatas(HashMap<String, StringParseLoggable> datas) {
+	public static <T1> ArrayList<String> logDatas(HashMap<String, StringParseLoggable> datas) {
 		ArrayList<String> words = new ArrayList<String>();
 		for (StringParseLoggable data : datas.values())
-			words.add(data.toLog());
+			words.add(data.toLog()+"\n");
 		return words;
 	}
 
@@ -51,6 +52,7 @@ public class StringParser {
 		for (String word : words) {
 			StringParseGenerable<T1, T2> gen = generable.init();
 			T1 item = StringParser.generateFromParse(gen, word, separator,endOfLine);
+			System.out.println(gen.getKey());
 			items.put(gen.getKey(),item);
 		}
 		return items;
@@ -141,14 +143,17 @@ public class StringParser {
 		return lines;
 	}
 
-	public void writeData(String path, ArrayList<String> words) {
+	public static void writeData(String path, ArrayList<String> words) {
 		try {
-
+			PrintWriter writer =new PrintWriter(path);
+			writer.print("");
+			writer.close();
 			FileWriter fw = new FileWriter(path, true);
 			BufferedWriter output = new BufferedWriter(fw);
-
-			for (int i = 0; i < words.size(); i++)
-				output.write(words.get(0));
+			for (int i = 0; i < words.size(); i++){
+				output.write(words.get(i));
+				output.newLine();
+			}
 			output.flush();
 			output.close();
 

@@ -103,7 +103,7 @@ public class CoordinatesDouble {
 	}
 
 	public String toString() {
-		return "CoordinatesDouble [coords=" + Arrays.toString(coords) + "]";
+		return "("+ Arrays.toString(coords) + ")";
 	}
 	
 }
