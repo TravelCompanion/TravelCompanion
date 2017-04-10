@@ -31,7 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.voyage.compagnon.R;
+import com.example.voyage.travelcompanionapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

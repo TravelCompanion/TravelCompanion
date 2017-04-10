@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.voyage.compagnon.R;
+import com.example.voyage.travelcompanionapp.R;
 
 public class NoticeActivity extends AppCompatActivity {
 

@@ -3,7 +3,7 @@ package com.example.voyage.travelcompanionapp;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.example.voyage.compagnon.R;
+import com.example.voyage.travelcompanionapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

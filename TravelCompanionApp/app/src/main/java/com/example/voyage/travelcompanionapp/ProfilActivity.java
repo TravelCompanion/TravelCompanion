@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
 
-import com.example.voyage.compagnon.R;
+import com.example.voyage.travelcompanionapp.R;
 
 public class ProfilActivity extends AppCompatActivity {
 
