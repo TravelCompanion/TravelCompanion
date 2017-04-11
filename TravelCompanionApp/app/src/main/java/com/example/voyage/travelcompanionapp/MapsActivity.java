@@ -1,7 +1,17 @@
 package com.example.voyage.travelcompanionapp;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.example.voyage.travelcompanionapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,9 +21,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private Location location;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +40,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria critere = new Criteria();
+        critere.setAccuracy(Criteria.ACCURACY_FINE);
+        ArrayList<LocationProvider> providers = new ArrayList<LocationProvider>();
+        List<String> names = locationManager.getProviders(critere, true);
+        for (String name : names) {
+            providers.add(locationManager.getProvider(name));
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 150, new LocationListener() {
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+
+                @Override
+                public void onLocationChanged(Location location) {
+                    Log.d("GPS", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
+                }
+            });
+
+        }
+
+
+
+
     }
 
 
