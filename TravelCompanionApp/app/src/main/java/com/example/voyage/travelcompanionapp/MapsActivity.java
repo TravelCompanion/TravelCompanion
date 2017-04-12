@@ -31,8 +31,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
-    private Location location;
+    Location location;
 
 
     @Override
@@ -90,43 +92,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(MapsActivity.this, "permission accordée", Toast.LENGTH_SHORT).show();
 
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Criteria critere = new Criteria();
-            critere.setAccuracy(Criteria.ACCURACY_FINE);
-            ArrayList<LocationProvider> providers = new ArrayList<LocationProvider>();
-            List<String> names = locationManager.getProviders(critere, true);
-            for (String name : names) {
-                providers.add(locationManager.getProvider(name));
 
-            }
 
             if (locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+                Criteria critere = new Criteria();
+                critere.setAccuracy(Criteria.ACCURACY_FINE);
+                List<String> providers = locationManager.getProviders(true);
+                for (String provider : providers) {
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, new LocationListener() {
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(provider, MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
 
+                                    @Override
+                                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderEnabled(String provider) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderDisabled(String provider) {
+
+                                    }
+
+                                    @Override
+                                    public void onLocationChanged(Location location) {
+
+                                    }
+                                });
+
+                        Log.d("GPS Enabled", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(provider);
+                            if (location != null) {
+                                Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
+                            }
+                        }
                     }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-                        Log.d("Provider Enabled", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
-                        Toast.makeText(MapsActivity.this, "Provider Enabled", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-                        Log.d("Provider Disabled", "Provider Disabled");
-
-                    }
-
-                    @Override
-                    public void onLocationChanged(Location location) {
-
-                            Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
-
-                    }
-                });
+                }
 
             } else if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
                 if (Build.VERSION.SDK_INT >= 23) {
@@ -168,8 +175,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in moi"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,13));
     }
 }
