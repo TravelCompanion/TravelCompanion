@@ -7,11 +7,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.voyage.travelcompanionapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +30,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     private Location location;
 
@@ -40,15 +43,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria critere = new Criteria();
-        critere.setAccuracy(Criteria.ACCURACY_FINE);
-        ArrayList<LocationProvider> providers = new ArrayList<LocationProvider>();
-        List<String> names = locationManager.getProviders(critere, true);
-        for (String name : names) {
-            providers.add(locationManager.getProvider(name));
-        }
-        if (ContextCompat.checkSelfPermission(this,
+        //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        getCoord();
+
+
+
+       /* if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -75,10 +76,80 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
 
+        }*/
+
+
+
+
+    }
+    public void getCoord(){
+        if (ContextCompat.checkSelfPermission(MapsActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(MapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(MapsActivity.this, "permission accordée", Toast.LENGTH_SHORT).show();
+
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Criteria critere = new Criteria();
+            critere.setAccuracy(Criteria.ACCURACY_FINE);
+            ArrayList<LocationProvider> providers = new ArrayList<LocationProvider>();
+            List<String> names = locationManager.getProviders(critere, true);
+            for (String name : names) {
+                providers.add(locationManager.getProvider(name));
+
+            }
+
+            if (locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, new LocationListener() {
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+                        Log.d("Provider Enabled", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
+                        Toast.makeText(MapsActivity.this, "Provider Enabled", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+                        Log.d("Provider Disabled", "Provider Disabled");
+
+                    }
+
+                    @Override
+                    public void onLocationChanged(Location location) {
+
+                            Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
+
+                    }
+                });
+
+            } else if (locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (this.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        //Permission refusée je ne fais rien
+                    } else {
+                        location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                    }
+                } else {
+                    location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                }
+            } else {
+                Toast.makeText(MapsActivity.this, "Impossible de récupérer vos coordonnées", Toast.LENGTH_SHORT).show();
+            }
         }
+        else{
 
-
-
+            Log.d("GPS", "permission refusée demande autorisation");
+            Toast.makeText(MapsActivity.this, "permission refusée", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(MapsActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+        }
 
     }
 
