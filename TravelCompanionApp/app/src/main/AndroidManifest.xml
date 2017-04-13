@@ -51,7 +51,8 @@
 
         <activity
             android:name="com.example.voyage.travelcompanionapp.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.example.voyage.travelcompanionapp.ProfilActivity"
             android:label="@string/title_activity_preferences"

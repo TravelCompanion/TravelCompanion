@@ -15,19 +15,16 @@
             android:id="@+id/nav_pref"
             android:icon="@drawable/ic_menu_manage"
             android:title="Préférences" />
-    </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
+
+           <!-- <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Share" />-->
             <item
                 android:id="@+id/nav_profil"
                 android:icon="@drawable/ic_perm_identity_black_24dp"
-                android:title="Send" />
-        </menu>
-    </item>
+                android:title="Profile" />
+    </group>
 
 </menu>
