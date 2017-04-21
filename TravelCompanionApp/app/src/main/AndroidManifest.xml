@@ -16,7 +16,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.voyage.travelcompanionapp.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.voyage.travelcompanionapp.MenuActivity"
+            android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -50,16 +50,20 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.example.voyage.travelcompanionapp.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.voyage.travelcompanionapp.ProfilActivity"
+            android:name=".ProfilActivity"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.voyage.travelcompanionapp.NoticeActivity"
+            android:name=".NoticeActivity"
             android:label="@string/title_activity_notice"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListMonumentActivity"
+            android:label="@string/title_activity_list_monument"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -1,6 +1,8 @@
 package com.example.voyage.travelcompanionapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -8,11 +10,24 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.voyage.travelcompanionapp.R;
@@ -27,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -39,15 +54,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_menu_map);
+        ListView list_avis_monument=(ListView)findViewById(R.id.list_monuments);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_map);
+        setSupportActionBar(toolbar);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         getCoord();
+
+        final String[]data_notice= new String[]{"monument1","monument2","monument3"};
+        ArrayAdapter<String> listadaptater;
+        listadaptater= new ArrayAdapter<String>(MapsActivity.this,android.R.layout.simple_list_item_1,data_notice);
+        list_avis_monument.setAdapter(listadaptater);
+
+        list_avis_monument.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                for(int i=0;i<data_notice.length;i++){
+                    if(position==i){
+                        Toast.makeText(MapsActivity.this,data_notice[i].toString(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
 
 
@@ -81,7 +119,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }*/
 
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_map);
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
     public void getCoord(){
@@ -179,4 +224,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in moi"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,13));
     }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_room) {
+            Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_profil) {
+            Intent intent = new Intent(MapsActivity.this, ProfilActivity.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }
