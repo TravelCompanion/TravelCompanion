@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
-
 import com.example.voyage.travelcompanionapp.R;
 
 public class ProfilActivity extends AppCompatActivity
@@ -27,7 +26,7 @@ public class ProfilActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profil);
         setSupportActionBar(toolbar);
 
 
@@ -66,12 +65,16 @@ public class ProfilActivity extends AppCompatActivity
         });
 
 
-/*
-       Tab 3
-        spec = host.newTabSpec("Tab Three");
-        spec.setContent(R.id.tab3);
-        spec.setIndicator("Tab Three");
-        host.addTab(spec);*/
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_profil);
+        //super(this, drawer,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_profil);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     public void onBackPressed() {
@@ -130,17 +133,7 @@ public class ProfilActivity extends AppCompatActivity
         return true;
     }
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
 

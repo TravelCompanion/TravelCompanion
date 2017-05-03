@@ -89,35 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-       /* if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 150, new LocationListener() {
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-
-                @Override
-                public void onLocationChanged(Location location) {
-                    Log.d("GPS", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
-                }
-            });
-
-        }*/
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -129,6 +100,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this);
 
     }
+    //methode coordonne gps
+
     public void getCoord(){
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED

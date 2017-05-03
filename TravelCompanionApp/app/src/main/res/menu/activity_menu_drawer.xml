@@ -17,14 +17,16 @@
             android:title="Préférences" />
 
 
-           <!-- <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />-->
+
             <item
                 android:id="@+id/nav_profil"
                 android:icon="@drawable/ic_perm_identity_black_24dp"
-                android:title="Profile" />
+                android:title="Profil" />
+
+        <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Déconnexion" />
     </group>
 
 </menu>
