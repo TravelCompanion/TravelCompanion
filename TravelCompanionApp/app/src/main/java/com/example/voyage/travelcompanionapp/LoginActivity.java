@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if(mEmailView.getText().toString().equals("test")&&
                             mPasswordView.getText().toString().equals("admin")){
                         Log.d("Tag","connexion");
-                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                     }
                     else{

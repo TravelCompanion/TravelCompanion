@@ -193,9 +193,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in moi"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,13));
+        if (location != null) {
+            LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in moi"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        }
     }
     @Override
     public void onBackPressed() {
