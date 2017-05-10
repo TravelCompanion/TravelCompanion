@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -35,6 +36,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -42,12 +45,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    public final String[] data_notice = new String[]{"monument1", "monument2", "monument3"};
 
     Location location;
 
@@ -57,7 +61,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
-        ListView list_avis_monument=(ListView)findViewById(R.id.list_monuments);
+        ListView list_avis_monument = (ListView) findViewById(R.id.list_monuments);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -70,24 +74,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         getCoord();
 
-        final String[]data_notice= new String[]{"monument1","monument2","monument3"};
+
         ArrayAdapter<String> listadaptater;
-        listadaptater= new ArrayAdapter<String>(MapsActivity.this,android.R.layout.simple_list_item_1,data_notice);
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, data_notice);
         list_avis_monument.setAdapter(listadaptater);
 
-        list_avis_monument.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        list_avis_monument.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                for(int i=0;i<data_notice.length;i++){
-                    if(position==i){
-                        Toast.makeText(MapsActivity.this,data_notice[i].toString(),Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < data_notice.length; i++) {
+                    if (position == i) {
+                        Toast.makeText(MapsActivity.this, data_notice[i].toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
@@ -102,7 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     //methode coordonne gps
 
-    public void getCoord(){
+    public void getCoord() {
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(MapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -167,14 +168,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else {
                 Toast.makeText(MapsActivity.this, "Impossible de récupérer vos coordonnées", Toast.LENGTH_SHORT).show();
             }
-        }
-        else{
+        } else {
 
             Log.d("GPS", "permission refusée demande autorisation");
             Toast.makeText(MapsActivity.this, "permission refusée", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(MapsActivity.this,
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
         }
+
+    }
+
+    private CircleOptions drawCircle(LatLng point){
+
+        // Instantiating CircleOptions to draw a circle around the marker
+        CircleOptions circleOptions = new CircleOptions();
+
+        // Specifying the center of the circle
+        circleOptions.center(point);
+
+        // Radius of the circle
+        circleOptions.radius(200);
+
+        // Border color of the circle
+        circleOptions.strokeColor(Color.BLACK);
+
+        // Fill color of the circle
+        circleOptions.fillColor(0x30ff0000);
+
+        // Border width of the circle
+        circleOptions.strokeWidth(2);
+        return circleOptions;
 
     }
 
@@ -191,12 +214,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
         if (location != null) {
-            LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in moi"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MapsActivity.this,
+                        new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+
+
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+
+            mMap.addCircle(drawCircle(position));
+            /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
+
+            LatLng visage = new LatLng(49.051209,2.008451);
+            mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
+            mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
+
+            LatLng cine = new LatLng(49.048021, 2.012134);
+            mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
+
+            LatLng maison = new LatLng(49.045975, 2.011040);
+            mMap.addMarker(new MarkerOptions().position(maison).title(data_notice[2].toString()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
         }
     }
     @Override
