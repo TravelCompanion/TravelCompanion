@@ -43,10 +43,10 @@ public class ProfilActivity extends AppCompatActivity
         host.addTab(spec);
 
         //Tab 2
-        spec = host.newTabSpec("Preferences");
+        /*spec = host.newTabSpec("Preferences");
         spec.setContent(R.id.tab_pref);
         spec.setIndicator("Preferences");
-        host.addTab(spec);
+        host.addTab(spec);*/
         final String[]data_notice= new String[]{"monument1","monument2","monument3"};
         ArrayAdapter<String> listadaptater;
         listadaptater= new ArrayAdapter<String>(ProfilActivity.this,android.R.layout.simple_list_item_1,data_notice);
@@ -65,14 +65,14 @@ public class ProfilActivity extends AppCompatActivity
         });
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_profil);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_profil);
         //super(this, drawer,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_profil);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);*/
 
 
     }
