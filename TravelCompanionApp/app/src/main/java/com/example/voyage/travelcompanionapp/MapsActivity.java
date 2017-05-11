@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +33,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.voyage.travelcompanionapp.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,14 +50,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     public final String[] data_notice = new String[]{"monument1", "monument2", "monument3"};
-
+    private GoogleApiClient mGoogleApiClient;
     Location location;
 
 
@@ -71,6 +76,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         getCoord();
 
@@ -223,10 +235,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             mMap.setMyLocationEnabled(true);
+
+            LocationAvailability locationAvailability =
+                    LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
+            if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
+
+                location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                if (location != null) {
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+                }
+            }
+
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
             LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
 
             mMap.addCircle(drawCircle(position));
             /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
@@ -235,15 +261,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng visage = new LatLng(49.051209,2.008451);
             mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
             mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
 
             LatLng cine = new LatLng(49.048021, 2.012134);
             mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
 
             LatLng maison = new LatLng(49.045975, 2.011040);
             mMap.addMarker(new MarkerOptions().position(maison).title(data_notice[2].toString()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
         }
     }
     @Override
@@ -301,4 +327,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+            mGoogleApiClient.disconnect();
+        }
+    }
 }
