@@ -261,36 +261,46 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
 
 
-
-            LatLng visage = new LatLng(49.051209,2.008451);
-            mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
-            mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            LatLng visage = new LatLng(49.051209, 2.008451);
+            //mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
+            //mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
 
             LatLng cine = new LatLng(49.048021, 2.012134);
-            mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
+
+            LatLng travail2= new LatLng(48.836338, 2.306364);
+            //mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
 
             LatLng maison = new LatLng(49.045975, 2.011040);
-            MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
+            //MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
 
             LatLng travail = new LatLng(48.836798, 2.306745);
-            mMap.addMarker(markerMaison);
-            MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
+            //mMap.addMarker(markerMaison);
+            //MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
 
 
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
+            ArrayList<LatLng> AlistMonu = new ArrayList<LatLng>();
 
+            AlistMonu.add(visage);
+            AlistMonu.add(cine);
+            AlistMonu.add(maison);
+            AlistMonu.add(travail);
+            AlistMonu.add(travail2);
 
-            float[] distance = new float[2];
-            Location.distanceBetween( markertravail.getPosition().latitude, markertravail.getPosition().longitude,
-                    circlePosition.getCenter().latitude, circlePosition.getCenter().longitude, distance);
+            ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
+            for (int i = 0; i <= marqueurmonus.size() - 1; i++) {
+                float[] distance = new float[2];
+                Location.distanceBetween(marqueurmonus.get(i).getPosition().latitude, marqueurmonus.get(i).getPosition().longitude,
+                        circlePosition.getCenter().latitude, circlePosition.getCenter().longitude, distance);
 
-            if( distance[0] > circlePosition.getRadius()){
-                Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
-                mMap.addMarker(markertravail);
+                if (distance[0] > circlePosition.getRadius()) {
+                    Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                    mMap.addMarker(marqueurmonus.get(i));
+                }
             }
         }
     }
@@ -376,5 +386,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+
+    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<LatLng> listlatlon){
+        int i=0;
+
+        ArrayList<MarkerOptions> marMonu = new ArrayList<MarkerOptions>();
+        for(LatLng lalo : listlatlon  ){
+            MarkerOptions markerop = new MarkerOptions().position(lalo).title("monu_"+i);
+            marMonu.add(markerop);
+            i++;
+        }
+        return marMonu;
     }
 }
