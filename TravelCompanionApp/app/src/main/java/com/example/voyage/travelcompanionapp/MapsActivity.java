@@ -253,10 +253,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
             LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+            CircleOptions circlePosition = drawCircle(position);
 
-            mMap.addCircle(drawCircle(position));
+            mMap.addCircle(circlePosition);
+
             /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
+
+
 
             LatLng visage = new LatLng(49.051209,2.008451);
             mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
@@ -268,8 +272,26 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
 
             LatLng maison = new LatLng(49.045975, 2.011040);
-            mMap.addMarker(new MarkerOptions().position(maison).title(data_notice[2].toString()));
+            MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
+
+            LatLng travail = new LatLng(48.836798, 2.306745);
+            mMap.addMarker(markerMaison);
+            MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
+
+
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
+
+
+            float[] distance = new float[2];
+            Location.distanceBetween( markertravail.getPosition().latitude, markertravail.getPosition().longitude,
+                    circlePosition.getCenter().latitude, circlePosition.getCenter().longitude, distance);
+
+            if( distance[0] > circlePosition.getRadius()){
+                Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                mMap.addMarker(markertravail);
+            }
         }
     }
     @Override
