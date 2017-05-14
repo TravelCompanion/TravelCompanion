@@ -290,18 +290,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             AlistMonu.add(travail2);
 
             ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
-            for (int i = 0; i <= marqueurmonus.size() - 1; i++) {
-                float[] distance = new float[2];
-                Location.distanceBetween(marqueurmonus.get(i).getPosition().latitude, marqueurmonus.get(i).getPosition().longitude,
-                        circlePosition.getCenter().latitude, circlePosition.getCenter().longitude, distance);
+            placeMarker(marqueurmonus,circlePosition);
 
-                if (distance[0] > circlePosition.getRadius()) {
-                    Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
-                    mMap.addMarker(marqueurmonus.get(i));
-                }
-            }
         }
     }
     @Override
@@ -399,5 +389,20 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             i++;
         }
         return marMonu;
+    }
+    public void placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
+        for (int i = 0; i <= markersO.size() - 1; i++) {
+            float[] distance = new float[2];
+            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+            if (distance[0] > circleP.getRadius()) {
+                //Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                mMap.addMarker(markersO.get(i));
+            }
+        }
+
     }
 }
