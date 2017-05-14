@@ -66,7 +66,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
-        ListView list_avis_monument = (ListView) findViewById(R.id.list_monuments);
+        ListView list_monument = (ListView) findViewById(R.id.list_monuments);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -87,11 +87,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         getCoord();
 
 
-        ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, data_notice);
-        list_avis_monument.setAdapter(listadaptater);
-
-        list_avis_monument.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView list_monumentHere=afficheListMarker(list_monument);
+        /*Continue recuperer les noms des marqueur
+        ArrayList<String> nameMonuments=keepMarker()*/
+        list_monumentHere.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 for (int i = 0; i < data_notice.length; i++) {
@@ -390,7 +389,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return marMonu;
     }
-    public void placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
+    public ArrayList<String> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
+        ArrayList<String> markerselect=new ArrayList<String>() ;
         for (int i = 0; i <= markersO.size() - 1; i++) {
             float[] distance = new float[2];
             Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
@@ -401,8 +401,29 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             } else {
                 Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
                 mMap.addMarker(markersO.get(i));
+                markerselect.add(markersO.get(i).getTitle());
             }
         }
+        return markerselect;
 
+    }
+    public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+        ArrayList<String> markerselect = new ArrayList<String>();
+        for (int i = 0; i <= markersO.size() - 1; i++) {
+            float[] distance = new float[2];
+            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+            if (distance[0] > circleP.getRadius()) {
+                markerselect.add(markersO.get(i).getTitle());
+            }
+        }
+        return markerselect;
+    }
+    public ListView afficheListMarker(ListView listV){
+        ArrayAdapter<String> listadaptater;
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, data_notice);
+        listV.setAdapter(listadaptater);
+        return listV;
     }
 }
