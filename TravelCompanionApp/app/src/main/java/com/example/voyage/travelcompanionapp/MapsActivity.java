@@ -59,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     public final String[] data_notice = new String[]{"monument1", "monument2", "monument3"};
     private GoogleApiClient mGoogleApiClient;
     Location location;
+    ListView list_monument;
 
 
     @Override
@@ -66,7 +67,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
-        ListView list_monument = (ListView) findViewById(R.id.list_monuments);
+        list_monument = (ListView) findViewById(R.id.list_monuments);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -87,19 +88,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         getCoord();
 
 
-        ListView list_monumentHere=afficheListMarker(list_monument);
+        //ListView list_monumentHere=afficheListMarker(list_monument);
         /*Continue recuperer les noms des marqueur
         ArrayList<String> nameMonuments=keepMarker()*/
-        list_monumentHere.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (int i = 0; i < data_notice.length; i++) {
-                    if (position == i) {
-                        Toast.makeText(MapsActivity.this, data_notice[i].toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
@@ -289,7 +281,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             AlistMonu.add(travail2);
 
             ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
-            placeMarker(marqueurmonus,circlePosition);
+            afficheListMarker(list_monument,placeMarker(marqueurmonus,circlePosition));
 
         }
     }
@@ -396,9 +388,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
                     circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
 
-            if (distance[0] > circleP.getRadius()) {
-                //Toast.makeText(getBaseContext(), "Outside", Toast.LENGTH_LONG).show();
-            } else {
+            if (distance[0] < circleP.getRadius()) {
                 Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
                 mMap.addMarker(markersO.get(i));
                 markerselect.add(markersO.get(i).getTitle());
@@ -420,10 +410,22 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return markerselect;
     }
-    public ListView afficheListMarker(ListView listV){
+    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker){
         ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, data_notice);
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
         listV.setAdapter(listadaptater);
-        return listV;
+
+
+        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < keepMarker.size(); i++) {
+                    if (position == i) {
+                        Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
     }
 }
