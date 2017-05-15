@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -30,8 +31,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.voyage.travelcompanionapp.R;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    Session session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+        session = new Session(getApplicationContext());
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -93,14 +98,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onClick(View view) {
                     //attemptLogin();
+                    if (mEmailView.getText().toString().trim().length()>0 && mPasswordView.getText().toString().trim().length()>0 ){
                     if(mEmailView.getText().toString().equals("test")&&
                             mPasswordView.getText().toString().equals("admin")){
                         Log.d("Tag","connexion");
+                        session.createLoginSession(mEmailView.getText().toString());
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                     else{
-                        Log.d("Tag","Erreur");
+                        Log.d("Tag","Erreur Connexion");
+                        Toast.makeText(LoginActivity.this,R.string.error_connection, Toast.LENGTH_SHORT).show();
+                    }
                     }
 
                 }

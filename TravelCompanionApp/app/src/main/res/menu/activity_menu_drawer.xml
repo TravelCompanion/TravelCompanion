@@ -8,7 +8,7 @@
             android:title="Monument" />
         <item
             android:id="@+id/nav_fav"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_star_black_24dp"
             android:title="Favoris" />
 
         <item
@@ -24,8 +24,8 @@
                 android:title="Profil" />
 
         <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
                 android:title="Déconnexion" />
     </group>
 

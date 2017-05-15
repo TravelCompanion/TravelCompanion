@@ -60,6 +60,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     Location location;
     ListView list_monument;
+    Session session;
 
 
     @Override
@@ -68,6 +69,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
         list_monument = (ListView) findViewById(R.id.list_monuments);
+        session = new Session(getApplicationContext());
+        session.checkLogin();
+        Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -87,10 +91,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         getCoord();
 
-
-        //ListView list_monumentHere=afficheListMarker(list_monument);
-        /*Continue recuperer les noms des marqueur
-        ArrayList<String> nameMonuments=keepMarker()*/
 
 
 
@@ -328,7 +328,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
             Intent intent = new Intent(MapsActivity.this, ProfilActivity.class);
@@ -389,7 +390,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                     circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
 
             if (distance[0] < circleP.getRadius()) {
-                Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
                 mMap.addMarker(markersO.get(i));
                 markerselect.add(markersO.get(i).getTitle());
             }
