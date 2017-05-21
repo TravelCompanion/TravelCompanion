@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +33,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.voyage.travelcompanionapp.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,15 +50,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     public final String[] data_notice = new String[]{"monument1", "monument2", "monument3"};
-
+    private GoogleApiClient mGoogleApiClient;
     Location location;
+    ListView list_monument;
+    Session session;
 
 
     @Override
@@ -61,7 +68,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
-        ListView list_avis_monument = (ListView) findViewById(R.id.list_monuments);
+        list_monument = (ListView) findViewById(R.id.list_monuments);
+        session = new Session(getApplicationContext());
+        session.checkLogin();
+        Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -71,24 +81,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         getCoord();
 
 
-        ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, data_notice);
-        list_avis_monument.setAdapter(listadaptater);
-
-        list_avis_monument.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (int i = 0; i < data_notice.length; i++) {
-                    if (position == i) {
-                        Toast.makeText(MapsActivity.this, data_notice[i].toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
@@ -223,27 +226,69 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             mMap.setMyLocationEnabled(true);
+            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+            CircleOptions circlePosition = drawCircle(position);
+            mMap.addCircle(circlePosition);
+
+            LocationAvailability locationAvailability =
+                    LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
+            if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
+
+                location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                 position = new LatLng(location.getLatitude(), location.getLongitude());
+                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+                circlePosition = drawCircle(position);
+                mMap.addCircle(circlePosition);
+
+                if (location != null) {
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+                }
+            }
+
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
 
-            mMap.addCircle(drawCircle(position));
+
+
+
             /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
 
-            LatLng visage = new LatLng(49.051209,2.008451);
-            mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
-            mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
+
+            LatLng visage = new LatLng(49.051209, 2.008451);
+            //mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
+            //mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
 
             LatLng cine = new LatLng(49.048021, 2.012134);
-            mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
+
+            LatLng travail2= new LatLng(48.836338, 2.306364);
+            //mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
 
             LatLng maison = new LatLng(49.045975, 2.011040);
-            mMap.addMarker(new MarkerOptions().position(maison).title(data_notice[2].toString()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
+            //MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
+
+            LatLng travail = new LatLng(48.836798, 2.306745);
+            //mMap.addMarker(markerMaison);
+            //MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
+
+
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
+            ArrayList<LatLng> AlistMonu = new ArrayList<LatLng>();
+
+            AlistMonu.add(visage);
+            AlistMonu.add(cine);
+            AlistMonu.add(maison);
+            AlistMonu.add(travail);
+            AlistMonu.add(travail2);
+
+            ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
+            afficheListMarker(list_monument,placeMarker(marqueurmonus,circlePosition));
+
         }
     }
     @Override
@@ -289,7 +334,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
             Intent intent = new Intent(MapsActivity.this, ProfilActivity.class);
@@ -301,4 +347,93 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
+    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<LatLng> listlatlon){
+        int i=0;
+
+        ArrayList<MarkerOptions> marMonu = new ArrayList<MarkerOptions>();
+        for(LatLng lalo : listlatlon  ){
+            MarkerOptions markerop = new MarkerOptions().position(lalo).title("monu_"+i);
+            marMonu.add(markerop);
+            i++;
+        }
+        return marMonu;
+    }
+    public ArrayList<String> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
+        ArrayList<String> markerselect=new ArrayList<String>() ;
+        for (int i = 0; i <= markersO.size() - 1; i++) {
+            float[] distance = new float[2];
+            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+            if (distance[0] < circleP.getRadius()) {
+                //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+                mMap.addMarker(markersO.get(i));
+                markerselect.add(markersO.get(i).getTitle());
+            }
+        }
+        return markerselect;
+
+    }
+    public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+        ArrayList<String> markerselect = new ArrayList<String>();
+        for (int i = 0; i <= markersO.size() - 1; i++) {
+            float[] distance = new float[2];
+            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+            if (distance[0] > circleP.getRadius()) {
+                markerselect.add(markersO.get(i).getTitle());
+            }
+        }
+        return markerselect;
+    }
+    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker){
+        ArrayAdapter<String> listadaptater;
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
+        listV.setAdapter(listadaptater);
+
+
+        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < keepMarker.size(); i++) {
+                    if (position == i) {
+                        Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+    }
 }
