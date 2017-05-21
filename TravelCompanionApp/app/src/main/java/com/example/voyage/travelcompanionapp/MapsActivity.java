@@ -226,12 +226,20 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
             mMap.setMyLocationEnabled(true);
+            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+            CircleOptions circlePosition = drawCircle(position);
+            mMap.addCircle(circlePosition);
 
             LocationAvailability locationAvailability =
                     LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
             if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
 
                 location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                 position = new LatLng(location.getLatitude(), location.getLongitude());
+                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+                circlePosition = drawCircle(position);
+                mMap.addCircle(circlePosition);
 
                 if (location != null) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -242,11 +250,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
-            CircleOptions circlePosition = drawCircle(position);
 
-            mMap.addCircle(circlePosition);
+
+
 
             /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
