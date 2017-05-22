@@ -14,10 +14,13 @@ public class TheoricUser {
 	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
 
 	public TheoricUser() {
-		this.position = new CoordinatesDouble(new double[] { 0, 0 });
-		preferences.put(PlaceType.MONUMENT1, 0.7);
-		preferences.put(PlaceType.MONUMENT2, 0.8);
-		preferences.put(PlaceType.MONUMENT3, 0.6);
+		this.position = new CoordinatesDouble(new double[] { 49, 2 });
+		int i = 0;
+		for(PlaceType placeType : PlaceType.values())
+		{
+			preferences.put(placeType, ((i%4)+1)*0.2);
+				i++;
+		}
 	}
 
 	public TheoricUser(String id, CoordinatesDouble position) {

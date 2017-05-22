@@ -10,16 +10,17 @@ import ia.TheoricUser;
 
 public class VirtualDataBase {
 	private static VirtualDataBase dataBase;
-	private HashMap<CoordinatesDouble, TempDataDB> places = new HashMap<CoordinatesDouble, TempDataDB>(); 
+	private HashMap<CoordinatesDouble, VirtualPlace> places = new HashMap<CoordinatesDouble, VirtualPlace>(); 
 	private HashMap<String, VirtualUser> users = new HashMap<String, VirtualUser>();
 	
 	
 	private VirtualDataBase(){
 		//data format : name,t1/t2/t3 ... ,x,y
 		ArrayList<String> lines = StringParser.readData(Constants.DB_PATH_PLACES);
-		ArrayList<String> lines2 = StringParser.readData(Constants.DB_PATH_USER);
-		places = StringParser.convertDataLinesKeyMap(new TempDataDB(), lines,',',';');
-		users = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');
+		//ArrayList<String> lines2 = StringParser.readData(Constants.DB_PATH_USER);
+		//places = StringParser.convertDataLinesKeyMap(new TempDataDB(), lines,',',';');
+		places = StringParser.convertDataLinesKeyMap(new VirtualPlace(), lines,'/',';');
+		//users = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');
 		
 	}
 	
@@ -27,7 +28,7 @@ public class VirtualDataBase {
 		if(dataBase == null) dataBase = new VirtualDataBase();
 		return dataBase;
 	}
-	public HashMap<CoordinatesDouble, TempDataDB> getPlaces() {
+	public HashMap<CoordinatesDouble, VirtualPlace> getPlaces() {
 		return places;
 	}
 	
@@ -35,8 +36,8 @@ public class VirtualDataBase {
 		return users;
 	}
 
-	public HashMap<CoordinatesDouble, TempDataDB> requestNearPlace(TheoricUser user,double distance){
-		HashMap<CoordinatesDouble, TempDataDB> req = new HashMap<CoordinatesDouble, TempDataDB>();
+	public HashMap<CoordinatesDouble, VirtualPlace> requestNearPlace(TheoricUser user,double distance){
+		HashMap<CoordinatesDouble, VirtualPlace> req = new HashMap<CoordinatesDouble, VirtualPlace>();
 		for(CoordinatesDouble data : places.keySet())
 			if(CoordinatesDouble.distanceAtoB(user.getPosition(),data) <= distance)
 				req.put(data,places.get(data));

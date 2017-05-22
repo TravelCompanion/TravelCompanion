@@ -8,20 +8,36 @@ import tools.parse.StringParser;
 import cte.PlaceType;
 import gps.Place;
 
-public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDouble> {
+public class VirtualPlace implements StringParseGenerable<VirtualPlace, CoordinatesDouble> {
+	/**
+	 * Its a transition class between business class and IO class for places
+	 * data
+	 */
 	private String name = "place";
 	private double x, y;
 	private ArrayList<PlaceType> types = new ArrayList<PlaceType>();
-	//private double note;
-	public TempDataDB(){};
-	public TempDataDB(String name, double x, double y) {
+	private double note;
+
+	public String getName() {
+		return name;
+	}
+
+	public double getNote() {
+		return note;
+	}
+
+	// private double note;
+	public VirtualPlace() {
+	};
+
+	public VirtualPlace(String name, double x, double y) {
 		this.x = x;
 		this.y = y;
 		this.name = name;
 	}
 
-	public static Place toPlace(TempDataDB td) {
-		Place place = new Place(td.name, new double[] { td.x, td.y });
+	public static Place toPlace(VirtualPlace td) {
+		Place place = new Place(td.name, new double[] { td.x, td.y },td.note);
 		for (PlaceType type : td.types)
 			place.getPlaceTypes().add(type);
 		return place;
@@ -43,26 +59,30 @@ public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDo
 		return types;
 	}
 
-	public TempDataDB generateItem(ArrayList<String> args) {
+	public VirtualPlace generateItem(ArrayList<String> args) {
 		// data format : name,t1:v/t2:v/t3:v ... ,x,y
+		System.out.println(args);
 		this.name = args.get(0);
 		this.x = Double.parseDouble(args.get(2));
 		this.y = Double.parseDouble(args.get(3));
-		ArrayList<String> lines = StringParser.sliceLine(args.get(1), '/');
+		this.note = Double.parseDouble(args.get(4))/5;
+		//ArrayList<String> lines = StringParser.sliceLine(args.get(1), '/');
+		ArrayList<String> lines = StringParser.sliceLine(args.get(1), ',');
 		for (String line : lines) {
 			types.add(PlaceType.getPlaceType(line));
 		}
 		return this;
 	}
+
 	public CoordinatesDouble getKey() {
-		CoordinatesDouble coordinatesDouble = new CoordinatesDouble(new double[]{x,y});
+		CoordinatesDouble coordinatesDouble = new CoordinatesDouble(new double[] { x, y });
 		return coordinatesDouble;
 	}
-	
-	public StringParseGenerable<TempDataDB, CoordinatesDouble> init() {
-		return new TempDataDB();
+
+	public StringParseGenerable<VirtualPlace, CoordinatesDouble> init() {
+		return new VirtualPlace();
 	}
-	
+
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -75,6 +95,7 @@ public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDo
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,7 +104,7 @@ public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDo
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TempDataDB other = (TempDataDB) obj;
+		VirtualPlace other = (VirtualPlace) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -100,9 +121,9 @@ public class TempDataDB implements StringParseGenerable<TempDataDB,CoordinatesDo
 			return false;
 		return true;
 	}
+
 	public String toString() {
 		return "TempDataDB [name=" + name + ", x=" + x + ", y=" + y + ", types=" + types + "]";
 	}
 
-	
 }

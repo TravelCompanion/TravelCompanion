@@ -2,12 +2,10 @@ package tools.polls;
 
 import java.util.ArrayList;
 
-import tools.math.MathComparator;
 import tools.list.ListTools;
+import tools.math.compare.MathComparator;
 
 public class MajorityJudgmentManager {
-	private ArrayList<Elector> electors = new ArrayList<Elector>();
-	private ArrayList<Elegible> elegibles = new ArrayList<Elegible>();
 	
 	public int election(ArrayList<Elector> electors,ArrayList<Elegible> elegibles){
 		int sx = elegibles.size(),sy = electors.size() ;
@@ -19,8 +17,7 @@ public class MajorityJudgmentManager {
 			}
 		
 		for(int x = 0; x < sx; x ++)
-				votes[sx].sort(MathComparator.getDouble(MathComparator.INF_DOUBLE));
-		int med;
+				votes[sx].sort(MathComparator.getByNameDouble("<"));
 		double[] judgments  =  new double[sx];
 		for(int x = 0; x < sx; x++){
 			judgments[x] = votes[x].get(votes[x].size()/2);

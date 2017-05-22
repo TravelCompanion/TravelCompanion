@@ -18,19 +18,27 @@ public class StringParser {
 	public static <T1> ArrayList<String> logDatas(HashMap<String, StringParseLoggable> datas) {
 		ArrayList<String> words = new ArrayList<String>();
 		for (StringParseLoggable data : datas.values())
-			words.add(data.toLog()+"\n");
+			words.add(data.toLog() + "\n");
 		return words;
 	}
 
 	// Generation Operations
-	public static <T1, T2> T1 generateFromParse(StringParseGenerable<T1, T2> generator,String line, char separator,
+	public static <T1, T2> T1 generateFromParse(StringParseGenerable<T1, T2> generator, String line, char separator,
 			char endOfLine) {
+		/**
+		 * generate an object of type T1 from a String, type T1 must implements
+		 * StringParseGenerable<T1, T2> and line must be in the right format.
+		 */
 		ArrayList<String> args = sliceLine(line, separator, endOfLine);
 		T1 item = generator.generateItem(args);
 		return item;
 	}
 
 	public static <T1, T2> T1 generateFromParse(StringParseGenerable<T1, T2> generator, String line, char separator) {
+		/**
+		 * generate an object of type T1 from a String, type T1 must implements
+		 * StringParseGenerable<T1, T2> and line must be in the right format.
+		 */
 		ArrayList<String> args = sliceLine(line, separator);
 		T1 item = generator.generateItem(args);
 		return item;
@@ -39,6 +47,11 @@ public class StringParser {
 	public static <T1, T2> HashMap<String, T1> convertDataLinesStringMap(StringParseGenerable<T1, T2> generable,
 			ArrayList<String> words) {
 		HashMap<String, T1> items = new HashMap<String, T1>();
+		/**
+		 * generate an hashMap of object of type T1 with key of type T2 from a
+		 * String list, type T1 must implements StringParseGenerable<T1, T2> and
+		 * line must be in the right format.
+		 */
 		for (String word : words) {
 			T1 item = StringParser.generateFromParse(generable, word, ',', ';');
 			items.put(generable.getStringKey(), item);
@@ -47,17 +60,17 @@ public class StringParser {
 	}
 
 	public static <T1, T2> HashMap<T2, T1> convertDataLinesKeyMap(StringParseGenerable<T1, T2> generable,
-			ArrayList<String> words,char separator,char endOfLine) {
+			ArrayList<String> words, char separator, char endOfLine) {
 		HashMap<T2, T1> items = new HashMap<T2, T1>();
 		for (String word : words) {
 			StringParseGenerable<T1, T2> gen = generable.init();
-			T1 item = StringParser.generateFromParse(gen, word, separator,endOfLine);
-			System.out.println(gen.getKey());
-			items.put(gen.getKey(),item);
+			T1 item = StringParser.generateFromParse(gen, word, separator, endOfLine);
+			// System.out.println(gen.getKey());
+			items.put(gen.getKey(), item);
 		}
 		return items;
 	}
-	
+
 	// String Operations
 
 	public static int getIndexOfWord(String w, String chain) {
@@ -78,8 +91,8 @@ public class StringParser {
 		/** get the whole text between index and the next separation */
 		int last = index;
 		while (line.charAt(index) != separator && !isLineEnd(index, line))
-			index++;		
-		String word = isLineEnd(index, line) ?  line.substring(last, index+1) : line.substring(last, index);
+			index++;
+		String word = isLineEnd(index, line) ? line.substring(last, index + 1) : line.substring(last, index);
 		return word;
 	}
 
@@ -112,11 +125,12 @@ public class StringParser {
 		ArrayList<String> words = new ArrayList<String>();
 		int index = 0;
 		while (true) {
-			if(line.charAt(index) == separator ) index++;
+			if (line.charAt(index) == separator)
+				index++;
 			String word = getNextWord(line, index, separator);
 			words.add(word);
-			index+=word.length();
-			
+			index += word.length();
+
 			if (isLineEnd(index, line))
 				break;
 		}
@@ -145,12 +159,12 @@ public class StringParser {
 
 	public static void writeData(String path, ArrayList<String> words) {
 		try {
-			PrintWriter writer =new PrintWriter(path);
+			PrintWriter writer = new PrintWriter(path);
 			writer.print("");
 			writer.close();
 			FileWriter fw = new FileWriter(path, true);
 			BufferedWriter output = new BufferedWriter(fw);
-			for (int i = 0; i < words.size(); i++){
+			for (int i = 0; i < words.size(); i++) {
 				output.write(words.get(i));
 				output.newLine();
 			}
@@ -164,6 +178,6 @@ public class StringParser {
 	}
 
 	public static boolean isLineEnd(int index, String line) {
-		return index >= line.length()-1;
+		return index >= line.length() - 1;
 	}
 }

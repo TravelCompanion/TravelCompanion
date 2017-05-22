@@ -1,0 +1,16 @@
+placea,monument1/monument3,1,5,0.23;
+placeb,monument2,5,18,0.06;
+placec,monument1/monument2,11,9,0.69;
+placed,monument2/monument3,9,0,0.72;
+placee,monument1/monument2/monument3,3,15,0.23;
+placef,monument3,2,7,0.50;
+placeg,monument1,3,14,0.81;
+placeh,monument1/monument2,9,6,0.30;
+placei,monument2/monument3,17,3,0.12;
+placej,monument1/monument3,19,3,0.96;
+placek,monument1/monument2/monument3,13,4,0.78;
+placel,monument1,5,8,0.75;
+placem,monument2,7,11,0.97;
+placen,monument3,11,13,0.52;
+placeo,monument1/monument2/monument3,16,2,0.31;
+placep,monument1/monument2/monument3,10,6,0.51;

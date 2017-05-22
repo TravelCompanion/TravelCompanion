@@ -1,79 +1,50 @@
-package tools.math;
+package tools.math.compare;
 
 import java.util.Comparator;
 
-public enum MathComparator {
-	INF_DOUBLE(0), SUP_DOUBLE(1), INFEQ_DOUBLE(2), SUPEQ_DOUBLE(3), INF_STRING(4), SUP_STRING(5), INFEQ_STRING(
-			6), SUPEQ_STRING(7);
+public class MathComparator {
 
-	private int id = 0;
-
-	private MathComparator(int id) {
-		this.id = id;
-	}
-
-	private static int getId(MathComparator comparator) {
-		return comparator.id;
-	}
-
+	@SuppressWarnings("unchecked")
 	public static <T> Comparator<T> getByNameDouble(String symb) {
 		switch (symb) {
 		case "<":
-			return getDouble(INF_DOUBLE);
+			return (Comparator<T>) InferiorDouble.get();
 		case ">":
-			return getDouble(SUP_DOUBLE);
+			return (Comparator<T>) SuperiorDouble.get();
 		case "<=":
-			return getDouble(INFEQ_DOUBLE);
+			return (Comparator<T>) InferiorEqualsDouble.get();
 		case ">=":
-			return getDouble(SUPEQ_DOUBLE);
+			return (Comparator<T>) SuperiorEqualsDouble.get();
 		default:
 			return null;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> Comparator<T> getByNameString(String symb) {
+		
 		switch (symb) {
 		case "<":
-			return getDouble(INF_STRING);
+			return (Comparator<T>) InferiorString.get();
 		case ">":
-			return getDouble(SUP_STRING);
+			return (Comparator<T>) SuperiorString.get();
 		case "<=":
-			return getDouble(INFEQ_STRING);
+			return (Comparator<T>) InferiorEqualsString.get();
 		case ">=":
-			return getDouble(SUPEQ_STRING);
+			return (Comparator<T>) SuperiorEqualsString.get();
 		default:
 			return null;
 		}
 	}
+	
 
-	@SuppressWarnings({ "unchecked" })
-	public static <T> Comparator<T> getDouble(MathComparator comparator) {
-		Comparator<T> comp = null;
-		switch (getId(comparator)) {
-		case 0:
-			comp = (Comparator<T>) InferiorDouble.get();
-		case 1:
-			comp = (Comparator<T>) SuperiorDouble.get();
-		case 2:
-			comp = (Comparator<T>) InferiorEqualsDouble.get();
-		case 3:
-			comp = (Comparator<T>) SuperiorEqualsDouble.get();
-		case 4:
-			comp = (Comparator<T>) InferiorString.get();
-		case 5:
-			comp = (Comparator<T>) SuperiorString.get();
-		case 6:
-			comp = (Comparator<T>) InferiorEqualsString.get();
-		case 7:
-			comp = (Comparator<T>) SuperiorEqualsString.get();
-
-		}
-		return comp;
-	}
-
+	
+	
+	
+	
 	private static class InferiorString implements Comparator<String> {
-		public static SuperiorString get() {
-			return new SuperiorString();
+		public static InferiorString get() {
+			return new InferiorString();
 		}
 
 		public int compare(String o1, String o2) {
@@ -89,8 +60,8 @@ public enum MathComparator {
 	}
 
 	private static class InferiorEqualsString implements Comparator<String> {
-		public static SuperiorEqualsString get() {
-			return new SuperiorEqualsString();
+		public static InferiorEqualsString get() {
+			return new InferiorEqualsString();
 		}
 
 		public int compare(String o1, String o2) {
@@ -138,7 +109,7 @@ public enum MathComparator {
 			return l1 < l2 ? -1 : 1;
 		}
 	}
-
+	
 	private static class InferiorDouble implements Comparator<Double> {
 		public static InferiorDouble get() {
 			return new InferiorDouble();

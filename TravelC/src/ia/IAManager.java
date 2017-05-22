@@ -1,5 +1,6 @@
 package ia;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -8,6 +9,8 @@ import cte.PlaceType;
 import gps.GPSMap;
 import gps.Place;
 import tools.math.CoordinatesDouble;
+import tools.math.compare.CompareUnitDouble;
+import tools.math.compare.MathUnitComparator;
 import tools.math.random.RandomDouble;
 
 public class IAManager {
@@ -27,12 +30,35 @@ public class IAManager {
 		return c;		
 	}
 	
-	public static HashMap<PlaceType, Double> getErrorByPlaceType(){
-		return null;		
+	public static ArrayList<CoordinatesDouble> chooseListOfPlace(TheoricUser user){
+		ArrayList<CompareUnitDouble<CoordinatesDouble>> units = new ArrayList<CompareUnitDouble<CoordinatesDouble>>();
+		ArrayList<CoordinatesDouble> coords = new ArrayList<CoordinatesDouble>();
+
+		for(Place place: GPSMap.getPlaces().values()){
+			if(CoordinatesDouble.eq(user.getPosition(), place.getCoords() )|| user.hasVisited(place.getCoords()))continue;
+			double v = calculateDistance(user,place);
+			units.add(new CompareUnitDouble<CoordinatesDouble>(v, place.getCoords()));
+		} 
+		units.sort(MathUnitComparator.getByNameDouble("<"));
+		System.out.println(units);
+		for(CompareUnitDouble<CoordinatesDouble> cud : units)
+			coords.add(cud.getElement());
+		return coords;
 	}
 	
-	public static double getGlobalError(HashMap<PlaceType, Double> errors){
-		return 0;
+	private static HashMap<PlaceType, Double> getErrorByPlaceType(TheoricUser user, Place place, double note){
+		HashMap<PlaceType, Double> errors = new HashMap<PlaceType,Double>();
+		for(PlaceType type : place.getPlaceTypes())
+			errors.put(type, note - user.getPreferences().get(type)*place.getNote());
+		return errors;		
+	}
+	
+	private static double getGlobalError(Place place, HashMap<PlaceType, Double> errors){
+		double errG = 0;
+		for(Double err : errors.values())
+			errG += err;
+		System.out.println("types : "+place.getPlaceTypes().size() +"errors : "+errors.values().size() +"errG : " +errG/place.getPlaceTypes().size());
+		return errG/place.getPlaceTypes().size();
 	}
 	
 	public static double notePlace(TheoricUser user,Place place){
@@ -50,14 +76,25 @@ public class IAManager {
 
 	private static double calculateDistance(TheoricUser user,Place place){
 		double val = 0;
-		for(PlaceType type : place.getPlaceTypes())
-			val += 1 - user.getPreferences().get(type);
-		return val;
+		for(PlaceType type : place.getPlaceTypes()){
+			//System.out.println(type);
+			//System.out.println(user);
+			val += Math.pow((1 - user.getPreferences().get(type)),2);
+			}
+		return val/place.getPlaceTypes().size();
 	}
 	
-	public static void perceptronChoise(){
-		
+	public static void perceptronLearn(TheoricUser user, Place place, double note,double eps){
+		HashMap<PlaceType, Double> errors = getErrorByPlaceType(user, place, note);
+		double errG = getGlobalError(place, errors);
+		Double pref;
+		for(PlaceType type : place.getPlaceTypes())
+			{
+			pref = user.getPreferences().get(type);
+			user.getPreferences().replace(type,pref+(eps*errG));
+			}
 	}
+
 	
 	public static void majorityJudgment(){
 		

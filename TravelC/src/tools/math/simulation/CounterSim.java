@@ -1,7 +1,9 @@
-package tools.math;
+package tools.math.simulation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tools.math.MathTools;
 public class CounterSim {
 
 	public static void main(String[] args) {

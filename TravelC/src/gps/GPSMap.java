@@ -2,7 +2,7 @@ package gps;
 
 import java.util.HashMap;
 
-import externalData.TempDataDB;
+import externalData.VirtualPlace;
 import tools.math.CoordinatesDouble;
 
 public class GPSMap {
@@ -16,10 +16,11 @@ public class GPSMap {
 		return gps;
 	}
 
-	public static void fillMap(HashMap<CoordinatesDouble, TempDataDB> datas) {
+	public static void fillMap(HashMap<CoordinatesDouble, VirtualPlace> datas) throws NoPlaceFoundException {
 		HashMap<CoordinatesDouble, Place> places = new HashMap<CoordinatesDouble, Place>();
 		for (CoordinatesDouble data : datas.keySet())
-			places.put(data, TempDataDB.toPlace(datas.get(data)));
+			places.put(data, VirtualPlace.toPlace(datas.get(data)));
+		if(places.isEmpty())throw new NoPlaceFoundException();
 		map = places;
 	}
 

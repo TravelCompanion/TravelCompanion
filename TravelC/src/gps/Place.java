@@ -6,11 +6,11 @@ import cte.PlaceType;
 import tools.math.CoordinatesDouble;
 
 public class Place {
-
+	/**Represent places*/
 	private String name = "place";
 	private CoordinatesDouble coords = new CoordinatesDouble(2);
 	private ArrayList<PlaceType> placeTypes = new ArrayList<PlaceType>();
-	private double note;
+	private double note = 1;
 
 	public Place() {
 	}
@@ -31,6 +31,12 @@ public class Place {
 	public Place(String name, double[] coords) {
 		this.coords = new CoordinatesDouble(coords);
 		this.name = name;
+	}
+
+	public Place(String name, double[] coords, double note) {
+		this.coords = new CoordinatesDouble(coords);
+		this.name = name;
+		this.note = note;
 	}
 
 	public double getNote() {
