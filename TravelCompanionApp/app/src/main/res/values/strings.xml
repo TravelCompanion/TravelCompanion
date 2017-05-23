@@ -86,4 +86,7 @@
     <string name="title_activity_preferences">preferencesActivity</string>
     <string name="title_activity_notice">NoticeActivity</string>
     <string name="title_activity_list_monument">ListMonumentActivity</string>
+    <string name="title_activity_desc_Monument">Description</string>
+    <string name="title_Monument_au_alentour">Monuments aux alentour</string>
+    <string name="title_profil">Profil</string>
 </resources>

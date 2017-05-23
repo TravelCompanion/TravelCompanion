@@ -2,6 +2,7 @@ package com.example.voyage.travelcompanionapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -46,6 +47,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,17 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     Location location;
     ListView list_monument;
     Session session;
+    SharedPreferences preferences;
+    int PRIVATE_MODE = 0;
+    public static final String KEY_NAME = "name";
+    public static final String KEY_DIST = "distance";
+
+    // Editor for Shared preferences
+    SharedPreferences.Editor editor;
+
+    private static final String PREF_NAME = "PrefDistance";
+
+
 
 
     @Override
@@ -103,8 +116,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_map);
         navigationView.setNavigationItemSelectedListener(this);
 
+
     }
-    //methode coordonne gps
+    //methode coordonnée gps
 
     public void getCoord() {
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
@@ -273,6 +287,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             //MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
 
             LatLng travail = new LatLng(48.836798, 2.306745);
+
+            LatLng fac = new LatLng(49.042974, 2.084606);
             //mMap.addMarker(markerMaison);
             //MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
 
@@ -285,9 +301,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             AlistMonu.add(maison);
             AlistMonu.add(travail);
             AlistMonu.add(travail2);
+            AlistMonu.add(fac);
 
             ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
-            afficheListMarker(list_monument,placeMarker(marqueurmonus,circlePosition));
+            afficheListMarker(list_monument,keepMarker(marqueurmonus,circlePosition),placeMarker(marqueurmonus,circlePosition));
 
         }
     }
@@ -388,24 +405,73 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return marMonu;
     }
-    public ArrayList<String> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
+
+
+       public ArrayList<Monument> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+           ArrayList<Monument> markerselect = new ArrayList<Monument>();
+           for (int i = 0; i <= markersO.size() - 1; i++) {
+               Monument monu = new Monument();
+               monu.setGeoloc(markersO.get(i).getPosition());
+               float[] distance = new float[2];
+
+               monu.setDistance(monu.calculdistance(monu.getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
+               Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                       circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+               if (monu.getDistance()[0] < circleP.getRadius()) {
+                   //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                   Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+                   mMap.addMarker(markersO.get(i));
+
+                    monu.setName(markersO.get(i).getTitle());
+                   markerselect.add(monu);
+
+
+               }
+           }
+           return markerselect;
+       }
+
+    /*public ArrayList<String> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
         ArrayList<String> markerselect=new ArrayList<String>() ;
+        for (int i = 0; i <= markersO.size() - 1; i++) {
+            Monument monu=new Monument();
+            monu.setGeoloc(markersO.get(i).getPosition());
+            float[] distance = new float[2];
+
+            monu.setDistance(monu.calculdistance(monu.getGeoloc(),circleP.getCenter().latitude, circleP.getCenter().longitude));
+            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+
+            if ( monu.getDistance()[0] < circleP.getRadius()) {
+                //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+                mMap.addMarker(markersO.get(i));
+
+               // monu.setName(markersO.get(i).getTitle());
+                markerselect.add(markersO.get(i).getTitle());
+                //editor.putString(KEY_NAME, keepMarker.get(i).toString());
+
+            }
+        }
+        return markerselect;
+
+    }*/
+
+    public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+        ArrayList<String> markerselect = new ArrayList<String>();
         for (int i = 0; i <= markersO.size() - 1; i++) {
             float[] distance = new float[2];
             Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
                     circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
 
             if (distance[0] < circleP.getRadius()) {
-                //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-                mMap.addMarker(markersO.get(i));
                 markerselect.add(markersO.get(i).getTitle());
             }
         }
         return markerselect;
-
     }
-    public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+    /*public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
         ArrayList<String> markerselect = new ArrayList<String>();
         for (int i = 0; i <= markersO.size() - 1; i++) {
             float[] distance = new float[2];
@@ -417,8 +483,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         return markerselect;
-    }
-    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker){
+    }*/
+
+    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<Monument> keepMarkerMonument){
         ArrayAdapter<String> listadaptater;
         listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
         listV.setAdapter(listadaptater);
@@ -427,13 +494,50 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                editor = preferences.edit();
                 for (int i = 0; i < keepMarker.size(); i++) {
                     if (position == i) {
-                        Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
+                        DecimalFormat df = new DecimalFormat("#");
+                        String elt = ""+df.format(keepMarkerMonument.get(i).getDistance()[0]);
+                        editor.putString(KEY_DIST, elt);
+
+                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
+                        startActivity(intent);
+
                     }
                 }
+                editor.commit();
             }
         });
 
     }
+
+    /*public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker){
+        ArrayAdapter<String> listadaptater;
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
+        listV.setAdapter(listadaptater);
+
+
+        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                editor = preferences.edit();
+                for (int i = 0; i < keepMarker.size(); i++) {
+                    if (position == i) {
+                        //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
+
+
+                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
+                        startActivity(intent);
+
+                    }
+                }
+                editor.commit();
+            }
+        });
+
+    }*/
 }
