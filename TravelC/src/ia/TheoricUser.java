@@ -12,7 +12,7 @@ public class TheoricUser {
 	private CoordinatesDouble position;
 	private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
 	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
-
+	
 	public TheoricUser() {
 		this.position = new CoordinatesDouble(new double[] { 49, 2 });
 		int i = 0;

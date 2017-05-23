@@ -76,11 +76,8 @@ public class IAManager {
 
 	private static double calculateDistance(TheoricUser user,Place place){
 		double val = 0;
-		for(PlaceType type : place.getPlaceTypes()){
-			//System.out.println(type);
-			//System.out.println(user);
+		for(PlaceType type : place.getPlaceTypes())
 			val += Math.pow((1 - user.getPreferences().get(type)),2);
-			}
 		return val/place.getPlaceTypes().size();
 	}
 	
