@@ -1,20 +1,17 @@
-package sim;
+package api.sim;
 
 
-import java.lang.reflect.Array;
-import java.util.AbstractList;
 import java.util.ArrayList;
 
-import cte.Constants;
-import cte.PlaceType;
-import externalData.VirtualDataBase;
-import gps.GPSMap;
-import gps.NoPlaceFoundException;
-import gps.Place;
-import ia.IAManager;
-import ia.TheoricUser;
+import api.cte.Constants;
+import api.cte.PlaceType;
+import api.externalData.VirtualDataBase;
+import api.gps.GPSMap;
+import api.gps.NoPlaceFoundException;
+import api.gps.Place;
+import api.ia.IAManager;
+import api.ia.TheoricUser;
 import tools.ia.Perceptron;
-import tools.ia.decition.AbstractDecition;
 import tools.ia.decition.DefaultDecition;
 import tools.math.CoordinatesDouble;
 import tools.math.compare.CompareUnitDouble;
@@ -71,9 +68,11 @@ public class Simulation2 {
 				result.add(places.get(j).getElement());
 			System.out.println(result);
 			next = result.get(0).getCoords();
-			
+			System.out.println(places.get(0).getValue());
+			note = IAManager.notePlace(user, result.get(0));
 			System.out.println(GPSMap.placeInRange() + " : " + GPSMap.getMap().toString());
-			
+			System.out.println("note : "+ note);
+			user.moveTo(next);
 		}
 	}
 

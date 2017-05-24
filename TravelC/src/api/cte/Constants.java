@@ -1,4 +1,4 @@
-package cte;
+package api.cte;
 
 public class Constants {
 	public static final double SCAN_SIZE = 0.1;

@@ -1,8 +1,8 @@
-package gps;
+package api.gps;
 
 import java.util.ArrayList;
 
-import cte.PlaceType;
+import api.cte.PlaceType;
 import tools.math.CoordinatesDouble;
 
 public class Place {

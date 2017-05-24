@@ -1,9 +1,9 @@
-package ia;
+package api.ia;
 
 import java.util.HashMap;
 
-import cte.Constants;
-import cte.PlaceType;
+import api.cte.Constants;
+import api.cte.PlaceType;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
 

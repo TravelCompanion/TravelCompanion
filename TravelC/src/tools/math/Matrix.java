@@ -1,7 +1,7 @@
 package tools.math;
 
 public class Matrix {
-	private int sizeX, sizeY;
+	public int sizeX, sizeY;
 	private double matrix[][];
 
 	public Matrix() {
@@ -11,12 +11,12 @@ public class Matrix {
 		this(sizeX, sizeY, 0);
 	}
 
-	public Matrix (double[][] matrix){
+	public Matrix(double[][] matrix) {
 		this.sizeX = matrix.length;
 		this.sizeY = matrix[0].length;
 		this.matrix = matrix;
 	}
-	
+
 	public Matrix(int sizeX, int sizeY, double init) {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
@@ -77,34 +77,34 @@ public class Matrix {
 			return null;
 		Matrix res = new Matrix(m2.sizeX, m1.sizeY);
 		for (int x = 0; x < res.sizeX; x++)
-			for (int y = 0; y < res.sizeY; y++){
+			for (int y = 0; y < res.sizeY; y++) {
 				res.matrix[x][y] = 0;
-				for(int k = 0; k < m1.sizeX;k++)
-					res.matrix[x][y] += m1.matrix[k][y]*m2.matrix[x][k];
+				for (int k = 0; k < m1.sizeX; k++)
+					res.matrix[x][y] += m1.matrix[k][y] * m2.matrix[x][k];
 			}
 		return res;
 	}
 
-	public static Matrix trans(Matrix m){
-		Matrix res = new Matrix(m.sizeY,m.sizeX);
-		for(int x = 0; x < m.sizeX; x++)
-			for(int y = 0; y < m.sizeY; y++)
+	public static Matrix trans(Matrix m) {
+		Matrix res = new Matrix(m.sizeY, m.sizeX);
+		for (int x = 0; x < m.sizeX; x++)
+			for (int y = 0; y < m.sizeY; y++)
 				res.matrix[y][x] = m.matrix[x][y];
 
-	return res;
+		return res;
 	}
-	
+
 	@Override
 	public String toString() {
 		String elt = "";
-		for(int y  = 0; y < sizeY; y++){
-			elt+="|";
-			for(int x  = 0; x < sizeX; x++)
-				elt+=matrix[x][y]+"|";
-			elt+="\n";
+		for (int y = 0; y < sizeY; y++) {
+			elt += "|";
+			for (int x = 0; x < sizeX; x++)
+				elt += matrix[x][y] + "|";
+			elt += "\n";
 		}
 
-			return elt;
+		return elt;
 	}
 
 	public int getSizeX() {
@@ -118,6 +118,5 @@ public class Matrix {
 	public double[][] getMatrix() {
 		return matrix;
 	}
-	
-	
+
 }

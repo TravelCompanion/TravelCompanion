@@ -1,14 +1,15 @@
-package ia;
+package api.ia;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import cte.Constants;
-import cte.PlaceType;
-import gps.GPSMap;
-import gps.Place;
+import api.cte.Constants;
+import api.cte.PlaceType;
+import api.gps.GPSMap;
+import api.gps.Place;
 import tools.math.CoordinatesDouble;
+import tools.math.Matrix;
 import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathUnitComparator;
 import tools.math.random.RandomDouble;
@@ -91,11 +92,6 @@ public class IAManager {
 			user.getPreferences().replace(type,pref+(eps*errG));
 			}
 	}
-
-	
-	public static void majorityJudgment(){
-		
-	}
 	
 	public static void learn(TheoricUser user, Place place, double note,double step){
 		for(PlaceType type : place.getPlaceTypes())
@@ -106,6 +102,17 @@ public class IAManager {
 			return oldValue + (step*(note - oldValue));
 	}
 
+	public static Matrix mapToMatrix(HashMap<PlaceType, Double>map){
+		Matrix m = new Matrix(PlaceType.values().length,1);
+		int k = 0;
+		for(PlaceType type : PlaceType.values()){
+			if(map.containsKey(type))m.getMatrix()[k][0] = map.get(type);
+			else m.getMatrix()[k][0] = 0;
+					k++;
+		}
+		return m;
+	}
+	
 }
 
 

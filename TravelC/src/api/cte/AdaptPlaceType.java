@@ -1,4 +1,4 @@
-package cte;
+package api.cte;
 
 public class AdaptPlaceType {
 	

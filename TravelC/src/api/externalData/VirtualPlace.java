@@ -1,12 +1,12 @@
-package externalData;
+package api.externalData;
 
 import java.util.ArrayList;
 
+import api.cte.PlaceType;
+import api.gps.Place;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParser;
-import cte.PlaceType;
-import gps.Place;
 
 public class VirtualPlace implements StringParseGenerable<VirtualPlace, CoordinatesDouble> {
 	/**

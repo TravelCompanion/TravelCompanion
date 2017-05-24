@@ -1,4 +1,4 @@
-package gps;
+package api.gps;
 
 public class NoPlaceFoundException extends Exception {
 	/**

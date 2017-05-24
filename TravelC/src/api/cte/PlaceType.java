@@ -1,4 +1,4 @@
-package cte;
+package api.cte;
 
 public enum PlaceType {
 	MONUMENT1, MONUMENT2, MONUMENT3, EGLISE, JARDIN, PARC, IMMEUBLE, MUSEE, SOCLE, 

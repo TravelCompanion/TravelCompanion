@@ -22,6 +22,7 @@ public class ListTools {
 		 return list;
 	}
 	
+	
 	public static ArrayList<String> sortListByStringAsc(ArrayList<String> list){
 		 list.sort(MathComparator.getByNameString(">"));
 		 return list;

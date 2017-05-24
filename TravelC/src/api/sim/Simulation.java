@@ -1,12 +1,12 @@
-package sim;
+package api.sim;
 
 
-import cte.Constants;
-import externalData.VirtualDataBase;
-import gps.GPSMap;
-import gps.NoPlaceFoundException;
-import ia.IAManager;
-import ia.TheoricUser;
+import api.cte.Constants;
+import api.externalData.VirtualDataBase;
+import api.gps.GPSMap;
+import api.gps.NoPlaceFoundException;
+import api.ia.IAManager;
+import api.ia.TheoricUser;
 import tools.math.CoordinatesDouble;
 
 public class Simulation {

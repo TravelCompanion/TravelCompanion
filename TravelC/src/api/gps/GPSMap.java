@@ -1,8 +1,8 @@
-package gps;
+package api.gps;
 
 import java.util.HashMap;
 
-import externalData.VirtualPlace;
+import api.externalData.VirtualPlace;
 import tools.math.CoordinatesDouble;
 
 public class GPSMap {

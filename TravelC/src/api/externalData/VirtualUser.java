@@ -1,10 +1,10 @@
-package externalData;
+package api.externalData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cte.PlaceType;
-import ia.TheoricUser;
+import api.cte.PlaceType;
+import api.ia.TheoricUser;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;

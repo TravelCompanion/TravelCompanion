@@ -1,12 +1,12 @@
-package externalData;
+package api.externalData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import api.cte.Constants;
+import api.ia.TheoricUser;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParser;
-import cte.Constants;
-import ia.TheoricUser;
 
 public class VirtualDataBase {
 	private static VirtualDataBase dataBase;

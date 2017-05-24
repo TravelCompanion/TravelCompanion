@@ -1,4 +1,4 @@
-package ia;
+package api.ia;
 
 public class ConstantIA {
 	public static final int INFINITE = 99999;
