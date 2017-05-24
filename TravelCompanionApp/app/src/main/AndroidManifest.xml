@@ -51,11 +51,11 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
+            android:label="@string/title_Monument_au_alentour"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ProfilActivity"
-            android:label="@string/title_activity_preferences"
+            android:label="@string/title_profil"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NoticeActivity"
@@ -65,7 +65,13 @@
             android:name=".ListMonumentActivity"
             android:label="@string/title_activity_list_monument"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".FavorisActivity"></activity>
+
+        <activity
+            android:name=".MonumentActivity"
+            android:label="@string/title_activity_desc_Monument"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
