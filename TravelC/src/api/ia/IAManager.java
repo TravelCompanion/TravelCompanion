@@ -40,6 +40,7 @@ public class IAManager {
 			double v = calculateDistance(user,place);
 			units.add(new CompareUnitDouble<CoordinatesDouble>(v, place.getCoords()));
 		} 
+		//noinspection Since15
 		units.sort(MathUnitComparator.getByNameDouble("<"));
 		System.out.println(units);
 		for(CompareUnitDouble<CoordinatesDouble> cud : units)
