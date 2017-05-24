@@ -6,10 +6,10 @@ import api.externalData.VirtualPlace;
 import tools.math.CoordinatesDouble;
 
 public class GPSMap {
-	// Simulaiton GPS
+	// Simulation GPS
 	private static GPSMap gps;
 	private static HashMap<CoordinatesDouble, Place> map = new HashMap<CoordinatesDouble, Place>();
-	
+	private GPSMap(){}
 	public static GPSMap getMap() {
 		if (gps == null)
 			gps = new GPSMap();
