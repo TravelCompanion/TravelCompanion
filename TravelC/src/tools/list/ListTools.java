@@ -8,23 +8,26 @@ import tools.math.compare.MathComparator;
 
 public class ListTools {
 	public static ArrayList<Double> sortListByNumberDesc(ArrayList<Double> list){
-		 list.sort(MathComparator.getByNameDouble("<"));
+		//noinspection Since15
+		list.sort(MathComparator.getByNameDouble("<"));
 		 return list;
 	}
 	
 	public static ArrayList<String> sortListByStringDesc(ArrayList<String> list){
-		 list.sort(MathComparator.getByNameString("<"));
+		//noinspection Since15
+		list.sort(MathComparator.getByNameString("<"));
 		 return list;
 	}
 	
 	public static ArrayList<Double> sortListByNumberAsc(ArrayList<Double> list){
-		 list.sort(MathComparator.getByNameDouble(">"));
+		//noinspection Since15
+		list.sort(MathComparator.getByNameDouble(">"));
 		 return list;
 	}
 	
-	
 	public static ArrayList<String> sortListByStringAsc(ArrayList<String> list){
-		 list.sort(MathComparator.getByNameString(">"));
+		//noinspection Since15
+		list.sort(MathComparator.getByNameString(">"));
 		 return list;
 	}
 	
@@ -43,4 +46,3 @@ public class ListTools {
 		
 	}
 }
-
