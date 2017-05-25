@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.voyage.travelcompanionapp.PreferencesActivity">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="139dp"
+        android:layout_height="78dp"
+        android:text="CheckBox"
+        tools:layout_editor_absoluteX="367dp"
+        tools:layout_editor_absoluteY="142dp" />
+</android.support.constraint.ConstraintLayout>

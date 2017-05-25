@@ -49,7 +49,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import com.example.voyage.api.externalData.VirtualUser;
+import com.example.voyage.api.tools.math.CoordinatesDouble;
 
 
 public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -58,7 +62,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-    public final String[] data_notice = new String[]{"monument1", "monument2", "monument3"};
     private GoogleApiClient mGoogleApiClient;
     Location location;
     ListView list_monument;
@@ -67,12 +70,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     int PRIVATE_MODE = 0;
     public static final String KEY_NAME = "name";
     public static final String KEY_DIST = "distance";
-
+    VirtualUser virtualuser = new VirtualUser();
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
 
     private static final String PREF_NAME = "PrefDistance";
-
+    String emailname="";
+    private DrawerLayout drawer;
+    Toolbar toolbar;
 
 
 
@@ -82,15 +87,23 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_map);
         list_monument = (ListView) findViewById(R.id.list_monuments);
-        session = new Session(getApplicationContext());
+        session = Session.getSession(getApplicationContext());
         session.checkLogin();
+
+        HashMap<String, String> userSession = session.getUserDetails();
+        // emailname
+        emailname = userSession.get(Session.KEY_EMAIL);
+
         Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_map);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_menu);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -107,10 +120,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_map);
@@ -251,12 +264,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                  position = new LatLng(location.getLatitude(), location.getLongitude());
-                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
                 circlePosition = drawCircle(position);
                 mMap.addCircle(circlePosition);
 
                 if (location != null) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                     virtualuser = new VirtualUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
+//Session.newUser(User.toUser(virtualUser))
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
                 }
             }
@@ -264,36 +279,17 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-
-
-
-
-            /*mMap.addMarker(new MarkerOptions().position(position).title("Marker in moi"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));*/
-
-
             LatLng visage = new LatLng(49.051209, 2.008451);
-            //mMap.addMarker(new MarkerOptions().position(visage).title(data_notice[0].toString()));
-            //mMap.addMarker(new MarkerOptions().position(visage).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(visage, 13));
 
             LatLng cine = new LatLng(49.048021, 2.012134);
 
             LatLng travail2= new LatLng(48.836338, 2.306364);
-            //mMap.addMarker(new MarkerOptions().position(cine).title(data_notice[1].toString()));
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cine, 13));
 
             LatLng maison = new LatLng(49.045975, 2.011040);
-            //MarkerOptions markerMaison = new MarkerOptions().position(maison).title(data_notice[2].toString());
 
             LatLng travail = new LatLng(48.836798, 2.306745);
 
             LatLng fac = new LatLng(49.042974, 2.084606);
-            //mMap.addMarker(markerMaison);
-            //MarkerOptions markertravail = new MarkerOptions().position(travail).title(data_notice[2].toString());
-
-
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 13));
             ArrayList<LatLng> AlistMonu = new ArrayList<LatLng>();
 
             AlistMonu.add(visage);
@@ -310,7 +306,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -359,7 +355,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             startActivity(intent);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -419,8 +415,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                        circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
 
                if (monu.getDistance()[0] < circleP.getRadius()) {
-                   //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
-                   Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
                    mMap.addMarker(markersO.get(i));
 
                     monu.setName(markersO.get(i).getTitle());
@@ -432,31 +426,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
            return markerselect;
        }
 
-    /*public ArrayList<String> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP){
-        ArrayList<String> markerselect=new ArrayList<String>() ;
-        for (int i = 0; i <= markersO.size() - 1; i++) {
-            Monument monu=new Monument();
-            monu.setGeoloc(markersO.get(i).getPosition());
-            float[] distance = new float[2];
-
-            monu.setDistance(monu.calculdistance(monu.getGeoloc(),circleP.getCenter().latitude, circleP.getCenter().longitude));
-            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
-                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
-
-            if ( monu.getDistance()[0] < circleP.getRadius()) {
-                //Toast.makeText(getBaseContext(), "Inside", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-                mMap.addMarker(markersO.get(i));
-
-               // monu.setName(markersO.get(i).getTitle());
-                markerselect.add(markersO.get(i).getTitle());
-                //editor.putString(KEY_NAME, keepMarker.get(i).toString());
-
-            }
-        }
-        return markerselect;
-
-    }*/
 
     public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
         ArrayList<String> markerselect = new ArrayList<String>();
@@ -471,19 +440,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         return markerselect;
     }
-    /*public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
-        ArrayList<String> markerselect = new ArrayList<String>();
-        for (int i = 0; i <= markersO.size() - 1; i++) {
-            float[] distance = new float[2];
-            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
-                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
-
-            if (distance[0] > circleP.getRadius()) {
-                markerselect.add(markersO.get(i).getTitle());
-            }
-        }
-        return markerselect;
-    }*/
 
     public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<Monument> keepMarkerMonument){
         ArrayAdapter<String> listadaptater;
@@ -514,30 +470,4 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    /*public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker){
-        ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
-        listV.setAdapter(listadaptater);
-
-
-        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-                editor = preferences.edit();
-                for (int i = 0; i < keepMarker.size(); i++) {
-                    if (position == i) {
-                        //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
-
-
-                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
-                        startActivity(intent);
-
-                    }
-                }
-                editor.commit();
-            }
-        });
-
-    }*/
 }

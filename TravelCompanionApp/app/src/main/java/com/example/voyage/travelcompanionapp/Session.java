@@ -10,15 +10,21 @@ import android.content.SharedPreferences.Editor;
 public class Session {
         // Shared Preferences
         SharedPreferences preferences;
-
+        private static Session session;
         // Editor for Shared preferences
         Editor editor;
 
         // Context
         Context _context;
 
+    public static Session getSession(Context context) {
+        if(session==null){
+            session=new Session(context);
+        }
+        return session;
+    }
 
-        int PRIVATE_MODE = 0;
+    int PRIVATE_MODE = 0;
 
 
         private static final String PREF_NAME = "PrefSession";
@@ -32,7 +38,13 @@ public class Session {
         public static final String KEY_EMAIL = "email";
 
         // Constructor
-        public Session(Context context){
+        /*public Session(Context context){
+            this._context = context;
+            preferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            editor = preferences.edit();
+        }*/
+
+        private Session(Context context) {
             this._context = context;
             preferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
             editor = preferences.edit();
