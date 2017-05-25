@@ -28,6 +28,14 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 
 	}
 
+	
+	
+	public VirtualUser(String id, CoordinatesDouble position, HashMap<PlaceType, Double> preferences) {
+		this.id = id;
+		this.position = position;
+		this.preferences = preferences;
+	}
+
 	public String toLog() {
 		String log = id + "," + position.getX() + "," + position.getY();
 		for (Double n : preferences.values())

@@ -13,6 +13,7 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=TravelC/src&lt;api.ia"/>
         <javaElement handleIdentifier="=TravelC/src&lt;api.gps"/>
+        <javaElement handleIdentifier="=TravelC/src&lt;api.externalData.generators"/>
         <javaElement handleIdentifier="=TravelC/src&lt;api.cte"/>
         <javaElement handleIdentifier="=TravelC/src&lt;api.externalData"/>
     </selectedElements>

@@ -17,10 +17,10 @@ public class VirtualDataBase {
 	private VirtualDataBase(){
 		//data format : name,t1/t2/t3 ... ,x,y
 		ArrayList<String> lines = StringParser.readData(Constants.DB_PATH_PLACES);
-		//ArrayList<String> lines2 = StringParser.readData(Constants.DB_PATH_USER);
+		ArrayList<String> lines2 = StringParser.readData(Constants.DB_PATH_USER);
 		//places = StringParser.convertDataLinesKeyMap(new TempDataDB(), lines,',',';');
 		places = StringParser.convertDataLinesKeyMap(new VirtualPlace(), lines,'/',';');
-		//users = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');
+		users = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');
 		
 	}
 	

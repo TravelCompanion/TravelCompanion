@@ -65,7 +65,6 @@ public class StringParser {
 		for (String word : words) {
 			StringParseGenerable<T1, T2> gen = generable.init();
 			T1 item = StringParser.generateFromParse(gen, word, separator, endOfLine);
-			// System.out.println(gen.getKey());
 			items.put(gen.getKey(), item);
 		}
 		return items;

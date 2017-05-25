@@ -14,6 +14,19 @@ public class Place {
 
 	public Place() {
 	}
+	
+	public Place(String name, CoordinatesDouble coords, ArrayList<PlaceType> placeTypes, double note) {
+		this.name = name;
+		this.coords = coords;
+		this.placeTypes = placeTypes;
+		this.note = note;
+	}
+
+	public Place(String name, CoordinatesDouble coords, double note) {
+		this.name = name;
+		this.coords = coords;
+		this.note = note;
+	}
 
 	public Place(CoordinatesDouble coordinates) {
 		this.coords = coordinates;
