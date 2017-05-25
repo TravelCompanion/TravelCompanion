@@ -33,8 +33,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-        session = new Session(getApplicationContext());
+        session = Session.getSession(getApplicationContext());
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -103,6 +101,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             mPasswordView.getText().toString().equals("admin")){
                         Log.d("Tag","connexion");
                         session.createLoginSession(mEmailView.getText().toString());
+
+
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
