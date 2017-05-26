@@ -3,12 +3,14 @@ package api.externalData;
 import java.util.ArrayList;
 
 import api.cte.PlaceType;
+import api.cte.TypeConfiguration;
 import api.gps.Place;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
+import tools.parse.StringParseLoggable;
 import tools.parse.StringParser;
 
-public class VirtualPlace implements StringParseGenerable<VirtualPlace, CoordinatesDouble> {
+public class VirtualPlace implements StringParseGenerable<VirtualPlace, CoordinatesDouble>, StringParseLoggable {
 	/**
 	 * Its a transition class between business class and IO class for places
 	 * data
@@ -72,7 +74,7 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 		// ArrayList<String> lines = StringParser.sliceLine(args.get(1), '/');
 		ArrayList<String> lines = StringParser.sliceLine(args.get(1), ',');
 		for (String line : lines) {
-			types.add(PlaceType.getPlaceType(line));
+			types.add(TypeConfiguration.get(line));
 		}
 		return this;
 	}
@@ -90,6 +92,15 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 
 	public String toString() {
 		return "TempDataDB [name=" + name + ", x=" + position.getX() + ", y=" + position.getY() + ", types=" + types + "]";
+	}
+
+	@Override
+	public String toLog() {
+		// data format : name,t1:v/t2:v/t3:v ... ,x,y
+		String typesString = PlaceType.typeToString(types.get(0));
+		for(int i = 1; i < types.size();i++)
+			typesString+= ","+PlaceType.typeToString(types.get(i));
+		return name+"/"+typesString+"/"+position.getX()+"/"+position.getY()+"/"+note+";";
 	}
 
 }

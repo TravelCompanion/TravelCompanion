@@ -9,7 +9,6 @@ import api.cte.PlaceType;
 import api.gps.GPSMap;
 import api.gps.Place;
 import tools.math.CoordinatesDouble;
-import tools.math.Matrix;
 import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathUnitComparator;
 import tools.math.random.RandomDouble;
@@ -103,16 +102,6 @@ public class IAManager {
 			return oldValue + (step*(note - oldValue));
 	}
 
-	public static Matrix mapToMatrix(HashMap<PlaceType, Double>map){
-		Matrix m = new Matrix(PlaceType.values().length,1);
-		int k = 0;
-		for(PlaceType type : PlaceType.values()){
-			if(map.containsKey(type))m.getMatrix()[k][0] = map.get(type);
-			else m.getMatrix()[k][0] = 0;
-					k++;
-		}
-		return m;
-	}
 	
 }
 

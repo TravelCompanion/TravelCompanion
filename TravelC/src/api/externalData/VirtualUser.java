@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import api.cte.PlaceType;
+import api.cte.TypeConfiguration;
 import api.ia.TheoricUser;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
@@ -18,6 +19,11 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 	private String id;
 	private CoordinatesDouble position;
 	private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
+	private ArrayList<VirtualUser> friendList = new ArrayList<VirtualUser>();
+
+	public ArrayList<VirtualUser> getFriendList() {
+		return friendList;
+	}
 
 	public VirtualUser() {
 	}
@@ -48,7 +54,7 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 		this.position = new CoordinatesDouble(
 				new double[] { Double.parseDouble(args.get(1)), Double.parseDouble(args.get(2)) });
 		int i = 3;
-		for (PlaceType type : PlaceType.values()) {
+		for (PlaceType type : TypeConfiguration.types) {
 			this.preferences.put(type, Double.parseDouble(args.get(i)));
 			i++;
 		}
@@ -69,6 +75,10 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 		return virtualUser;
 	}
 
+	public void newFriend(VirtualUser user){
+		friendList.add(user);
+	}
+	
 	public StringParseGenerable<VirtualUser, String> init() {
 		return new VirtualUser();
 	}

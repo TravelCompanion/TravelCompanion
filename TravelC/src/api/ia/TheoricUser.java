@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import api.cte.Constants;
 import api.cte.PlaceType;
+import api.cte.TypeConfiguration;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
 
@@ -16,7 +17,7 @@ public class TheoricUser {
 	public TheoricUser() {
 		this.position = new CoordinatesDouble(new double[] { 49, 2 });
 		int i = 0;
-		for(PlaceType placeType : PlaceType.values())
+		for(PlaceType placeType : TypeConfiguration.types)
 		{
 			preferences.put(placeType, ((i%4)+1)*0.2);
 				i++;

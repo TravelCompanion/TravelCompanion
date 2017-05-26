@@ -10,6 +10,5 @@ public class Simulation {
 			HashMap<String,VirtualUser> users = VirtualDataBase.getDataBase().getUsers();
 			for(VirtualUser user : users.values())
 				System.out.println(user);
-
 		}		
 }

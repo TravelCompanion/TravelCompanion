@@ -12,7 +12,7 @@ public class PlaceGenerator extends DataGenerator{
 	public static ArrayList<VirtualPlace> generatePlaceList(int numberOfPlaces){
 		ArrayList<VirtualPlace> places = new ArrayList<VirtualPlace>();
 		for(int i = 0; i < numberOfPlaces; i ++)
-			places.add(generatePlace(i));
+			places.add(generatePlace(i+1));
 		return places;
 	}
 
