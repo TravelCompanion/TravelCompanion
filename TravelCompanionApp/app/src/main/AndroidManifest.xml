@@ -61,13 +61,15 @@
             android:name=".ListMonumentActivity"
             android:label="@string/title_activity_list_monument"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".FavorisActivity"></activity>
-
+        <activity android:name=".FavorisActivity" />
         <activity
             android:name=".MonumentActivity"
             android:label="@string/title_activity_desc_Monument"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InscriptionActivity"
+            android:label="@string/title_activity_inscription"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
