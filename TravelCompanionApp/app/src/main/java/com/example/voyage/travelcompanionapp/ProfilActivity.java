@@ -17,23 +17,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.voyage.travelcompanionapp.R;
+
+import java.util.HashMap;
 
 public class ProfilActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
    private DrawerLayout drawer;
     private Toolbar toolbar;
+    Session session;
+    String emailname="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_profil);
         toolbar = (Toolbar) findViewById(R.id.toolbar_menu);
+        TextView textusername= (TextView) findViewById(R.id.user);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        session = Session.getSession(getApplicationContext());
+        session.checkLogin();
+
+        HashMap<String, String> userSession = session.getUserDetails();
+        // emailname
+        emailname = userSession.get(Session.KEY_EMAIL);
+        textusername.setText(emailname);
 
 
 
@@ -126,7 +140,8 @@ public class ProfilActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_logout) {
+            session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
             Intent intent = new Intent(ProfilActivity.this, ProfilActivity.class);

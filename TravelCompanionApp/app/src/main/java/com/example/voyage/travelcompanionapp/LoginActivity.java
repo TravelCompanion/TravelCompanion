@@ -41,7 +41,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     Session session;
+    Button mEmailSignInButton;
+    Button inscription;
 
 
     @Override
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         session = Session.getSession(getApplicationContext());
-
+        inscription = (Button) findViewById(R.id.login_sign_up);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -90,32 +92,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         if (mEmailSignInButton != null) {
-            mEmailSignInButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //attemptLogin();
-                    if (mEmailView.getText().toString().trim().length()>0 && mPasswordView.getText().toString().trim().length()>0 ){
-                    if(mEmailView.getText().toString().equals("test")&&
-                            mPasswordView.getText().toString().equals("admin")){
-                        Log.d("Tag","connexion");
-                        session.createLoginSession(mEmailView.getText().toString());
-
-
-                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else{
-                        Log.d("Tag","Erreur Connexion");
-                        Toast.makeText(LoginActivity.this,R.string.error_connection, Toast.LENGTH_SHORT).show();
-                    }
-                    }
-
-                }
-            });
-        }
+            mEmailSignInButton.setOnClickListener(LoginActivity.this);
+    }
+        inscription.setOnClickListener(LoginActivity.this);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -282,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
+        List<String> emails = new ArrayList<String>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -300,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<String>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -375,6 +356,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    public void onClick(View view) {
+        if(view== mEmailSignInButton) {
+                if (mEmailView.getText().toString().trim().length()>0 && mPasswordView.getText().toString().trim().length()>0 ){
+                    if(mEmailView.getText().toString().equals("test")&&
+                            mPasswordView.getText().toString().equals("admin")){
+                        Log.d("Tag","connexion");
+                        session.createLoginSession(mEmailView.getText().toString());
+
+
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+                        Log.d("Tag","Erreur Connexion");
+                        Toast.makeText(LoginActivity.this,R.string.error_connection, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+            if(view==inscription){
+                Log.d("Tag","page inscription");
+                Intent intent = new Intent(LoginActivity.this, InscriptionActivity.class);
+                startActivity(intent);
+
+            }
+
+
+
     }
 }
 
