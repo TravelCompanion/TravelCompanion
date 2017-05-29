@@ -1,7 +1,8 @@
 package tools.ia.decition;
 
+import tools.math.Matrix;
+
 public abstract class AbstractDecition {
-	public double result(double entry){
-		return 1 - entry;
-	}
+	public abstract Matrix result(Matrix result);
+	public abstract Matrix derived(Matrix result);
 }

@@ -5,10 +5,12 @@ import java.util.HashMap;
 import api.cte.Constants;
 import api.cte.PlaceType;
 import api.cte.TypeConfiguration;
+import api.externalData.UserConverter;
+import api.externalData.VirtualUser;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
 
-public class TheoricUser {
+public class TheoricUser implements UserConverter<TheoricUser>{
 	private String id = "user";
 	private CoordinatesDouble position;
 	private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
@@ -41,6 +43,20 @@ public class TheoricUser {
 		this.position = newPos;
 	}
 
+	public TheoricUser fromVirtualUser(VirtualUser virtualUser) {
+		TheoricUser user = new TheoricUser(virtualUser.getId(), virtualUser.getPosition());
+		for (PlaceType type : virtualUser.getPreferences().keySet())
+			user.getPreferences().put(type, virtualUser.getPreferences().get(type));
+		return user;
+	}
+
+	public VirtualUser toVirtualUser() {
+		VirtualUser virtualUser = new VirtualUser(id, position);
+		for (PlaceType type : preferences.keySet())
+			virtualUser.getPreferences().put(type,preferences.get(type));
+		return virtualUser;		
+	}
+	
 	public void visitPlace(CoordinatesDouble pos) {
 		if (visitedRecently.size() == Constants.MEM_SIZE)
 			visitedRecently.extractFisrt();
@@ -62,5 +78,7 @@ public class TheoricUser {
 	public String toString() {
 		return "[" + position + " , " + preferences + "]";
 	}
+
+	
 
 }

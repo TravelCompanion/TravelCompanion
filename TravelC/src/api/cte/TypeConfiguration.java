@@ -9,8 +9,7 @@ public class TypeConfiguration {
 	private static final String PATH = "./data/types.txt";
 	private static TypeConfiguration config;
 	private static HashMap<String, PlaceType> hashTypes = new HashMap<String, PlaceType>();
-	
-	public static int size = 0;
+	public static int size;
 	public static ArrayList<PlaceType> types = new ArrayList<PlaceType>();
 
 	private TypeConfiguration() {

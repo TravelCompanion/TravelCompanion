@@ -17,5 +17,6 @@ public class GeneratePlaceStart {
 		System.out.println(places);
 		System.out.println(lines);
 		StringParser.writeData(Constants.DB_PATH_PLACES,lines);
+		//TheoricUser theoricUser = new TheoricUser().fromVirtualUser(new VirtualUser());
 	} 
 }

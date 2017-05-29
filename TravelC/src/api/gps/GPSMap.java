@@ -19,7 +19,7 @@ public class GPSMap {
 	public static void fillMap(HashMap<CoordinatesDouble, VirtualPlace> datas) throws NoPlaceFoundException {
 		HashMap<CoordinatesDouble, Place> places = new HashMap<CoordinatesDouble, Place>();
 		for (CoordinatesDouble data : datas.keySet())
-			places.put(data, VirtualPlace.toPlace(datas.get(data)));
+			places.put(data, new Place().fromVirtualPlace(datas.get(data)));
 		if(places.isEmpty())throw new NoPlaceFoundException();
 		map = places;
 	}

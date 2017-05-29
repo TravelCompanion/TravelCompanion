@@ -1,33 +1,42 @@
 package tools.ia;
 
 import tools.ia.decition.AbstractDecition;
+import tools.math.Matrix;
 
-public class Perceptron {
-	private double[] weights;
-	private int numberWeights;
+public class Perceptron extends NeuralNetwork{
+	private Matrix weights;
+	public int numberWeights;
 	private double step;
-	private AbstractDecition decide;
 	
-	public Perceptron(double[] weigths,double step,AbstractDecition decide){
-		this.numberWeights = weigths.length;
+	public Perceptron(Matrix weigths,double step,AbstractDecition decide){
+		this.numberWeights = weigths.sizeY;
 		this.weights = weigths;
 		this.step = step;
 		this.decide = decide;
+		this.learningUnit = new PerceptronLearning();
 	}
 	
-	public double propagate(double[] entry, double threshold){
-		double result = 0;
-		int norm = 0;
+	public Matrix propagate(Matrix entry){
+		Matrix result = new Matrix(1,1);
 		for(int i  = 0; i < numberWeights;i++){
-			result += weights[i]*entry[i] - threshold;
-			if(entry[i] != 0)norm += 1;
+			result =Matrix.mult(entry, weights);
 		}
-		return decide.result(result/norm);
+		return result;
 	}
 	
-	public void learn(double[] entry,double result, double desired){
-		double error = desired - result;
-		for(int i = 0; i  < numberWeights; i++)
-			weights[i] = weights[i] + step*error*entry[i];
+	public void updateWeights(Matrix m){
+		weights = Matrix.add(weights, m);
 	}
+	public Matrix getWeights() {
+		return weights;
+	}
+
+	public int getNumberWeights() {
+		return numberWeights;
+	}
+
+	public double getStep() {
+		return step;
+	}
+
 }

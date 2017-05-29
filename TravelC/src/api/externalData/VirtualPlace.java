@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import api.cte.PlaceType;
 import api.cte.TypeConfiguration;
-import api.gps.Place;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
@@ -44,13 +43,6 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 	public VirtualPlace(String name, double x, double y) {
 		position = new CoordinatesDouble(new double[] { x, y });
 		this.name = name;
-	}
-
-	public static Place toPlace(VirtualPlace td) {
-		Place place = new Place(td.name, td.getPosition(), td.note);
-		for (PlaceType type : td.types)
-			place.getPlaceTypes().add(type);
-		return place;
 	}
 
 	public String getStringKey() {

@@ -3,9 +3,11 @@ package api.gps;
 import java.util.ArrayList;
 
 import api.cte.PlaceType;
+import api.externalData.PlaceConverter;
+import api.externalData.VirtualPlace;
 import tools.math.CoordinatesDouble;
 
-public class Place {
+public class Place implements PlaceConverter<Place>{
 	/**Represent places*/
 	private String name = "place";
 	private CoordinatesDouble coords = new CoordinatesDouble(2);
@@ -52,6 +54,19 @@ public class Place {
 		this.note = note;
 	}
 
+	public Place fromVirtualPlace(VirtualPlace td) {
+		Place place = new Place(td.getName(), td.getPosition(), td.getNote());
+		for (PlaceType type : td.getTypes())
+			place.getPlaceTypes().add(type);
+		return place;
+	}
+	
+	@Override
+	public VirtualPlace toVirtualPlace() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public double getNote() {
 		return note;
 	}
@@ -71,5 +86,7 @@ public class Place {
 	public String toString() {
 		return "[" + name + "," + coords + ", " + placeTypes + "]";
 	}
+
+	
 
 }

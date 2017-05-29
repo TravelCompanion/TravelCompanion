@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import api.cte.PlaceType;
 import api.cte.TypeConfiguration;
-import api.ia.TheoricUser;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
@@ -59,20 +58,6 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 			i++;
 		}
 		return this;
-	}
-
-	public static TheoricUser toUser(VirtualUser virtualUser) {
-		TheoricUser user = new TheoricUser(virtualUser.id, virtualUser.position);
-		for (PlaceType type : virtualUser.preferences.keySet())
-			user.getPreferences().put(type, virtualUser.preferences.get(type));
-		return user;
-	}
-
-	public static VirtualUser fromUser(TheoricUser user) {
-		VirtualUser virtualUser = new VirtualUser(user.getId(), user.getPosition());
-		for (PlaceType type : user.getPreferences().keySet())
-			virtualUser.preferences.put(type, user.getPreferences().get(type));
-		return virtualUser;
 	}
 
 	public void newFriend(VirtualUser user){
