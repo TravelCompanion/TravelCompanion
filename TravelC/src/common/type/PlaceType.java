@@ -1,4 +1,4 @@
-package api.cte;
+package common.type;
 
 public class PlaceType {
 	private String name;

@@ -1,4 +1,4 @@
-package api.cte;
+package common.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;

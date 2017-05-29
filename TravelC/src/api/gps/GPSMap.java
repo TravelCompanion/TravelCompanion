@@ -2,7 +2,7 @@ package api.gps;
 
 import java.util.HashMap;
 
-import api.externalData.VirtualPlace;
+import common.data.VirtualPlace;
 import tools.math.CoordinatesDouble;
 
 public class GPSMap {

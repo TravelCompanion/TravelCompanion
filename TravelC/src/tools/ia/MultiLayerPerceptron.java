@@ -24,11 +24,11 @@ public class MultiLayerPerceptron extends NeuralNetwork{
 	public MultiLayerPerceptron(int[] layersSize,AbstractDecition decition,double step){
 		this.entrySize = layersSize[0];
 		this.numberLayer = layersSize.length;
-		for(int i =1;i < layersSize.length;i++)
-			weights[i] = new Matrix(layersSize[i],layersSize[i-1],new Random(),1,0);
+		this.weights = new Matrix[layersSize.length-1];
+		for(int i =0;i < weights.length;i++)
+			weights[i-1] = new Matrix(layersSize[i],layersSize[i-1],new Random(),1,0);
 		this.decide = decition;
 		this.step = step;
-
 	}
 	
 	public int getEntrySize() {

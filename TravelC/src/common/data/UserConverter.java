@@ -1,4 +1,4 @@
-package api.externalData;
+package common.data;
 
 public interface UserConverter<T> {
 	public T fromVirtualUser(VirtualUser virtualUser);

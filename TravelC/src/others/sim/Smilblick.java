@@ -1,4 +1,4 @@
-package sim;
+package others.sim;
 
 import tools.math.Matrix;
 

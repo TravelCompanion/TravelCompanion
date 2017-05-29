@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
     <jar path="TravelC/tools.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/TravelC/toolsdesc.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/TravelC/tools.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="true" manifestLocation="/TravelC/toolsmanifest" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+    <manifest generateManifest="false" manifestLocation="/TravelC/toolsmanifest" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=TravelC/src&lt;tools"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.list"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.polls"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.math.compare"/>

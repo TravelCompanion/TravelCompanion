@@ -1,10 +1,10 @@
-package api.externalData.generators;
+package others.generators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import api.cte.PlaceType;
-import api.externalData.VirtualPlace;
+import common.data.VirtualPlace;
+import common.type.PlaceType;
 import tools.math.CoordinatesDouble;
 import tools.math.random.RandomDouble;
 

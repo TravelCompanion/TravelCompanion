@@ -2,11 +2,11 @@ package api.ia;
 
 import java.util.HashMap;
 
-import api.cte.Constants;
-import api.cte.PlaceType;
-import api.cte.TypeConfiguration;
-import api.externalData.UserConverter;
-import api.externalData.VirtualUser;
+import common.data.Constants;
+import common.data.UserConverter;
+import common.data.VirtualUser;
+import common.type.PlaceType;
+import common.type.TypeConfiguration;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
 

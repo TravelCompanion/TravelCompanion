@@ -7,7 +7,7 @@ import tools.math.random.RandomDouble;
 public class Matrix {
 	public final int sizeX, sizeY;
 	protected double matrix[][];
-
+	
 	
 	
 	public Matrix(int sizeX, int sizeY) {
@@ -46,7 +46,7 @@ public class Matrix {
 	public Matrix(int size, double init) {
 		this(size, size, init);
 	}
-
+	
 	public static Matrix diagonal(int sizeX, int sizeY, double value) {
 		Matrix m = new Matrix(sizeX, sizeY, 0.0);
 		for (int x = 0; x < sizeX; x++)

@@ -1,11 +1,10 @@
-package api.externalData;
+package common.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import api.cte.Constants;
-import api.cte.TypeConfiguration;
-import api.ia.TheoricUser;
+import common.data.Constants;
+import common.type.TypeConfiguration;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParser;
 
@@ -48,7 +47,7 @@ public class VirtualDataBase {
 		return usersHash.get(name);
 	}
 	
-	public HashMap<CoordinatesDouble, VirtualPlace> requestNearPlace(TheoricUser user,double distance){
+	public HashMap<CoordinatesDouble, VirtualPlace> requestNearPlace(VirtualUser user,double distance){
 		HashMap<CoordinatesDouble, VirtualPlace> req = new HashMap<CoordinatesDouble, VirtualPlace>();
 		for(CoordinatesDouble data : placesHash.keySet())
 			if(CoordinatesDouble.distanceAtoB(user.getPosition(),data) <= distance)

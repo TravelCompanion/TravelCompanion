@@ -2,9 +2,9 @@ package api.gps;
 
 import java.util.ArrayList;
 
-import api.cte.PlaceType;
-import api.externalData.PlaceConverter;
-import api.externalData.VirtualPlace;
+import common.data.PlaceConverter;
+import common.data.VirtualPlace;
+import common.type.PlaceType;
 import tools.math.CoordinatesDouble;
 
 public class Place implements PlaceConverter<Place>{

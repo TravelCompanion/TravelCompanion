@@ -1,9 +1,9 @@
-package sim;
+package others.sim;
 
 import java.util.HashMap;
 
-import api.externalData.VirtualDataBase;
-import api.externalData.VirtualUser;
+import common.data.VirtualDataBase;
+import common.data.VirtualUser;
 
 public class Simulation {
 		public static void main(String args[]){

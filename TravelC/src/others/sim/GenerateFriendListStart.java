@@ -1,7 +1,7 @@
-package sim;
+package others.sim;
 
-import api.externalData.VirtualDataBase;
-import api.externalData.generators.UserGenerator;
+import common.data.VirtualDataBase;
+import others.generators.UserGenerator;
 
 public class GenerateFriendListStart {
 	

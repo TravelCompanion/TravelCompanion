@@ -1,4 +1,4 @@
-package api.externalData;
+package common.data;
 
 public interface PlaceConverter<T>{
 	public T fromVirtualPlace(VirtualPlace virtualPlace);

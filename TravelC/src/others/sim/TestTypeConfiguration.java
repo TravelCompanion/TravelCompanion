@@ -1,6 +1,6 @@
-package sim;
+package others.sim;
 
-import api.cte.TypeConfiguration;
+import common.type.TypeConfiguration;
 
 public class TestTypeConfiguration {
 	public static void main(String[] args) {

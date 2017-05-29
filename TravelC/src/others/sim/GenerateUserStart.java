@@ -1,10 +1,10 @@
-package sim;
+package others.sim;
 
 import java.util.ArrayList;
 
-import api.cte.Constants;
-import api.externalData.VirtualUser;
-import api.externalData.generators.UserGenerator;
+import common.data.Constants;
+import common.data.VirtualUser;
+import others.generators.UserGenerator;
 import tools.parse.StringParser;
 
 public class GenerateUserStart {

@@ -1,10 +1,10 @@
-package api.externalData.generators;
+package others.generators;
 
 import java.util.HashMap;
 import java.util.Random;
 
-import api.cte.PlaceType;
-import api.cte.TypeConfiguration;
+import common.type.PlaceType;
+import common.type.TypeConfiguration;
 import tools.math.CoordinatesDouble;
 import tools.math.random.RandomDouble;
 

@@ -1,9 +1,9 @@
-package api.externalData;
+package common.data;
 
 import java.util.ArrayList;
 
-import api.cte.PlaceType;
-import api.cte.TypeConfiguration;
+import common.type.PlaceType;
+import common.type.TypeConfiguration;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
@@ -19,8 +19,6 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 	private ArrayList<PlaceType> types = new ArrayList<PlaceType>();
 	private double note;
 
-	
-	
 	public VirtualPlace(String name, CoordinatesDouble position, ArrayList<PlaceType> types, double note) {
 		this.name = name;
 		this.position = position;
@@ -45,16 +43,31 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 		this.name = name;
 	}
 
-	public String getStringKey() {
-		return name;
-	}
-
 	public CoordinatesDouble getPosition() {
 		return position;
 	}
 
 	public ArrayList<PlaceType> getTypes() {
 		return types;
+	}
+
+	public String toString() {
+		return "TempDataDB [name=" + name + ", x=" + position.getX() + ", y=" + position.getY() + ", types=" + types
+				+ "]";
+	}
+
+	// Parsing
+	// ========================================================================================================
+	public String toLog() {
+		// data format : name,t1:v/t2:v/t3:v ... ,x,y
+		String typesString = PlaceType.typeToString(types.get(0));
+		for (int i = 1; i < types.size(); i++)
+			typesString += "," + PlaceType.typeToString(types.get(i));
+		return name + "/" + typesString + "/" + position.getX() + "/" + position.getY() + "/" + note + ";";
+	}
+
+	public String getStringKey() {
+		return name;
 	}
 
 	public VirtualPlace generateItem(ArrayList<String> args) {
@@ -78,21 +91,6 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 
 	public StringParseGenerable<VirtualPlace, CoordinatesDouble> init() {
 		return new VirtualPlace();
-	}
-
-	
-
-	public String toString() {
-		return "TempDataDB [name=" + name + ", x=" + position.getX() + ", y=" + position.getY() + ", types=" + types + "]";
-	}
-
-	@Override
-	public String toLog() {
-		// data format : name,t1:v/t2:v/t3:v ... ,x,y
-		String typesString = PlaceType.typeToString(types.get(0));
-		for(int i = 1; i < types.size();i++)
-			typesString+= ","+PlaceType.typeToString(types.get(i));
-		return name+"/"+typesString+"/"+position.getX()+"/"+position.getY()+"/"+note+";";
 	}
 
 }

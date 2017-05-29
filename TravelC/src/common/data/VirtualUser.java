@@ -1,10 +1,10 @@
-package api.externalData;
+package common.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import api.cte.PlaceType;
-import api.cte.TypeConfiguration;
+import common.type.PlaceType;
+import common.type.TypeConfiguration;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
@@ -33,47 +33,14 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 
 	}
 
-	
-	
 	public VirtualUser(String id, CoordinatesDouble position, HashMap<PlaceType, Double> preferences) {
 		this.id = id;
 		this.position = position;
 		this.preferences = preferences;
 	}
 
-	public String toLog() {
-		String log = id + "," + position.getX() + "," + position.getY();
-		for (Double n : preferences.values())
-			log += "," + n;
-		return log + ';';
-	}
-
-	public VirtualUser generateItem(ArrayList<String> args) {
-		this.id = args.get(0);
-		this.position = new CoordinatesDouble(
-				new double[] { Double.parseDouble(args.get(1)), Double.parseDouble(args.get(2)) });
-		int i = 3;
-		for (PlaceType type : TypeConfiguration.types) {
-			this.preferences.put(type, Double.parseDouble(args.get(i)));
-			i++;
-		}
-		return this;
-	}
-
-	public void newFriend(VirtualUser user){
+	public void newFriend(VirtualUser user) {
 		friendList.add(user);
-	}
-	
-	public StringParseGenerable<VirtualUser, String> init() {
-		return new VirtualUser();
-	}
-
-	public String getStringKey() {
-		return id;
-	}
-
-	public String getKey() {
-		return id;
 	}
 
 	public String getId() {
@@ -127,6 +94,40 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 
 	public String toString() {
 		return "VirtualUser [id=" + id + ", position=" + position + ", preferences=" + preferences + "]";
+	}
+
+	// Parsing
+	// ================================================================================================
+
+	public String toLog() {
+		String log = id + "," + position.getX() + "," + position.getY();
+		for (Double n : preferences.values())
+			log += "," + n;
+		return log + ';';
+	}
+
+	public VirtualUser generateItem(ArrayList<String> args) {
+		this.id = args.get(0);
+		this.position = new CoordinatesDouble(
+				new double[] { Double.parseDouble(args.get(1)), Double.parseDouble(args.get(2)) });
+		int i = 3;
+		for (PlaceType type : TypeConfiguration.types) {
+			this.preferences.put(type, Double.parseDouble(args.get(i)));
+			i++;
+		}
+		return this;
+	}
+
+	public StringParseGenerable<VirtualUser, String> init() {
+		return new VirtualUser();
+	}
+
+	public String getStringKey() {
+		return id;
+	}
+
+	public String getKey() {
+		return id;
 	}
 
 }

@@ -1,12 +1,12 @@
-package api.externalData.generators;
+package others.generators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import api.cte.PlaceType;
-import api.externalData.VirtualDataBase;
-import api.externalData.VirtualUser;
+import common.data.VirtualDataBase;
+import common.data.VirtualUser;
+import common.type.PlaceType;
 import tools.math.CoordinatesDouble;
 import tools.math.Matrix;
 import tools.math.random.RandomInt;

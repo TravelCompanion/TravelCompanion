@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import api.cte.Constants;
-import api.cte.PlaceType;
 import api.gps.GPSMap;
 import api.gps.Place;
+import common.data.Constants;
+import common.type.PlaceType;
 import tools.math.CoordinatesDouble;
 import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathUnitComparator;

@@ -1,10 +1,10 @@
-package sim;
+package others.sim;
 
 import java.util.ArrayList;
 
-import api.cte.Constants;
-import api.externalData.VirtualPlace;
-import api.externalData.generators.PlaceGenerator;
+import common.data.Constants;
+import common.data.VirtualPlace;
+import others.generators.PlaceGenerator;
 import tools.parse.StringParser;
 
 public class GeneratePlaceStart {
