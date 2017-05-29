@@ -2,6 +2,8 @@ package api.gps;
 
 import java.util.HashMap;
 
+import api.data.Place;
+import common.data.NoPlaceFoundException;
 import common.data.VirtualPlace;
 import tools.math.CoordinatesDouble;
 

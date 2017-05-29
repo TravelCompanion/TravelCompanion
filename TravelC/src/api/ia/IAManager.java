@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import api.data.Place;
+import api.data.TheoricUser;
 import api.gps.GPSMap;
-import api.gps.Place;
 import common.data.Constants;
 import common.type.PlaceType;
 import tools.math.CoordinatesDouble;

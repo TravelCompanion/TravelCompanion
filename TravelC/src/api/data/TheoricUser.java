@@ -1,4 +1,4 @@
-package api.ia;
+package api.data;
 
 import java.util.HashMap;
 

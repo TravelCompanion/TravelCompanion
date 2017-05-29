@@ -1,4 +1,4 @@
-package api.gps;
+package api.data;
 
 import java.util.ArrayList;
 
