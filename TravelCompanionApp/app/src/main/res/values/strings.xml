@@ -14,6 +14,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="entrer_mot_de_passe">entrer un mot de passe</string>
+    <string name="entrer_rep_mot_de_passe">entrer une seconde fois un mot de passe</string>
     <string name="title_activity_navigation">navigation</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,6 +28,7 @@
     <string name="title_activity_profile">profil</string>
     <string name="title_activity_settings">Settings</string>
     <string name="error_connection">login ou le mot de passe est incorrect</string>
+    <string name="user">Utilisateur</string>
 
     <!-- Strings related to Settings -->
 
@@ -89,4 +93,7 @@
     <string name="title_activity_desc_Monument">Description</string>
     <string name="title_Monument_au_alentour">Monuments aux alentour</string>
     <string name="title_profil">Profil</string>
+    <string name="title_activity_inscription">InscriptionActivity</string>
+    <string name="title_inscription">Inscription</string>
+    <string name="title_inscription_nom">entrer un pseudo</string>
 </resources>
