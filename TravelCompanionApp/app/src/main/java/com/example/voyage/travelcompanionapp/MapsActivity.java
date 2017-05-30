@@ -64,8 +64,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     Session session;
     SharedPreferences preferences;
     int PRIVATE_MODE = 0;
-    public static final String KEY_NAME = "name";
-    public static final String KEY_DIST = "distance";
+    public static final String KEY_NAME_MONUMENT = "monument_name";
+    public static final String KEY_ID_MONUMENT = "id";
+    public static final String KEY_DIST_MONUMENT = "distance";
     VirtualUser virtualuser = new VirtualUser();
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
@@ -428,7 +429,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                         //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
                         DecimalFormat df = new DecimalFormat("#");
                         String elt = ""+df.format(keepMarkerMonument.get(i).getDistance()[0]);
-                        editor.putString(KEY_DIST, elt);
+                        keepMarkerMonument.get(i).setId(i);
+                        String idMonument = String.valueOf(keepMarkerMonument.get(i).getId());
+                        String monument_name = keepMarkerMonument.get(i).getName();
+
+                        editor.putString(KEY_DIST_MONUMENT, elt);
+                        editor.putString(KEY_NAME_MONUMENT, monument_name);
+
+
+                        editor.putString(KEY_ID_MONUMENT, idMonument);
+
 
                         Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
                         startActivity(intent);

@@ -23,7 +23,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
     Button visite;
     Bundle savedInstanceState;
     final Context context = this;
+    RatingBar ratingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("PrefDistance", 0);
@@ -85,6 +88,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         visite.setOnClickListener(MonumentActivity.this);
 
 
+
     }
 
 
@@ -129,20 +133,32 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
     public void onClick(View v) {
         if(v==visite){
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    context);
+                    MonumentActivity.this);
             LayoutInflater inflater = this.getLayoutInflater();
 
             // set title
             alertDialogBuilder.setTitle(R.string.donner_note);
+            View mView = getLayoutInflater().inflate(R.layout.activity_rate,null);
 
             // set dialog message
             alertDialogBuilder
                     .setCancelable(false)
-                    .setView(inflater.inflate(R.layout.activity_rate, null))
-                    .setPositiveButton(R.string.note,new DialogInterface.OnClickListener() {
+                    .setView(mView);
+                    //.setView(inflater.inflate(R.layout.activity_rate, (ViewGroup) findViewById(R.id.layout_rate_bar) ));
+
+            ratingBar = (RatingBar) mView.findViewById(R.id.ratingBar_note);
+
+
+
+
+            alertDialogBuilder.setPositiveButton(R.string.note,new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
+                            addListenerOnRatingBar(ratingBar);
+
                             // if this button is clicked, close
                             // current activity
+                            //Toast.makeText(MonumentActivity.this, "Note: "+String.valueOf(rating), Toast.LENGTH_SHORT).show();
+
                             MonumentActivity.this.finish();
                         }
                     })
@@ -161,6 +177,23 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
             alertDialog.show();
 
         }
+    }
+
+    public void addListenerOnRatingBar(RatingBar r) {
+
+        Note note_monu = new Note();
+        String rate;
+        rate=String.valueOf(r.getRating());
+        Log.d("user_Note",String.valueOf(rate));
+        note_monu.setNote(r.getRating());
+        r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingB, float rating,
+                                        boolean fromUser) {
+
+                Log.d("user_Note",String.valueOf(rating));
+
+            }
+        });
     }
 
 
