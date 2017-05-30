@@ -29,6 +29,9 @@
     <string name="title_activity_settings">Settings</string>
     <string name="error_connection">login ou le mot de passe est incorrect</string>
     <string name="user">Utilisateur</string>
+    <string name="note">Noter</string>
+    <string name="fermer">Fermer</string>
+    <string name="donner_note">Voulez-vous une noter ce monument</string>
 
     <!-- Strings related to Settings -->
 

@@ -134,13 +134,9 @@ public class ProfilActivity extends AppCompatActivity
         if (id == R.id.nav_room) {
             Intent intent = new Intent(ProfilActivity.this, MapsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
+        }
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_logout) {
+         else if (id == R.id.nav_logout) {
             session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
