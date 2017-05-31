@@ -50,6 +50,10 @@
             android:label="@string/title_Monument_au_alentour"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ParametreActivity"
+            android:label="@string/title_compte"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ProfilActivity"
             android:label="@string/title_profil"
             android:theme="@style/AppTheme.NoActionBar" />

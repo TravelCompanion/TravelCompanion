@@ -92,8 +92,6 @@ public class Session {
          * */
         public HashMap<String, String> getUserDetails(){
             HashMap<String, String> user = new HashMap<String, String>();
-            // user name
-            //user.put(KEY_NAME, preferences.getString(KEY_NAME, null));
 
             // user email id
             user.put(KEY_EMAIL, preferences.getString(KEY_EMAIL, null));

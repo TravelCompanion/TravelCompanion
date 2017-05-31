@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -24,11 +25,12 @@ import com.example.voyage.travelcompanionapp.R;
 import java.util.HashMap;
 
 public class ProfilActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener  {
+        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener  {
    private DrawerLayout drawer;
     private Toolbar toolbar;
     Session session;
     String emailname="";
+    Button buttonCompte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class ProfilActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        buttonCompte= (Button) findViewById(R.id.compte);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         session = Session.getSession(getApplicationContext());
@@ -48,11 +51,11 @@ public class ProfilActivity extends AppCompatActivity
         // emailname
         emailname = userSession.get(Session.KEY_EMAIL);
         textusername.setText(emailname);
+        buttonCompte.setOnClickListener(ProfilActivity.this);
 
 
 
-
-        TabHost host = (TabHost)findViewById(R.id.tabHost);
+       /* TabHost host = (TabHost)findViewById(R.id.tabHost);
         host.setup();
         ListView list_avis_monument=(ListView)findViewById(R.id.list_avis_monument);
 
@@ -60,13 +63,13 @@ public class ProfilActivity extends AppCompatActivity
         TabHost.TabSpec spec = host.newTabSpec("Avis");
         spec.setContent(R.id.tab_avis);
         spec.setIndicator("Avis");
-        host.addTab(spec);
+        host.addTab(spec);*/
 
         //Tab 2
         /*spec = host.newTabSpec("Preferences");
         spec.setContent(R.id.tab_pref);
         spec.setIndicator("Preferences");
-        host.addTab(spec);*/
+        host.addTab(spec);
         final String[]data_notice= new String[]{"monument1","monument2","monument3"};
         ArrayAdapter<String> listadaptater;
         listadaptater= new ArrayAdapter<String>(ProfilActivity.this,android.R.layout.simple_list_item_1,data_notice);
@@ -82,7 +85,7 @@ public class ProfilActivity extends AppCompatActivity
                     }
                 }
             }
-        });
+        });*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout_profil);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -150,6 +153,13 @@ public class ProfilActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if(v==buttonCompte){
+            Intent intent = new Intent(ProfilActivity.this, ParametreActivity.class);
+            startActivity(intent);
+        }
     }
+}
 
 

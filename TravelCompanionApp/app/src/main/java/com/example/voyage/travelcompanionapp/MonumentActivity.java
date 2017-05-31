@@ -144,7 +144,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
             alertDialogBuilder
                     .setCancelable(false)
                     .setView(mView);
-                    //.setView(inflater.inflate(R.layout.activity_rate, (ViewGroup) findViewById(R.id.layout_rate_bar) ));
+            //.setView(inflater.inflate(R.layout.activity_rate, (ViewGroup) findViewById(R.id.layout_rate_bar) ));
 
             ratingBar = (RatingBar) mView.findViewById(R.id.ratingBar_note);
 
