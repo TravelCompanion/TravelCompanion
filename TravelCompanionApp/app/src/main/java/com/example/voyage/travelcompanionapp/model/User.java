@@ -1,4 +1,4 @@
-package com.example.voyage.travelcompanionapp;
+package com.example.voyage.travelcompanionapp.model;
 
 
 

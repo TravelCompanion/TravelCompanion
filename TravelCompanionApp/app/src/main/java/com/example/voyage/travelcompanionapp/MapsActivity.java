@@ -10,13 +10,11 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -33,7 +31,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.voyage.travelcompanionapp.R;
+import com.example.voyage.travelcompanionapp.model.Monument;
+import com.example.voyage.travelcompanionapp.persistance.RecupMonument;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -42,7 +41,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -66,8 +64,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     Session session;
     SharedPreferences preferences;
     int PRIVATE_MODE = 0;
-    public static final String KEY_NAME = "name";
-    public static final String KEY_DIST = "distance";
+    public static final String KEY_NAME_MONUMENT = "monument_name";
+    public static final String KEY_ID_MONUMENT = "id";
+    public static final String KEY_DIST_MONUMENT = "distance";
     VirtualUser virtualuser = new VirtualUser();
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
@@ -215,7 +214,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         circleOptions.center(point);
 
         // Radius of the circle
-        circleOptions.radius(200);
+        circleOptions.radius(20000);
 
         // Border color of the circle
         circleOptions.strokeColor(Color.BLACK);
@@ -277,34 +276,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-            LatLng visage = new LatLng(49.051209, 2.008451);
+            RecupMonument AlistMonu=new RecupMonument();
 
-            LatLng cine = new LatLng(49.048021, 2.012134);
-
-            LatLng travail2= new LatLng(48.836338, 2.306364);
-
-            LatLng maison = new LatLng(49.045975, 2.011040);
-
-            LatLng travail = new LatLng(48.836798, 2.306745);
-
-            LatLng fac = new LatLng(49.042974, 2.084606);
-            ArrayList<LatLng> AlistMonu = new ArrayList<LatLng>();
-
-            AlistMonu.add(visage);
-            AlistMonu.add(cine);
-            AlistMonu.add(maison);
-            AlistMonu.add(travail);
-            AlistMonu.add(travail2);
-            AlistMonu.add(fac);
-
-            ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu);
+            ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu.getAlistMonu());
             afficheListMarker(list_monument,keepMarker(marqueurmonus,circlePosition),placeMarker(marqueurmonus,circlePosition));
 
         }
     }
     @Override
     public void onBackPressed() {
-       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -339,13 +319,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         if (id == R.id.nav_room) {
             Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id == R.id.nav_logout) {
             session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
@@ -353,7 +328,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             startActivity(intent);
         }
 
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -388,12 +362,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<LatLng> listlatlon){
+    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<Monument> listlatlon){
         int i=0;
 
         ArrayList<MarkerOptions> marMonu = new ArrayList<MarkerOptions>();
-        for(LatLng lalo : listlatlon  ){
-            MarkerOptions markerop = new MarkerOptions().position(lalo).title("monu_"+i);
+        for(Monument lalo : listlatlon  ){
+            MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
             marMonu.add(markerop);
             i++;
         }
@@ -401,7 +375,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-       public ArrayList<Monument> placeMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+       public ArrayList<Monument> placeMarker(ArrayList<MarkerOptions> markersO, CircleOptions circleP) {
            ArrayList<Monument> markerselect = new ArrayList<Monument>();
            for (int i = 0; i <= markersO.size() - 1; i++) {
                Monument monu = new Monument();
@@ -455,7 +429,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                         //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
                         DecimalFormat df = new DecimalFormat("#");
                         String elt = ""+df.format(keepMarkerMonument.get(i).getDistance()[0]);
-                        editor.putString(KEY_DIST, elt);
+                        keepMarkerMonument.get(i).setId(i);
+                        String idMonument = String.valueOf(keepMarkerMonument.get(i).getId());
+                        String monument_name = keepMarkerMonument.get(i).getName();
+
+                        editor.putString(KEY_DIST_MONUMENT, elt);
+                        editor.putString(KEY_NAME_MONUMENT, monument_name);
+
+
+                        editor.putString(KEY_ID_MONUMENT, idMonument);
+
 
                         Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
                         startActivity(intent);
