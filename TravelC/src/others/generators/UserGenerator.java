@@ -22,8 +22,8 @@ public class UserGenerator extends DataGenerator{
 	private static Matrix generateLinkMatrix(ArrayList<String> users) {
 		Matrix m = new Matrix(users.size(),users.size());
 		Random rand = new Random();
-		for(int x = 0; x < m.sizeX/2; x++)
-			for(int y = 0; y< m.sizeY/2;y++){
+		for(int x = 0; x < m.sizeX; x++)
+			for(int y = 0; y< x;y++){
 				m.getMatrix()[x][y] = RandomInt.generate(rand,1, 0);
 				m.getMatrix()[y][x] = m.getMatrix()[x][y];
 			}
@@ -35,9 +35,11 @@ public class UserGenerator extends DataGenerator{
 	public static void generateLinks(ArrayList<String> users) {
 		Matrix m = generateLinkMatrix(users);
 		for(int x = 0; x < m.sizeX;x++)
-			for(int y = 0; y < m.sizeY;y++)
-				if(m.getMatrix()[x][y] == 1)
+			for(int y = 0; y < x;y++)
+				if(m.getMatrix()[x][y] == 1){
 					VirtualDataBase.getUser(x).newFriend(VirtualDataBase.getUser(y));
+					VirtualDataBase.getUser(y).newFriend(VirtualDataBase.getUser(x));
+					}
 	}
 	
 	public static VirtualUser generateUser(int number){

@@ -2,7 +2,7 @@ package api.gps;
 
 import java.util.HashMap;
 
-import api.data.Place;
+import api.data.TheoricPlace;
 import common.data.NoPlaceFoundException;
 import common.data.VirtualPlace;
 import tools.math.CoordinatesDouble;
@@ -10,7 +10,7 @@ import tools.math.CoordinatesDouble;
 public class GPSMap {
 	// Simulation GPS
 	private static GPSMap gps;
-	private static HashMap<CoordinatesDouble, Place> map = new HashMap<CoordinatesDouble, Place>();
+	private static HashMap<CoordinatesDouble, TheoricPlace> map = new HashMap<CoordinatesDouble, TheoricPlace>();
 	private GPSMap(){}
 	public static GPSMap getMap() {
 		if (gps == null)
@@ -19,9 +19,9 @@ public class GPSMap {
 	}
 
 	public static void fillMap(HashMap<CoordinatesDouble, VirtualPlace> datas) throws NoPlaceFoundException {
-		HashMap<CoordinatesDouble, Place> places = new HashMap<CoordinatesDouble, Place>();
+		HashMap<CoordinatesDouble, TheoricPlace> places = new HashMap<CoordinatesDouble, TheoricPlace>();
 		for (CoordinatesDouble data : datas.keySet())
-			places.put(data, new Place().fromVirtualPlace(datas.get(data)));
+			places.put(data, new TheoricPlace().fromVirtualPlace(datas.get(data)));
 		if(places.isEmpty())throw new NoPlaceFoundException();
 		map = places;
 	}
@@ -30,11 +30,11 @@ public class GPSMap {
 		map.clear();
 	}
 	
-	public static HashMap<CoordinatesDouble, Place> getPlaces(){
+	public static HashMap<CoordinatesDouble, TheoricPlace> getPlaces(){
 		return map;
 	}
 	
-	public static Place getPlaceAt(CoordinatesDouble coordinates){
+	public static TheoricPlace getPlaceAt(CoordinatesDouble coordinates){
 		return map.get(coordinates);
 	}
 	
@@ -44,7 +44,7 @@ public class GPSMap {
 	
 	public String toString() {
 		String elt = "|";
-		for(Place place : map.values())
+		for(TheoricPlace place : map.values())
 			{
 			elt+= place+"|";
 			}

@@ -2,7 +2,7 @@ package tools.ia.decition;
 
 import tools.math.Matrix;
 
-public class SigmoideDecition extends AbstractDecition{
+public class SigmoidDecition extends AbstractDecition{
 	public Matrix result(Matrix result){
 		Matrix tmp = result;
 		for(int x = 0; x < result.sizeX;x++)

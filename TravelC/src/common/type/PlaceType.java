@@ -1,8 +1,10 @@
 package common.type;
 
 public class PlaceType {
+	/**This class define what a place is*/
 	private String name;
 	private int id;
+	/**position in the list of type*/
 
 	private PlaceType() {
 	}
@@ -10,22 +12,6 @@ public class PlaceType {
 	private PlaceType(String name, int id) {
 		this.name = name;
 		this.id = id;
-	}
-
-	public static String typeToString(PlaceType type) {
-		return type.name;
-	}
-
-	public static PlaceType stringToType(String name) {
-		return TypeConfiguration.get(name);
-	}
-
-	public static int typeToInt(PlaceType type) {
-		return type.id;
-	}
-
-	public static PlaceType intToType(int i) {
-		return TypeConfiguration.get(i);
 	}
 
 	public static PlaceType createType(String name, int id) {

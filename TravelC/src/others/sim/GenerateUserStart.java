@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import common.data.Constants;
 import common.data.VirtualUser;
+import common.type.TypeConfiguration;
 import others.generators.UserGenerator;
 import tools.parse.StringParser;
 
 public class GenerateUserStart {
 	public static void main(String args[]){
+		TypeConfiguration.getConfig();
 		ArrayList<VirtualUser> users = UserGenerator.generateUserList(50);
 		ArrayList<String> lines = new ArrayList<String>();
 		

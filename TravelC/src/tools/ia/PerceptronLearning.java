@@ -2,7 +2,7 @@ package tools.ia;
 
 import tools.math.Matrix;
 
-public class PerceptronLearning implements LearningUnit {
+public class PerceptronLearning implements LearningUnit<Perceptron> {
 	private Matrix entry;
 	private double result;
 	private double desired;
@@ -15,13 +15,14 @@ public class PerceptronLearning implements LearningUnit {
 		this.desired = desired;
 	}
 
-	public void learn(NeuralNetwork network) {
-		Perceptron perceptron = (Perceptron) network;
+	public void learn(Perceptron network) {
+		/**learning function for the perceptron*/
 		double error = desired - result;
-		perceptron.updateWeights(Matrix.mult(entry, perceptron.getStep() * error));
+		network.updateWeights(Matrix.trans(Matrix.mult(entry, network.getStep() * error)));
 	}
 
 	public void getParameters(Matrix entry, double result,double desired) {
+		/**get the parameters for the perceptron*/
 		this.entry = entry;
 		this.result = result;
 		this.desired = desired;

@@ -1,29 +1,24 @@
 package api.data;
 
-import java.util.HashMap;
 
+import common.convertion.UserConverter;
 import common.data.Constants;
-import common.data.UserConverter;
 import common.data.VirtualUser;
-import common.type.PlaceType;
 import common.type.TypeConfiguration;
+import common.type.TypeManager;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
+import tools.math.Matrix;
 
 public class TheoricUser implements UserConverter<TheoricUser>{
+	
 	private String id = "user";
 	private CoordinatesDouble position;
-	private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
+	private Matrix preferences = Matrix.kmatrix(1,TypeConfiguration.number, 0.5);
 	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
 	
 	public TheoricUser() {
 		this.position = new CoordinatesDouble(new double[] { 49, 2 });
-		int i = 0;
-		for(PlaceType placeType : TypeConfiguration.types)
-		{
-			preferences.put(placeType, ((i%4)+1)*0.2);
-				i++;
-		}
 	}
 
 	public TheoricUser(String id, CoordinatesDouble position) {
@@ -35,7 +30,7 @@ public class TheoricUser implements UserConverter<TheoricUser>{
 		return position;
 	}
 
-	public HashMap<PlaceType, Double> getPreferences() {
+	public Matrix getPreferences() {
 		return preferences;
 	}
 
@@ -45,15 +40,13 @@ public class TheoricUser implements UserConverter<TheoricUser>{
 
 	public TheoricUser fromVirtualUser(VirtualUser virtualUser) {
 		TheoricUser user = new TheoricUser(virtualUser.getId(), virtualUser.getPosition());
-		for (PlaceType type : virtualUser.getPreferences().keySet())
-			user.getPreferences().put(type, virtualUser.getPreferences().get(type));
+		preferences = TypeManager.typeMapToColumnMatrix(virtualUser.getPreferences());
 		return user;
 	}
 
 	public VirtualUser toVirtualUser() {
 		VirtualUser virtualUser = new VirtualUser(id, position);
-		for (PlaceType type : preferences.keySet())
-			virtualUser.getPreferences().put(type,preferences.get(type));
+		virtualUser.getPreferences().putAll(TypeManager.matrixTotypeMap(preferences));
 		return virtualUser;		
 	}
 	
@@ -79,6 +72,9 @@ public class TheoricUser implements UserConverter<TheoricUser>{
 		return "[" + position + " , " + preferences + "]";
 	}
 
+	public void updatePreferences(Matrix weights) {
+		this.preferences = weights;
+	}
 	
 
 }

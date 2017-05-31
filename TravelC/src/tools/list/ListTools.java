@@ -3,7 +3,9 @@ package tools.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathComparator;
+import tools.math.compare.MathUnitComparator;
 
 
 public class ListTools {
@@ -34,6 +36,14 @@ public class ListTools {
 	public static <T> void listToTab(List<T> list,T[] tab){
 		for(int i = 0; i < list.size(); i++)
 			tab[i] = list.get(i);
+	}
+	
+	public static <T> ArrayList<T> sortCompareUnitDoubleListAsc(ArrayList<CompareUnitDouble<T>> list){
+		ArrayList<T> sortList = new ArrayList<T>();
+		list.sort(MathUnitComparator.getByNameDouble("<"));
+		for(CompareUnitDouble<T> elt : list)
+			sortList.add(elt.getElement());
+		return sortList;
 	}
 	
 	@SuppressWarnings("unchecked")

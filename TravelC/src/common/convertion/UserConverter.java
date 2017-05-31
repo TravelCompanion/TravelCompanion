@@ -1,4 +1,6 @@
-package common.data;
+package common.convertion;
+
+import common.data.VirtualUser;
 
 public interface UserConverter<T> {
 	/**classes witch define users data must implements this interface*/

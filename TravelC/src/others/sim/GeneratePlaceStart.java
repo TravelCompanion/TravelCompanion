@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import common.data.Constants;
 import common.data.VirtualPlace;
+import common.type.TypeConfiguration;
 import others.generators.PlaceGenerator;
 import tools.parse.StringParser;
 
 public class GeneratePlaceStart {
 	public static void main(String[] args){
+		TypeConfiguration.getConfig();
 		ArrayList<VirtualPlace> places = PlaceGenerator.generatePlaceList(200);
 		ArrayList<String> lines = new ArrayList<String>();
 		

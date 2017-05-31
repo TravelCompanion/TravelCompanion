@@ -27,7 +27,7 @@ public class VirtualDataBase {
 			places.add(StringParser.sliceLine(line, ',').get(0));
 		//places = StringParser.convertDataLinesKeyMap(new TempDataDB(), lines,',',';');
 		placesHash = StringParser.convertDataLinesKeyMap(new VirtualPlace(), lines,'/',';');
-		usersHash = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');		
+		usersHash = StringParser.convertDataLinesKeyMap(new VirtualUser(), lines2, ',',';');	
 	}
 	
 	public static VirtualDataBase getDataBase() {
@@ -55,6 +55,19 @@ public class VirtualDataBase {
 		return req;
 	}
 	//otherRequest...
+
+	public static ArrayList<VirtualPlace> requestNearPlace(CoordinatesDouble pos) {
+		ArrayList<VirtualPlace> virtualPlaces = new ArrayList<VirtualPlace>();
+		for(VirtualPlace place : placesHash.values())
+			if(CoordinatesDouble.distanceAtoB(pos, place.getPosition()) < Constants.SCAN_SIZE)
+				virtualPlaces.add(place);
+		return virtualPlaces;
+	}
+
+	public static ArrayList<VirtualUser> requestFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

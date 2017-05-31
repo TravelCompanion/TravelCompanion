@@ -26,7 +26,7 @@ public class Matrix {
 		this.matrix = new double[sizeX][sizeY];
 		for (int x = 0; x < sizeX; x++)
 			for (int y = 0; y < sizeY; y++)
-				matrix[x][y] = init;
+				this.matrix[x][y] = init;
 	}
 
 	public Matrix(int sizeX, int sizeY, Random rand,double max, double min) {
@@ -99,11 +99,12 @@ public class Matrix {
 	}
 
 	public static Matrix mult(Matrix m,double k){
+		Matrix res = new Matrix(m.sizeX, m.sizeY);
 		for (int x = 0; x < m.sizeX; x++)
 			for (int y = 0; y < m.sizeY; y++) {  
-				m.matrix[x][y] = k*m.matrix[x][y];
+				res.matrix[x][y] = k*m.matrix[x][y];
 			}
-		return m;
+		return res;
 	}
 	
 	public static Matrix trans(Matrix m) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import common.type.PlaceType;
 import common.type.TypeConfiguration;
+import common.type.TypeManager;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
@@ -60,9 +61,9 @@ public class VirtualPlace implements StringParseGenerable<VirtualPlace, Coordina
 	// ========================================================================================================
 	public String toLog() {
 		// data format : name,t1:v/t2:v/t3:v ... ,x,y
-		String typesString = PlaceType.typeToString(types.get(0));
+		String typesString = TypeManager.typeToString(types.get(0));
 		for (int i = 1; i < types.size(); i++)
-			typesString += "," + PlaceType.typeToString(types.get(i));
+			typesString += "," + TypeManager.typeToString(types.get(i));
 		return name + "/" + typesString + "/" + position.getX() + "/" + position.getY() + "/" + note + ";";
 	}
 

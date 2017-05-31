@@ -8,6 +8,7 @@ import common.type.TypeConfiguration;
 import tools.math.CoordinatesDouble;
 import tools.parse.StringParseGenerable;
 import tools.parse.StringParseLoggable;
+import tools.parse.StringParser;
 
 public class VirtualUser implements StringParseGenerable<VirtualUser, String>, StringParseLoggable {
 	/**
@@ -19,6 +20,7 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 	private CoordinatesDouble position;
 	private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
 	private ArrayList<VirtualUser> friendList = new ArrayList<VirtualUser>();
+	private ArrayList<VirtualPlace> visited = new ArrayList<VirtualPlace>();
 
 	public ArrayList<VirtualUser> getFriendList() {
 		return friendList;
@@ -64,6 +66,10 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 		result = prime * result + ((preferences == null) ? 0 : preferences.hashCode());
 		return result;
 	}
+	
+	public ArrayList<VirtualPlace> getVisited() {
+		return visited;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -101,8 +107,22 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 
 	public String toLog() {
 		String log = id + "," + position.getX() + "," + position.getY();
-		for (Double n : preferences.values())
-			log += "," + n;
+		log += ",";
+		int k = 0;
+		for (Double n : preferences.values()) {
+
+			log += k == 0 ? n : "/" + n;
+			k++;
+		}
+		if (!friendList.isEmpty()) {
+			log += ",";
+			k = 0;
+			for (VirtualUser user : friendList) {
+
+				log += k == 0 ? user.getId() : "/" + user.getId();
+				k++;
+			}
+		}
 		return log + ';';
 	}
 
@@ -110,11 +130,16 @@ public class VirtualUser implements StringParseGenerable<VirtualUser, String>, S
 		this.id = args.get(0);
 		this.position = new CoordinatesDouble(
 				new double[] { Double.parseDouble(args.get(1)), Double.parseDouble(args.get(2)) });
-		int i = 3;
-		for (PlaceType type : TypeConfiguration.types) {
-			this.preferences.put(type, Double.parseDouble(args.get(i)));
-			i++;
+
+		ArrayList<String> lines = StringParser.sliceLine(args.get(3), '/');
+		for (int i = 0; i < TypeConfiguration.number; i++)
+			this.preferences.put(TypeConfiguration.get(i), Double.parseDouble(lines.get(i)));
+		if (args.size() < 4) {
+			lines = StringParser.sliceLine(args.get(4), '/');
+			for (String name : lines)
+				this.friendList.add(VirtualDataBase.getUser(name));
 		}
+
 		return this;
 	}
 

@@ -21,7 +21,7 @@ public class DataGenerator {
 		return preferences;
 	}
 	
-	protected static CoordinatesDouble generatePosition() {
+	public static CoordinatesDouble generatePosition() {
 		Random rand = new Random();
 		return  new CoordinatesDouble(new double[]{RandomDouble.generate(rand,MINX,MAXX),RandomDouble.generate(rand,MINY,MAXY)});
 	}

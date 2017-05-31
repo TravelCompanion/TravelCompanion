@@ -2,14 +2,14 @@ package tools.ia;
 
 import tools.math.Matrix;
 
-public class MLPLearning implements LearningUnit{
+public class MLPLearning implements LearningUnit<MultiLayerPerceptron>{
 	private Matrix[] memory;
 	private Matrix entry;
 	private Matrix desired;
 	
 	
 	
-	public void learn(NeuralNetwork network) {
+	public void learn(MultiLayerPerceptron network) {
 		/*MultiLayerPerceptron mlp = (MultiLayerPerceptron)network;
 		int memorySize = memory.length;
 		Matrix err = Matrix.mult(memory[memorySize-1], -1);
