@@ -32,6 +32,8 @@
     <string name="note">Noter</string>
     <string name="fermer">Fermer</string>
     <string name="donner_note">Voulez-vous une noter ce monument</string>
+    <string name="modifier">Modifier</string>
+    <string name="title_popup_edit">Vous pouvez modifier</string>
 
     <!-- Strings related to Settings -->
 
@@ -99,4 +101,5 @@
     <string name="title_activity_inscription">InscriptionActivity</string>
     <string name="title_inscription">Inscription</string>
     <string name="title_inscription_nom">entrer un pseudo</string>
+    <string name="title_compte">Compte d\'utilisateur</string>
 </resources>
