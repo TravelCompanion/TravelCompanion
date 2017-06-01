@@ -6,7 +6,7 @@
             android:id="@+id/nav_room"
             android:icon="@drawable/ic_account_balance_black_24dp"
             android:title="Monument" />
-        <item
+        <!--<item
             android:id="@+id/nav_fav"
             android:icon="@drawable/ic_star_black_24dp"
             android:title="Favoris" />
@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_pref"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Préférences" />
+            android:title="Préférences" />-->
 
 
 

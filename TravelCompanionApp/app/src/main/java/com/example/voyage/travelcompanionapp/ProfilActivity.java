@@ -31,6 +31,7 @@ public class ProfilActivity extends AppCompatActivity
     Session session;
     String emailname="";
     Button buttonCompte;
+    Button buttonPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class ProfilActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         buttonCompte= (Button) findViewById(R.id.compte);
+        buttonPreference= (Button) findViewById(R.id.preferences);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         session = Session.getSession(getApplicationContext());
@@ -52,7 +54,7 @@ public class ProfilActivity extends AppCompatActivity
         emailname = userSession.get(Session.KEY_EMAIL);
         textusername.setText(emailname);
         buttonCompte.setOnClickListener(ProfilActivity.this);
-
+        buttonPreference.setOnClickListener(ProfilActivity.this);
 
 
        /* TabHost host = (TabHost)findViewById(R.id.tabHost);
@@ -157,6 +159,10 @@ public class ProfilActivity extends AppCompatActivity
     public void onClick(View v) {
         if(v==buttonCompte){
             Intent intent = new Intent(ProfilActivity.this, ParametreActivity.class);
+            startActivity(intent);
+        }
+        if(v==buttonPreference ){
+            Intent intent = new Intent(ProfilActivity.this, PreferencesActivity.class);
             startActivity(intent);
         }
     }

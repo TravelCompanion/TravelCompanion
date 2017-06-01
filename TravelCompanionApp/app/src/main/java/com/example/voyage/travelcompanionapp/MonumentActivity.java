@@ -183,7 +183,8 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
         Note note_monu = new Note();
         String rate;
-        rate=String.valueOf(r.getRating());
+
+        rate=String.valueOf(Integer.valueOf((int) r.getRating()));
         Log.d("user_Note",String.valueOf(rate));
         note_monu.setNote(r.getRating());
         r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

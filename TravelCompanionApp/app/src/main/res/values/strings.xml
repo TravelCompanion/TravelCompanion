@@ -35,6 +35,27 @@
     <string name="modifier">Modifier</string>
     <string name="title_popup_edit">Vous pouvez modifier</string>
 
+
+    <!-- Type de Monument -->
+    <string name="type_musee">Musée</string>
+    <string name="type_eglise">Eglise</string>
+    <string name="type_parc_attraction">Parc D\'attraction</string>
+    <string name="type_jardin">Jardin</string>
+    <string name="type_chateau">Chateau</string>
+    <string name="type_parc">Parc</string>
+    <string name="type_immeuble">Immeuble</string>
+    <string name="type_hotel">Hotel</string>
+    <string name="type_auberge">Auberge</string>
+    <string name="type_socle">Socle</string>
+    <string name="type_maison">Maison</string>
+    <string name="type_caves">Caves</string>
+    <string name="type_pavillon">Pavillon</string>
+    <string name="type_villa">Villa</string>
+
+
+
+
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
