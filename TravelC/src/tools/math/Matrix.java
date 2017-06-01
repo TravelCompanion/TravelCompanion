@@ -176,5 +176,13 @@ public class Matrix {
 			super(new double[vector.length][1]);
 			}
 	}
+
+	public void setValue(int x, int y, double val) {
+		matrix[x][y] = val;
+	}
+
+	public double getValue(int x, int y) {
+		return matrix[x][y];
+	}
 	
 }

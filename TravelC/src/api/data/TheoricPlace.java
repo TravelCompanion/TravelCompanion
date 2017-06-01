@@ -1,87 +1,47 @@
 package api.data;
 
+
+import java.util.ArrayList;
+
 import common.convertion.PlaceConverter;
-import common.data.VirtualPlace;
 import common.type.TypeConfiguration;
-import common.type.TypeManager;
+import model.Monument;
 import tools.math.CoordinatesDouble;
 import tools.math.Matrix;
+import tools.parse.StringParser;
 
-public class TheoricPlace implements PlaceConverter<TheoricPlace> {
-	/** Represent places */
+public class TheoricPlace implements PlaceConverter<TheoricPlace>{
+	
 	private String name = "place";
 	private CoordinatesDouble coords = new CoordinatesDouble(2);
-	private Matrix types = new Matrix(TypeConfiguration.number, 1);
+	
+	private double note;
+	private Matrix types;
 	private int numberOfTypes;
-
-	private double note = 1;
-
-	public TheoricPlace() {
+	
+	public TheoricPlace(){}
+	
+	public TheoricPlace(CoordinatesDouble coordinates){
+		this.coords = coordinates;
+		}
+	public TheoricPlace(double[] coords){
+		this.coords = new CoordinatesDouble(coords);
+		}
+	
+	public TheoricPlace(String name, CoordinatesDouble coordinates){
+		this.coords = coordinates;
+		this.name = name;
+	}
+	public TheoricPlace(String name , double[] coords){
+		this.coords = new CoordinatesDouble(coords);
+		this.name = name;
 	}
 
-	public TheoricPlace(String name, CoordinatesDouble coords, Matrix types, double note) {
+	
+	
+	public TheoricPlace(String name, Matrix types) {
 		this.name = name;
-		this.coords = coords;
 		this.types = types;
-		this.note = note;
-	}
-
-	public TheoricPlace(String name, CoordinatesDouble coords, double note) {
-		this.name = name;
-		this.coords = coords;
-		this.note = note;
-	}
-
-	public TheoricPlace(CoordinatesDouble coordinates) {
-		this.coords = coordinates;
-	}
-
-	public TheoricPlace(double[] coords) {
-		this.coords = new CoordinatesDouble(coords);
-	}
-
-	public TheoricPlace(String name, CoordinatesDouble coordinates) {
-		this.coords = coordinates;
-		this.name = name;
-	}
-
-	public TheoricPlace(String name, double[] coords) {
-		this.coords = new CoordinatesDouble(coords);
-		this.name = name;
-	}
-
-	public TheoricPlace(String name, double[] coords, double note) {
-		this.coords = new CoordinatesDouble(coords);
-		this.name = name;
-		this.note = note;
-	}
-
-	public TheoricPlace fromVirtualPlace(VirtualPlace virtualPlace) {
-		/** convert a place in virtualPlace */
-		TheoricPlace place = new TheoricPlace(virtualPlace.getName(), virtualPlace.getPosition(),
-				virtualPlace.getNote());
-		place.types = TypeManager.typeListToMatrix(virtualPlace.getTypes());
-		place.getTypeNumber();
-		return place;
-	}
-
-	private void getTypeNumber() {
-		int k = 0;
-		for (int i = 0; i < this.types.sizeX; i++)
-			if (this.types.getMatrix()[i][0] == 1)
-				k += 1;
-		this.numberOfTypes = k;
-	}
-
-	@Override
-	public VirtualPlace toVirtualPlace() {
-		/** convert a virtualPlace in place */
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public double getNote() {
-		return note;
 	}
 
 	public String getName() {
@@ -92,16 +52,44 @@ public class TheoricPlace implements PlaceConverter<TheoricPlace> {
 		return coords;
 	}
 
+	
+	public String toString() {
+		return "Place [" + name + ", coords :" + coords + ", "
+				+ types + "]";
+	}
+
 	public Matrix getTypes() {
 		return types;
 	}
 
-	public String toString() {
-		return "[" + name + "," + coords + ", " + types + "]";
+	public TheoricPlace fromDatabasePlace(Monument monument) {
+		ArrayList<String> lines = StringParser.sliceLine(monument.getType(), ',');
+		Matrix typesMon = new Matrix(TypeConfiguration.number,1);
+		int k = 0;
+		for(String line : lines){
+			typesMon.setValue(TypeConfiguration.get(line).getId(), 0, 1);
+			k++;
+		}
+		TheoricPlace theoricPlace = new TheoricPlace(monument.getName_monument(),typesMon);
+		theoricPlace.numberOfTypes = k;
+		return theoricPlace;
+	}
+
+	@Override
+	public Monument toVirtualPlace() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double getNote() {
+		return note;
 	}
 
 	public int getNumberOfTypes() {
+		// TODO Auto-generated method stub
 		return numberOfTypes;
 	}
+	
+	
 
 }

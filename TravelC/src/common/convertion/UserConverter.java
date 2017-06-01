@@ -1,9 +1,9 @@
 package common.convertion;
 
-import common.data.VirtualUser;
+import model.Utilisateur;
 
 public interface UserConverter<T> {
 	/**classes witch define users data must implements this interface*/
-	public T fromVirtualUser(VirtualUser virtualUser);
-	public VirtualUser toVirtualUser();
+	public T fromDatabaselUser(Utilisateur virtualUser);
+	public Utilisateur toDatabaseUser();
 }
