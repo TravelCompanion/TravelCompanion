@@ -29,15 +29,14 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
     String elempref="";
     FloatingActionButton bfa;
      String[] choose_pref=new String[14];
-     Switch switch_all = (Switch) findViewById(R.id.switch_select_all_checkbox);
+     Switch switch_all;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
         bfa=(FloatingActionButton)findViewById(R.id.fab_action_pref);
-
-
+        switch_all = (Switch) findViewById(R.id.switch_select_all_checkbox);
 
 
         chkmusee=(CheckBox) findViewById(R.id.checkBox_musee);
@@ -55,8 +54,7 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
         chkimmeuble=(CheckBox) findViewById(R.id.checkBox_immeuble);
         chkchateau=(CheckBox) findViewById(R.id.checkBox_chateau);
 
-
-        switch_all.setOnClickListener(PreferencesActivity.this);
+        switch_all.setOnCheckedChangeListener(PreferencesActivity.this);
 
 
 
@@ -135,6 +133,10 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
                 if (j != 0 || j!=choose_pref.length-1) {
                         elempref += choose_pref[j] + ",";
                     }
+
+                    if (j==choose_pref.length-1) {
+                        elempref += choose_pref[j] + "";
+                    }
                 }
 
                 if(elempref!=""){
@@ -154,6 +156,38 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            chkmusee.setChecked(true);
+            chkmaison.setChecked(true);
+            chkparc.setChecked(true);
+            chkeglise.setChecked(true);
+            chkjardin.setChecked(true);
+            chkattraction.setChecked(true);
+            chkvilla.setChecked(true);
+            chkpavillon.setChecked(true);
+            chkcaves.setChecked(true);
+            chksocle.setChecked(true);
+            chkauberge.setChecked(true);
+            chkhotel.setChecked(true);
+            chkimmeuble.setChecked(true);
+            chkchateau.setChecked(true);
+
+
+        } if(isChecked==false) {
+            chkmusee.setChecked(false);
+            chkmaison.setChecked(false);
+            chkparc.setChecked(false);
+            chkeglise.setChecked(false);
+            chkjardin.setChecked(false);
+            chkattraction.setChecked(false);
+            chkvilla.setChecked(false);
+            chkpavillon.setChecked(false);
+            chkcaves.setChecked(false);
+            chksocle.setChecked(false);
+            chkauberge.setChecked(false);
+            chkhotel.setChecked(false);
+            chkimmeuble.setChecked(false);
+            chkchateau.setChecked(false);        }
 
     }
 }

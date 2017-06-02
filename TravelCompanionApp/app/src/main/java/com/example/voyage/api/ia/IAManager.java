@@ -16,7 +16,7 @@ import com.example.voyage.api.tools.math.random.RandomDouble;
 public class IAManager {
 	
 	public static CoordinatesDouble choosePlace(TheoricUser user){
-		double val = -ConstantIA.INFINITE; 
+		double val = -ConstantIA.INFINITE;
 		CoordinatesDouble c = user.getPosition();
 		for(Place place: GPSMap.getPlaces().values()){
 			if(CoordinatesDouble.eq(user.getPosition(), place.getCoords() )|| user.hasVisited(place.getCoords()))continue;
@@ -89,7 +89,8 @@ public class IAManager {
 		for(PlaceType type : place.getPlaceTypes())
 			{
 			pref = user.getPreferences().get(type);
-			user.getPreferences().replace(type,pref+(eps*errG));
+				//noinspection Since15
+				user.getPreferences().replace(type,pref+(eps*errG));
 			}
 	}
 
@@ -100,6 +101,7 @@ public class IAManager {
 	
 	public static void learn(TheoricUser user, Place place, double note,double step){
 		for(PlaceType type : place.getPlaceTypes())
+			//noinspection Since15
 			user.getPreferences().replace(type, simpleAdapt(user.getPreferences().get(type), note, step));
 	}
 	
