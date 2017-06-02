@@ -1,12 +1,15 @@
 package tools.math;
 
+import java.util.Random;
+
+import tools.math.random.RandomDouble;
+
 public class Matrix {
-	public int sizeX, sizeY;
-	private double matrix[][];
-
-	public Matrix() {
-	}
-
+	public final int sizeX, sizeY;
+	protected double matrix[][];
+	
+	
+	
 	public Matrix(int sizeX, int sizeY) {
 		this(sizeX, sizeY, 0);
 	}
@@ -23,9 +26,19 @@ public class Matrix {
 		this.matrix = new double[sizeX][sizeY];
 		for (int x = 0; x < sizeX; x++)
 			for (int y = 0; y < sizeY; y++)
-				matrix[x][y] = init;
+				this.matrix[x][y] = init;
 	}
 
+	public Matrix(int sizeX, int sizeY, Random rand,double max, double min) {
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
+		this.matrix = new double[sizeX][sizeY];
+		for (int x = 0; x < sizeX; x++)
+			for (int y = 0; y < sizeY; y++)
+				matrix[x][y] = RandomDouble.generate(max, min);
+	}
+
+	
 	public Matrix(int size) {
 		this(size, size, 0);
 	}
@@ -33,7 +46,7 @@ public class Matrix {
 	public Matrix(int size, double init) {
 		this(size, size, init);
 	}
-
+	
 	public static Matrix diagonal(int sizeX, int sizeY, double value) {
 		Matrix m = new Matrix(sizeX, sizeY, 0.0);
 		for (int x = 0; x < sizeX; x++)
@@ -69,7 +82,7 @@ public class Matrix {
 	}
 
 	public static boolean possibleMult(Matrix m1, Matrix m2) {
-		return m1.sizeX != m2.sizeY;
+		return m1.sizeX == m2.sizeY;
 	}
 
 	public static Matrix mult(Matrix m1, Matrix m2) {
@@ -85,6 +98,15 @@ public class Matrix {
 		return res;
 	}
 
+	public static Matrix mult(Matrix m,double k){
+		Matrix res = new Matrix(m.sizeX, m.sizeY);
+		for (int x = 0; x < m.sizeX; x++)
+			for (int y = 0; y < m.sizeY; y++) {  
+				res.matrix[x][y] = k*m.matrix[x][y];
+			}
+		return res;
+	}
+	
 	public static Matrix trans(Matrix m) {
 		Matrix res = new Matrix(m.sizeY, m.sizeX);
 		for (int x = 0; x < m.sizeX; x++)
@@ -94,6 +116,30 @@ public class Matrix {
 		return res;
 	}
 
+	public static Matrix ones(int sizeX,int sizeY){
+		Matrix m = new Matrix(sizeX,sizeY);
+		for(int x =0; x < sizeX; x ++)
+			for(int y =0; y < sizeY; y ++)
+				m.matrix[x][y] = 1;
+		return m;
+	}
+	
+	public static Matrix zeros(int sizeX,int sizeY){
+		Matrix m = new Matrix(sizeX,sizeY);
+		for(int x =0; x < sizeX; x ++)
+			for(int y =0; y < sizeY; y ++)
+				m.matrix[x][y] = 0;
+		return m;
+	}
+	
+	public static Matrix kmatrix(int sizeX,int sizeY,double k){
+		Matrix m = new Matrix(sizeX,sizeY);
+		for(int x =0; x < sizeX; x ++)
+			for(int y =0; y < sizeY; y ++)
+				m.matrix[x][y] = k;
+		return m;
+	}
+	
 	@Override
 	public String toString() {
 		String elt = "";
@@ -119,4 +165,24 @@ public class Matrix {
 		return matrix;
 	}
 
+	public class ColumnVector extends Matrix{
+		public ColumnVector(double[] vector){
+			super(new double[1][vector.length]);
+		}
+	}
+	
+	public class RowVector extends Matrix{
+		public RowVector(double[] vector){
+			super(new double[vector.length][1]);
+			}
+	}
+
+	public void setValue(int x, int y, double val) {
+		matrix[x][y] = val;
+	}
+
+	public double getValue(int x, int y) {
+		return matrix[x][y];
+	}
+	
 }
