@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
-public class PreferencesActivity extends AppCompatActivity implements View.OnClickListener{
+public class PreferencesActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
      CheckBox chkmusee;
      CheckBox chkmaison;
      CheckBox chkparc;
@@ -27,12 +29,15 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
     String elempref="";
     FloatingActionButton bfa;
      String[] choose_pref=new String[14];
+     Switch switch_all = (Switch) findViewById(R.id.switch_select_all_checkbox);
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
         bfa=(FloatingActionButton)findViewById(R.id.fab_action_pref);
+
+
 
 
         chkmusee=(CheckBox) findViewById(R.id.checkBox_musee);
@@ -49,6 +54,11 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
         chkhotel=(CheckBox) findViewById(R.id.checkBox_hotel);
         chkimmeuble=(CheckBox) findViewById(R.id.checkBox_immeuble);
         chkchateau=(CheckBox) findViewById(R.id.checkBox_chateau);
+
+
+        switch_all.setOnClickListener(PreferencesActivity.this);
+
+
 
 
 
@@ -122,7 +132,7 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
           elempref="";
 
                 for (int j = 0; j<= choose_pref.length-1; j++) {
-                if (j != 0) {
+                if (j != 0 || j!=choose_pref.length-1) {
                         elempref += choose_pref[j] + ",";
                     }
                 }
@@ -139,6 +149,11 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
 
         }
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
     }
 }

@@ -210,5 +210,18 @@
         android:layout_marginStart="55dp"
         app:backgroundTint="@color/wallet_hint_foreground_holo_dark"/>
 
+    <Switch
+        android:id="@+id/switch_select_all_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout6"
+        android:layout_alignEnd="@+id/fab_action_pref"
+        android:layout_alignRight="@+id/fab_action_pref"
+        android:layout_marginBottom="90dp"
+        android:checked="false"
+        android:showText="true"
+        android:text="Tout Selectionné"
+        tools:checked="false" />
+
 </RelativeLayout>
    <!-- </ScrollView>-->
