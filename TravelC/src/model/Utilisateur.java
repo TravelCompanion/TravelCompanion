@@ -1,7 +1,5 @@
 package model;
 
-import tools.math.Matrix;
-
 public class Utilisateur {
 
 	private String email;

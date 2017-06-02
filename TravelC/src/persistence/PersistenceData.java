@@ -17,8 +17,12 @@ import tools.parse.StringParser;
 public class PersistenceData {
 
 	private Parametre a;
-
 	public DataBase db;
+	private List<Musee> musees = new ArrayList<Musee>();
+	private List<Utilisateur> users = new ArrayList<Utilisateur>();
+	private List<Message> messages = new ArrayList<Message>();
+	private List<Monument> monuments = new ArrayList<Monument>();
+
 
 	public PersistenceData() {
 		ArrayList<String> lines= StringParser.readData("./data/databaseconfig.txt");
@@ -31,12 +35,7 @@ public class PersistenceData {
 		this.setA(new Parametre(userName, password, database));
 		db = new DataBase(Parametre.Host, Parametre.username, Parametre.password, Parametre.IPHOST, Parametre.Port);
 	}
-
-	private List<Musee> musees = new ArrayList<Musee>();
-	private List<Utilisateur> users = new ArrayList<Utilisateur>();
-	private List<Message> messages = new ArrayList<Message>();
-	private List<Monument> monuments = new ArrayList<Monument>();
-
+	
 	public boolean VerifierUtilisateur(String userName, String email, String password)
 			throws IOException, SQLException {
 
@@ -133,7 +132,7 @@ public class PersistenceData {
 
 	}
 
-	public Utilisateur persisteUser(int id) throws SQLException, NoUserFoundException {
+	public Utilisateur loadUser(int id) throws SQLException, NoUserFoundException {
 
 		ResultSet Res;
 		Res = db.executionQuery("select * from utilisateur where id_user=" + id);
@@ -173,55 +172,35 @@ public class PersistenceData {
 
 	}
 
-	public List<Monument> persisteMonument(Double lat, Double lng, Double range)
+	public List<Monument> loadMonument(Double latitude, Double longitude, Double range)
 			throws SQLException, NoPlaceFoundException {
 
-		ResultSet Res;
+		ResultSet res;
 		monuments.clear();
-		Res = db.executionQuery("SELECT *,haversine_distance(latitude, longitude," + lat + "," + lng
-				+ ")FROM monument WHERE haversine_distance(latitude, longitude," + lat + "," + lng + ") < " + range
-				+ " ORDER BY haversine_distance(latitude, longitude," + lat + "," + lng + ") asc");
-		if (Res == null)
+		res = db.executionQuery("SELECT *,haversine_distance(latitude, longitude," + latitude + "," + longitude
+				+ ")FROM monument WHERE haversine_distance(latitude, longitude," + latitude + "," + longitude + ") < " + range
+				+ " ORDER BY haversine_distance(latitude, longitude," + latitude + "," + longitude + ") asc");
+		if (res == null)
 			throw new NoPlaceFoundException();
 		else {
-			while (Res.next()) {
-				Monument m = new Monument(Res.getInt(1), Res.getString(2), Res.getString(3), Res.getString(4),
-						Res.getInt(5), Res.getDouble(6), Res.getDouble(7), Res.getString(8), Res.getString(9),
-						Res.getDouble(10));
+			while (res.next()) {
+				Monument m = new Monument(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
+						res.getInt(5), res.getDouble(6), res.getDouble(7), res.getString(8), res.getString(9),
+						res.getDouble(10));
 
 				monuments.add(m);
 			}
 		}
 		return monuments;
-
 	}
 
-	public List<Monument> persisteMonument(Double lat, Double lng) throws SQLException {
+	public List<Monument> loadMonumentSite(Double latitude, Double longitude) throws SQLException {
 
 		ResultSet Res;
 		monuments.clear();
-		Res = db.executionQuery("SELECT *,haversine_distance(latitude, longitude," + lat + "," + lng
-				+ ")FROM monument WHERE haversine_distance(latitude, longitude," + lat + "," + lng
-				+ ") < 20 ORDER BY haversine_distance(latitude, longitude," + lat + "," + lng + ") asc");
-		while (Res.next()) {
-			Monument m = new Monument(Res.getInt(1), Res.getString(2), Res.getString(3), Res.getString(4),
-					Res.getInt(5), Res.getDouble(6), Res.getDouble(7), Res.getString(8), Res.getString(9),
-					Res.getDouble(10));
-
-			monuments.add(m);
-
-		}
-		return monuments;
-
-	}
-
-	public List<Monument> persisteMonumentSite(Double lat, Double lng) throws SQLException {
-
-		ResultSet Res;
-		monuments.clear();
-		Res = db.executionQuery("SELECT *,haversine_distance(latitude, longitude," + lat + "," + lng
-				+ ")FROM monument WHERE haversine_distance(latitude, longitude," + lat + "," + lng
-				+ ") < 20 ORDER BY haversine_distance(latitude, longitude," + lat + "," + lng + ") asc limit 3");
+		Res = db.executionQuery("SELECT *,haversine_distance(latitude, longitude," + latitude + "," + longitude
+				+ ")FROM monument WHERE haversine_distance(latitude, longitude," + latitude + "," + longitude
+				+ ") < 20 ORDER BY haversine_distance(latitude, longitude," + latitude + "," + longitude + ") asc limit 3");
 
 		while (Res.next()) {
 			Monument m = new Monument(Res.getInt(1), Res.getString(2), Res.getString(3), Res.getString(4),

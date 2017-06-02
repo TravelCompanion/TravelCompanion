@@ -9,11 +9,12 @@ public abstract class NeuralNetwork<T> {
 	protected LearningUnit<T> learningUnit;
 	
 	protected double step;
+	@SuppressWarnings("unchecked")
 	public NeuralNetwork(){
 		this.decide = new DefaultDecition();
-		this.learningUnit = (LearningUnit) new DefaultLearning();
+		this.learningUnit = (LearningUnit<T>) new DefaultLearning();
 	}
-	public NeuralNetwork(AbstractDecition decide, LearningUnit learningUnit){
+	public NeuralNetwork(AbstractDecition decide, LearningUnit<T> learningUnit){
 		this.decide = decide;
 		this.learningUnit = learningUnit;
 	}

@@ -15,6 +15,7 @@ public class IAManager {
 
 	public static final double PERCEPTRON_STEP = 0.2;
 
+	//public static Perceptron ia = new Perceptron(new SigmoidDecition(), new PerceptronLearning());
 	public static Perceptron ia = new Perceptron(new SigmoidDecition(), new PerceptronLearning());
 	private static double lastResult;
 
@@ -27,7 +28,9 @@ public class IAManager {
 		{	
 		Matrix m =Matrix.mult(place.getTypes(), place.getNote());
 		
-		tmpList.add(new CompareUnitDouble<TheoricPlace>(ia.propagate(m).getMatrix()[0][0]/place.getNumberOfTypes(), place));
+		//tmpList.add(new CompareUnitDouble<TheoricPlace>(ia.propagate(m).getMatrix()[0][0]/place.getNumberOfTypes(), place));
+		tmpList.add(new CompareUnitDouble<TheoricPlace>(ia.propagate(m).getMatrix()[0][0], place));
+		
 		}
 		tmpList.sort(MathUnitComparator.getByNameDouble("<"));
 		return tmpList;

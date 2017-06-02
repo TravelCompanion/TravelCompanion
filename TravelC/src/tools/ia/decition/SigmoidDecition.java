@@ -4,11 +4,11 @@ import tools.math.Matrix;
 
 public class SigmoidDecition extends AbstractDecition{
 	public Matrix result(Matrix result){
-		Matrix tmp = result;
+		/*Matrix tmp = result;
 		for(int x = 0; x < result.sizeX;x++)
 			for(int y = 0; y < result.sizeY;y++)
-		tmp.getMatrix()[x][y] = 1/(1+Math.exp(-result.getMatrix()[x][y]));
-		return tmp;
+		tmp.getMatrix()[x][y] = 1/(1+Math.exp(-result.getMatrix()[x][y]));*/
+		return result;
 	}
 
 	public Matrix derived(Matrix result) {
