@@ -11,6 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=TravelC/src&lt;tools"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.list"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.polls"/>
         <javaElement handleIdentifier="=TravelC/src&lt;tools.math.compare"/>
