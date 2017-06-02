@@ -3,7 +3,9 @@ package com.example.voyage.travelcompanionapp;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -30,13 +32,17 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
     FloatingActionButton bfa;
      String[] choose_pref=new String[14];
      Switch switch_all;
-
+    Toolbar toolbar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
         bfa=(FloatingActionButton)findViewById(R.id.fab_action_pref);
         switch_all = (Switch) findViewById(R.id.switch_select_all_checkbox);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_preferences);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         chkmusee=(CheckBox) findViewById(R.id.checkBox_musee);
@@ -68,10 +74,7 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public void findidCheckbox(){
 
-
-    }
 
     @Override
     public void onClick(View v) {
