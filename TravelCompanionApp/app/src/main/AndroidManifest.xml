@@ -77,7 +77,7 @@
     </activity>
         <activity
             android:name=".PreferencesActivity"
-            android:label="@string/title_activity_desc_Monument"
+            android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="com.example.voyage.travelcompanionapp.ProfilActivity" >
 

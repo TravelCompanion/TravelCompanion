@@ -8,11 +8,16 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class Session {
+    //cette classe est un singleton afin quel soit unique
         // Shared Preferences
-        SharedPreferences preferences;
+        SharedPreferences sharedpreferences;
         private static Session session;
-        // Editor for Shared preferences
+        // Editor pour le Shared preferences
         Editor editor;
+
+
+
+    public  HashMap<String, String> userHashMap = new HashMap<String, String>();
 
         // Context
         Context _context;
@@ -34,10 +39,12 @@ public class Session {
 
         public static final String KEY_NAME = "name";
 
-        // Email address (make variable public to access from outside)
+        //je rends ces variables public afin qu'on puisse y acceder a l'exterieur
         public static final String KEY_EMAIL = "email";
+        public static final String KEY_PREFUSER = "types_preferences";
 
-        // Constructor
+
+    // Constructor
         /*public Session(Context context){
             this._context = context;
             preferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -46,12 +53,12 @@ public class Session {
 
         private Session(Context context) {
             this._context = context;
-            preferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-            editor = preferences.edit();
+            sharedpreferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            editor = sharedpreferences.edit();
         }
 
         /**
-         * Create login session
+         * Creation de la session
          * */
         public void createLoginSession( String email){
             // Storing login value as TRUE
@@ -63,23 +70,24 @@ public class Session {
             editor.commit();
         }
 
+
         /**
-         * Check login method wil check user login status
-         * If false it will redirect user to login page
+         * Verifie si utilisateur est connecté
+         * si c'est le cas on retourne sur la page de connexion
          * Else won't do anything
          * */
         public void checkLogin(){
-            // Check login status
+            // verifie le status de l'utilisateur
             if(!this.isLoggedIn()){
-                // user is not logged in redirect him to Login Activity
+                // l'utilisateur n'est pas connecté redirection sur Login Activity
                 Intent i = new Intent(_context, LoginActivity.class);
-                // Closing all the Activities
+                // fermeture de toute les page
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                // Add new Flag to start new Activity
+                // ajout d'un nouveau drapeau pour une nouvelle activity
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                // Staring Login Activity
+                // lancement de la page login activity
                 _context.startActivity(i);
             }
 
@@ -88,20 +96,27 @@ public class Session {
 
 
         /**
-         * Get stored session data
+         * cette methode enregistre les element de l'utilisateur dans un hashMap
          * */
         public HashMap<String, String> getUserDetails(){
-            HashMap<String, String> user = new HashMap<String, String>();
 
-            // user email id
-            user.put(KEY_EMAIL, preferences.getString(KEY_EMAIL, null));
+            userHashMap.put(KEY_EMAIL, sharedpreferences.getString(KEY_EMAIL, null));
 
-            // return user
-            return user;
+            return userHashMap;
         }
 
+    public void updateHashMapUserDetails(String KEY,String val){
+        if(isLoggedIn()) {
+            //always commmit before put value in hashMap
+            editor.putString(KEY, val);
+            editor.commit();
+            userHashMap.put(KEY, sharedpreferences.getString(KEY, null));
+        }
+
+    }
+
         /**
-         * Clear session details
+         * purge la session
          * */
         public void logoutUser(){
             // Clearing all data from Shared Preferences
@@ -121,11 +136,17 @@ public class Session {
         }
 
         /**
-         * Quick check for login
+         * methode l'etat de l'utilsateur
          * **/
         // Get Login State
         public boolean isLoggedIn(){
-            return preferences.getBoolean(IS_LOGIN, false);
+            return sharedpreferences.getBoolean(IS_LOGIN, false);
         }
+
+    public HashMap<String, String> getUserHashMap() {
+        return userHashMap;
     }
+    }
+
+
 

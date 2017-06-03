@@ -13,6 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class PreferencesActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
      CheckBox chkmusee;
      CheckBox chkmaison;
@@ -33,18 +35,18 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
      String[] choose_pref=new String[14];
      Switch switch_all;
     Toolbar toolbar;
+    Session session;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //liaison avec le XML
         setContentView(R.layout.activity_preferences);
+        session = Session.getSession(getApplicationContext());
+
+        //affectation des elements du fichier xml à des variable définis
         bfa=(FloatingActionButton)findViewById(R.id.fab_action_pref);
         switch_all = (Switch) findViewById(R.id.switch_select_all_checkbox);
         toolbar = (Toolbar) findViewById(R.id.toolbar_preferences);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-
         chkmusee=(CheckBox) findViewById(R.id.checkBox_musee);
         chkmaison=(CheckBox) findViewById(R.id.checkBox_maison);
         chkparc=(CheckBox) findViewById(R.id.checkBox_parc);
@@ -60,22 +62,21 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
         chkimmeuble=(CheckBox) findViewById(R.id.checkBox_immeuble);
         chkchateau=(CheckBox) findViewById(R.id.checkBox_chateau);
 
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //action quand le bouton(switch) change.Appel de la méthode onCheckedChanged
         switch_all.setOnCheckedChangeListener(PreferencesActivity.this);
-
-
-
-
-
+        //action quand on click sur  bouton.Appel de la méthode onClick
         bfa.setOnClickListener(PreferencesActivity.this);
-
-
 
 
 
     }
 
 
-
+    //quand on click sur le floating bouton il prend en compte les checkbox selectionnées(avec des 1) et les affecte à un tableau
     @Override
     public void onClick(View v) {
         for (int i = 0; i <= 13; i++){
@@ -144,8 +145,8 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
                 if(elempref!=""){
                     Log.d("listpref",elempref);
-                    Toast.makeText(PreferencesActivity.this, elempref, Toast.LENGTH_SHORT).show();
-                    //Utiliser une methode pour envoyer les elements
+                    session.updateHashMapUserDetails("types_preferences",elempref);
+                    Toast.makeText(PreferencesActivity.this,"preferences sauvegardés "+session.getUserHashMap().get(Session.KEY_PREFUSER), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Log.d("listpref","pas d'element dans la liste");

@@ -56,7 +56,6 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         setActionbarBackable();
         visite = (Button) findViewById(R.id.button_visite);
 
-
         setActionbarBackable();
 
 
