@@ -45,22 +45,19 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
         if (config.smallestScreenWidthDp >= 600)
         {
-            activity_select= R.layout.tablet_activity_content_monument;
+            activity_select= R.layout.tablet_content_monument;
         }
         else{
-            activity_select= R.layout.activity_content_monument;
+            activity_select= R.layout.content_monument;
         }
         setContentView(activity_select);
         Toolbar bar_monument_info=(Toolbar)findViewById(R.id.toolbar_monumentActivity);
-        visite = (Button) findViewById(R.id.button_visite);
-
         setSupportActionBar(bar_monument_info);
         setActionbarBackable();
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout_content_monument);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, bar_monument_info, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        visite = (Button) findViewById(R.id.button_visite);
+
+        setActionbarBackable();
+
 
 
 
@@ -123,9 +120,6 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayUseLogoEnabled(false);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(false);
         }
     }
 
@@ -183,7 +177,8 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
         Note note_monu = new Note();
         String rate;
-        rate=String.valueOf(r.getRating());
+
+        rate=String.valueOf(Integer.valueOf((int) r.getRating()));
         Log.d("user_Note",String.valueOf(rate));
         note_monu.setNote(r.getRating());
         r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

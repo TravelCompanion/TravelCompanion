@@ -13,17 +13,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.voyage.travelcompanionapp.MonumentActivity">
-
 
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_monumentActivity"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#2196F3"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.Toolbar>
 
 
     <ImageView

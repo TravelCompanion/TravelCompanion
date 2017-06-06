@@ -17,6 +17,8 @@ public class ParametreActivity extends AppCompatActivity implements View.OnClick
     TextView text_nom;
     TextView text_mdp;
 
+
+
     EditText edm;
 
     @Override

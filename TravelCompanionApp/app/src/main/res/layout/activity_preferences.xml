@@ -1,88 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.voyage.travelcompanionapp.PreferencesActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.voyage.travelcompanionapp.PreferencesActivity"
+    android:fitsSystemWindows="true">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_preferences"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#2196F3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.Toolbar>
 
-    <CheckBox
-        android:id="@+id/checkBox"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="173dp" />
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="56dp"
+        android:orientation="vertical"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="87dp">
 
-    <CheckBox
-        android:id="@+id/checkBox2"
+        <CheckBox
+            android:id="@+id/checkBox_eglise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/type_eglise"
+
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox_musee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="15dp"
+            android:text="@string/type_musee" />
+
+    </LinearLayout>
+
+     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteY="174dp"
-        tools:layout_editor_absoluteX="107dp" />
+         android:orientation="vertical"
+         android:layout_centerVertical="true"
+         android:layout_alignLeft="@+id/linearLayout"
+         android:layout_alignStart="@+id/linearLayout">
 
-    <CheckBox
-        android:id="@+id/checkBox3"
+        <CheckBox
+            android:id="@+id/checkBox_attraction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_parc_attraction"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="152dp" />
+
+
+         <CheckBox
+             android:id="@+id/checkBox_caves"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/type_caves" />
+
+        </LinearLayout>
+
+
+          <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="268dp" />
+              android:orientation="vertical"
+              android:layout_alignParentBottom="true"
+              android:layout_alignLeft="@+id/linearLayout2"
+              android:layout_alignStart="@+id/linearLayout2"
+              android:layout_marginBottom="250dp">
 
-    <CheckBox
-        android:id="@+id/checkBox4"
+
+
+              <CheckBox
+                  android:id="@+id/checkBox_maison"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/type_maison"
+                  />
+              <CheckBox
+                  android:id="@+id/checkBox_villa"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/type_villa"
+                  />
+
+              <CheckBox
+                  android:id="@+id/checkBox_immeuble"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/type_immeuble" />
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="267dp" />
+        android:orientation="vertical"
+        android:layout_alignTop="@+id/linearLayout3"
+        android:layout_below="@+id/linearLayout7"
+        android:layout_alignLeft="@+id/linearLayout7"
+        android:layout_alignStart="@+id/linearLayout7">
 
-    <CheckBox
-        android:id="@+id/checkBox5"
+        <CheckBox
+            android:id="@+id/checkBox_chateau"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_chateau" />
+
+       <CheckBox
+            android:id="@+id/checkBox_auberge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_auberge"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <CheckBox
+            android:id="@+id/checkBox_hotel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_hotel" />
+
+
+    </LinearLayout>
+
+
+
+       <LinearLayout
+           android:id="@+id/linearLayout6"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_above="@+id/linearLayout2"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentEnd="true"
+           android:layout_alignTop="@+id/linearLayout"
+           android:layout_marginRight="137dp"
+           android:layout_marginEnd="137dp">
+
+
+           <CheckBox
+               android:id="@+id/checkBox_jardin"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/type_jardin"
+               />
+
+           <CheckBox
+               android:id="@+id/checkBox_parc"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/type_parc"
+               android:layout_marginTop="15dp"/>
+
+       </LinearLayout>
+
+
+       <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="374dp" />
+           android:orientation="vertical"
+           android:layout_alignTop="@+id/linearLayout2"
+           android:layout_alignRight="@+id/linearLayout6"
+           android:layout_alignEnd="@+id/linearLayout6">
 
-    <CheckBox
-        android:id="@+id/checkBox6"
+       <CheckBox
+            android:id="@+id/checkBox_pavillon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_pavillon"
+ />
+           <CheckBox
+               android:id="@+id/checkBox_socle"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/type_socle" />
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_action_pref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="373dp" />
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_done_black_24dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginBottom="51dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/linearLayout6"
+        android:layout_alignStart="@+id/linearLayout6"
+        android:layout_marginStart="55dp"
+        app:backgroundTint="@color/wallet_hint_foreground_holo_dark"/>
 
-    <CheckBox
-        android:id="@+id/checkBox7"
+    <Switch
+        android:id="@+id/switch_select_all_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="478dp" />
+        android:layout_above="@+id/linearLayout6"
+        android:layout_alignEnd="@+id/linearLayout6"
+        android:layout_alignRight="@+id/linearLayout6"
+        android:layout_marginBottom="90dp"
+        android:checked="false"
+        android:text="Tout Selectionner"
+        tools:checked="false" />
 
-    <CheckBox
-        android:id="@+id/checkBox8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="477dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="579dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CheckBox"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="578dp" />
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
+   <!-- </ScrollView>-->
