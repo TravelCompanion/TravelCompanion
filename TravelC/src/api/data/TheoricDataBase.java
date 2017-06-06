@@ -15,19 +15,24 @@ import persistence.PersistenceData;
 import tools.math.CoordinatesDouble;
 
 public class TheoricDataBase {
-
+	/**
+	 * The class manage the data used by the AI and manage the different /
+	 * request to the others part
+	 */
 	private static TheoricDataBase dataBase;
 	private static double searchRange = 20;
 	public static TheoricMainUser mainUser;
-
+	/**this attribute represent the user currently logged*/
 	public static ArrayList<TheoricUser> friends = new ArrayList<TheoricUser>();
+	/**contains the list of the main users friends*/
 	private static HashMap<String, TheoricUser> hashFriends = new HashMap<String, TheoricUser>();
 
 	public static ArrayList<TheoricPlace> places = new ArrayList<TheoricPlace>();
+	/**contains the list of the places nearby the main user*/
 	private static HashMap<CoordinatesDouble, TheoricPlace> hashPlaces = new HashMap<CoordinatesDouble, TheoricPlace>();
 	private static final TheoricUserConverter USER_CONVERTER = new TheoricUserConverter();
 	private static final TheoricMonumentConverter MONUMENT_CONVERTER = new TheoricMonumentConverter();
-	
+
 	private TheoricDataBase() {
 		TypeConfiguration.getConfig();
 	}
@@ -40,16 +45,19 @@ public class TheoricDataBase {
 	}
 
 	public static void restartDataBase() {
+		/**this method is for reinitialize the database*/
 		dataBase = new TheoricDataBase();
 	}
 
 	public static void requestMainUser(PersistenceData persistenceData, int id)
 			throws SQLException, NoUserFoundException {
+		/**request to load the data of user with the corresponding id to the database and set it as main user*/
 		TheoricDataBase.getDataBase();
-		mainUser =USER_CONVERTER.fromDatabaseToMainUser(persistenceData.loadUser(id));
+		mainUser = USER_CONVERTER.fromDatabaseToMainUser(persistenceData.loadUser(id));
 	}
 
 	public static void requestUpateMainUser(PersistenceData persistenceData) {
+		/**request for update the data of the main user in the database*/
 		Utilisateur utilisateur = USER_CONVERTER.toDataBase(TheoricDataBase.mainUser);
 		persistenceData.updateUserPref(utilisateur);
 	}
@@ -66,9 +74,10 @@ public class TheoricDataBase {
 	}
 
 	public static void requestNearPlace(PersistenceData persistenceData) throws NoPlaceFoundException, SQLException {
+		/**request to get the places nearby the user*/
 		TheoricDataBase.getDataBase();
-		ArrayList<Monument> monuments = (ArrayList<Monument>) persistenceData.loadMonument(mainUser.getPosition().getX(),
-				mainUser.getPosition().getY(), searchRange);
+		ArrayList<Monument> monuments = (ArrayList<Monument>) persistenceData
+				.loadMonument(mainUser.getPosition().getX(), mainUser.getPosition().getY(), searchRange);
 		TheoricPlace thplace;
 		for (Monument place : monuments) {
 			thplace = MONUMENT_CONVERTER.fromDatabase(place);

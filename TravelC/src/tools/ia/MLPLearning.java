@@ -2,14 +2,14 @@ package tools.ia;
 
 import tools.math.Matrix;
 
-public class MLPLearning implements LearningUnit<MultiLayerPerceptron>{
+public class MLPLearning implements LearningUnit{
 	private Matrix[] memory;
 	private Matrix entry;
 	private Matrix desired;
 	
 	
 	
-	public void learn(MultiLayerPerceptron network) {
+	public void learn(NeuralNetwork network) {
 		/*MultiLayerPerceptron mlp = (MultiLayerPerceptron)network;
 		int memorySize = memory.length;
 		Matrix err = Matrix.mult(memory[memorySize-1], -1);
@@ -21,8 +21,8 @@ public class MLPLearning implements LearningUnit<MultiLayerPerceptron>{
 		}*/
 	}
 	
-	public Matrix multByDeriv(MultiLayerPerceptron mlp,Matrix err,int memorySize,int k){
-		Matrix deriv = mlp.decide.derived(memory[memorySize-1-k]);
+	public Matrix multByDeriv(NeuralNetwork mlp,Matrix err,int memorySize,int k){
+		Matrix deriv = ((MultiLayerPerceptron)mlp).decide.derived(memory[memorySize-1-k]);
 		for(int x = 0; x < err.sizeX;x++)
 			deriv.getMatrix()[x][0] = err.getMatrix()[x][0]*deriv.getMatrix()[x][0];
 		return deriv;

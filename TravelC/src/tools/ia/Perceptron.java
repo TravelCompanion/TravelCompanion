@@ -3,7 +3,7 @@ package tools.ia;
 import tools.ia.decition.AbstractDecition;
 import tools.math.Matrix;
 
-public class Perceptron extends NeuralNetwork<Perceptron>{
+public class Perceptron extends NeuralNetwork{
 	@Override
 	public String toString() {
 		return "Perceptron [weights=" + weights + ", numberWeights=" + numberWeights + ", step=" + step + "]";
@@ -13,7 +13,7 @@ public class Perceptron extends NeuralNetwork<Perceptron>{
 	public int numberWeights;
 	private double step;
 	
-	public Perceptron(AbstractDecition decide,LearningUnit<Perceptron> learningUnit){
+	public Perceptron(AbstractDecition decide,LearningUnit learningUnit){
 		super(decide,learningUnit);
 	}
 		

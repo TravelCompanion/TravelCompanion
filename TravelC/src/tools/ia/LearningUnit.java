@@ -1,6 +1,6 @@
 package tools.ia;
 
-public interface LearningUnit<T> {
-	public void learn(T network);
+public interface LearningUnit {
+	public void learn(NeuralNetwork network);
 	
 }

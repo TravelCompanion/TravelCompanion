@@ -20,7 +20,7 @@ public class TheoricMonumentConverter implements MonumentConverter<TheoricPlace>
 			typesMon.setValue(TypeConfiguration.get(line).getId(), 0, 1);
 			k++;
 		}
-		TheoricPlace theoricPlace = new TheoricPlace(monument.getName_monument(),typesMon,k);
+		TheoricPlace theoricPlace = new TheoricPlace(monument.getName_monument(),typesMon,monument.getNote(),k);
 		return theoricPlace;
 	}
 

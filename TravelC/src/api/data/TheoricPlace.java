@@ -38,10 +38,11 @@ public class TheoricPlace{
 		this.types = types;
 	}
 	
-	public TheoricPlace(String name, Matrix types,int typeNum) {
+	public TheoricPlace(String name, Matrix types,double note,int typeNum) {
 		this.name = name;
 		this.types = types;
 		this.numberOfTypes = typeNum;
+		this.note = note;
 	}
 
 	public String getName() {

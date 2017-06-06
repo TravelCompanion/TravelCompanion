@@ -4,17 +4,17 @@ import tools.ia.decition.AbstractDecition;
 import tools.ia.decition.DefaultDecition;
 import tools.math.Matrix;
 
-public abstract class NeuralNetwork<T> {
+public abstract class NeuralNetwork {
 	public final AbstractDecition decide;
-	protected LearningUnit<T> learningUnit;
+	protected LearningUnit learningUnit;
 	
 	protected double step;
 	@SuppressWarnings("unchecked")
 	public NeuralNetwork(){
 		this.decide = new DefaultDecition();
-		this.learningUnit = (LearningUnit<T>) new DefaultLearning();
+		this.learningUnit = (LearningUnit) new DefaultLearning();
 	}
-	public NeuralNetwork(AbstractDecition decide, LearningUnit<T> learningUnit){
+	public NeuralNetwork(AbstractDecition decide, LearningUnit learningUnit){
 		this.decide = decide;
 		this.learningUnit = learningUnit;
 	}

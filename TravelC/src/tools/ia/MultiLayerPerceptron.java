@@ -5,7 +5,7 @@ import java.util.Random;
 import tools.ia.decition.AbstractDecition;
 import tools.math.Matrix;
 
-public class MultiLayerPerceptron extends NeuralNetwork<MultiLayerPerceptron>{
+public class MultiLayerPerceptron extends NeuralNetwork{
 
 	public final int entrySize;
 	public final int numberLayer;
