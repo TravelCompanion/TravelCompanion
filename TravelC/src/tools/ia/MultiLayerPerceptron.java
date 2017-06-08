@@ -2,7 +2,8 @@ package tools.ia;
 
 import java.util.Random;
 
-import tools.ia.decition.AbstractDecition;
+import tools.ia.decition.AbstractDecision;
+import tools.ia.learning.MultiLayerPerceptronLearning;
 import tools.math.Matrix;
 
 public class MultiLayerPerceptron extends NeuralNetwork{
@@ -13,16 +14,16 @@ public class MultiLayerPerceptron extends NeuralNetwork{
 	
 	
 	
-	public MultiLayerPerceptron(int entrySize, int numberLayer, Matrix[] weights,AbstractDecition decition,double step) {
-		super(decition,new MLPLearning());
+	public MultiLayerPerceptron(int entrySize, int numberLayer, Matrix[] weights,AbstractDecision decition,double step) {
+		super(decition,new MultiLayerPerceptronLearning());
 		this.entrySize = entrySize;
 		this.numberLayer = numberLayer;
 		this.weights = weights;
 		this.step = step;
 	}
 
-	public MultiLayerPerceptron(int[] layersSize,AbstractDecition decition,double step){
-		super(decition,new MLPLearning());
+	public MultiLayerPerceptron(int[] layersSize,AbstractDecision decition,double step){
+		super(decition,new MultiLayerPerceptronLearning());
 		this.entrySize = layersSize[0];
 		this.numberLayer = layersSize.length;
 		this.weights = new Matrix[layersSize.length-1];
@@ -47,7 +48,7 @@ public class MultiLayerPerceptron extends NeuralNetwork{
 		Matrix tmp = entry;
 		for(int i = 0; i < weights.length;i++){
 			tmp = Matrix.mult(tmp, weights[i]);
-			tmp = decide.result(tmp);
+			tmp = decide.decide(tmp);
 		}
 		return tmp;
 	}
@@ -56,7 +57,7 @@ public class MultiLayerPerceptron extends NeuralNetwork{
 		Matrix[] memory = new Matrix[numberLayer];
 		memory[0] = entry;
 			for(int i = 1; i < weights.length;i++)
-				memory[i] = decide.result(Matrix.mult(memory[i-1], weights[i]));
+				memory[i] = decide.decide(Matrix.mult(memory[i-1], weights[i]));
 			return memory;
 	}
 

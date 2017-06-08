@@ -1,25 +1,26 @@
 package tools.ia;
 
-import tools.ia.decition.AbstractDecition;
-import tools.ia.decition.DefaultDecition;
+import tools.ia.decition.AbstractDecision;
+import tools.ia.decition.DefaultDecision;
+import tools.ia.learning.DefaultLearning;
+import tools.ia.learning.LearningUnit;
 import tools.math.Matrix;
 
 public abstract class NeuralNetwork {
-	public final AbstractDecition decide;
+	public final AbstractDecision decide;
 	protected LearningUnit learningUnit;
-	
 	protected double step;
-	@SuppressWarnings("unchecked")
+
 	public NeuralNetwork(){
-		this.decide = new DefaultDecition();
+		this.decide = new DefaultDecision();
 		this.learningUnit = (LearningUnit) new DefaultLearning();
 	}
-	public NeuralNetwork(AbstractDecition decide, LearningUnit learningUnit){
+	public NeuralNetwork(AbstractDecision decide, LearningUnit learningUnit){
 		this.decide = decide;
 		this.learningUnit = learningUnit;
 	}
 	
-	public abstract Matrix propagate(Matrix m);
+	public abstract Matrix propagate(Matrix matrix);
 	public abstract void learn();
 
 	

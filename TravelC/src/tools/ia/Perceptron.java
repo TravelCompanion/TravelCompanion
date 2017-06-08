@@ -1,23 +1,20 @@
 package tools.ia;
 
-import tools.ia.decition.AbstractDecition;
+import tools.ia.decition.AbstractDecision;
+import tools.ia.learning.LearningUnit;
+import tools.ia.learning.PerceptronLearning;
 import tools.math.Matrix;
 
 public class Perceptron extends NeuralNetwork{
-	@Override
-	public String toString() {
-		return "Perceptron [weights=" + weights + ", numberWeights=" + numberWeights + ", step=" + step + "]";
-	}
 
 	private Matrix weights;
 	public int numberWeights;
-	private double step;
 	
-	public Perceptron(AbstractDecition decide,LearningUnit learningUnit){
+	public Perceptron(AbstractDecision decide,LearningUnit learningUnit){
 		super(decide,learningUnit);
 	}
 		
-	public Perceptron(Matrix weigths,double step,AbstractDecition decide){
+	public Perceptron(Matrix weigths,double step,AbstractDecision decide){
 		super(decide,new PerceptronLearning());
 		this.numberWeights = weigths.sizeY;
 		this.weights = weigths;
@@ -29,7 +26,7 @@ public class Perceptron extends NeuralNetwork{
 		/**propagate the entry in the perceptron*/
 		Matrix result = new Matrix(1,1);
 			result = Matrix.mult(entry, weights);
-		return decide.result(result);
+		return decide.decide(result);
 	}
 	
 	public void configureLearning(Matrix entry, double result,double desired){
@@ -46,8 +43,8 @@ public class Perceptron extends NeuralNetwork{
 		learningUnit.learn(this);
 	}
 	
-	public void updateWeights(Matrix m){
-		weights = Matrix.add(weights, m);
+	public void updateWeights(Matrix matrix){
+		weights = Matrix.add(weights, matrix);
 	}
 	public Matrix getWeights() {
 		return weights;
@@ -61,4 +58,8 @@ public class Perceptron extends NeuralNetwork{
 		return step;
 	}
 
+	public String toString() {
+		return "Perceptron [weights=" + weights + ", numberWeights=" + numberWeights + ", step=" + step + "]";
+	}
+	
 }

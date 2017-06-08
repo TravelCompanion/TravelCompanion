@@ -1,5 +1,7 @@
-package tools.ia;
+package tools.ia.learning;
 
+import tools.ia.NeuralNetwork;
+import tools.ia.Perceptron;
 import tools.math.Matrix;
 
 public class PerceptronLearning implements LearningUnit {

@@ -1,23 +1,23 @@
-package common.convertion.iabdd;
+package common.convertion.ia.bdd;
 
 import java.util.ArrayList;
 
 import api.data.TheoricMainUser;
 import api.data.TheoricUser;
-import common.convertion.generic.UserConverter;
+import common.convertion.ia.TheoricUserConverter;
 import common.type.TypeConfiguration;
 import model.Utilisateur;
 import tools.math.Matrix;
 import tools.parse.StringParser;
 
-public class TheoricUserConverter implements UserConverter<TheoricUser> {
+public class TheoricUserConvertionDB implements TheoricUserConverter<Utilisateur> {
 
-	public TheoricUser fromDatabase(Utilisateur data) {
+	public TheoricUser convertFrom(Utilisateur data) {
 		TheoricUser theoricUser = new TheoricUser(data.getUserName());
 		return theoricUser;
 	}
 
-	public TheoricMainUser fromDatabaseToMainUser(Utilisateur data) {
+	public TheoricMainUser convertFromToMainUser(Utilisateur data) {
 		
 		Matrix pref = new Matrix(1, TypeConfiguration.number);
 		ArrayList<String> lines = StringParser.sliceLine(data.getPreferences(), ',');
@@ -27,7 +27,7 @@ public class TheoricUserConverter implements UserConverter<TheoricUser> {
 		return theoricMainUser;
 	}
 
-	public Utilisateur toDataBase(TheoricUser data) {
+	public Utilisateur convertTo(TheoricUser data) {
 		Matrix tmp = data.getPreferences();
 		String pref = "" + tmp.getValue(0, 0);
 		for (int i = 1; i < tmp.sizeY; i++)

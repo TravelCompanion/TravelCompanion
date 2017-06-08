@@ -4,8 +4,9 @@ package api.data;
 
 import tools.math.CoordinatesDouble;
 import tools.math.Matrix;
+import tools.polls.Elegible;
 
-public class TheoricPlace{
+public class TheoricPlace implements Elegible{
 	
 	private String name = "place";
 	private CoordinatesDouble coords = new CoordinatesDouble(2);

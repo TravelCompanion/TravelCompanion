@@ -1,8 +1,10 @@
-package tools.ia;
+package tools.ia.learning;
 
+import tools.ia.MultiLayerPerceptron;
+import tools.ia.NeuralNetwork;
 import tools.math.Matrix;
 
-public class MLPLearning implements LearningUnit{
+public class MultiLayerPerceptronLearning implements LearningUnit{
 	private Matrix[] memory;
 	private Matrix entry;
 	private Matrix desired;

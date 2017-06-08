@@ -2,33 +2,38 @@ package tools.polls;
 
 import java.util.ArrayList;
 
-import tools.list.ListTools;
+import tools.math.Matrix;
+import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathComparator;
+import tools.math.compare.MathUnitComparator;
 
 public class MajorityJudgmentManager {
-	
-	public int election(ArrayList<Elector> electors,ArrayList<Elegible> elegibles){
-		int sx = elegibles.size(),sy = electors.size() ;
-		ArrayList<Double>[] votes = ListTools.createTabList(sx);
-		
-		for(int x = 0; x < sx; x ++)
-			for(int y = 0; y < sy;y++){
-			votes[sx].add(electors.get(y).vote(elegibles.get(x)));
-			}
-		
-		for(int x = 0; x < sx; x ++)
-				votes[sx].sort(MathComparator.getByNameDouble("<"));
-		double[] judgments  =  new double[sx];
-		for(int x = 0; x < sx; x++){
-			judgments[x] = votes[x].get(votes[x].size()/2);
+
+	private static Matrix getVotes(ArrayList<Elector> electors, ArrayList<Elegible> elegibles) {
+		Matrix votes = new Matrix(electors.size(), elegibles.size());
+		for (int x = 0; x < votes.sizeX; x++)
+			for (int y = 0; y < votes.sizeY; y++)
+				votes.setValue(x, y, electors.get(x).vote(elegibles.get(y)));
+		return votes;
+	}
+
+	private static ArrayList<CompareUnitDouble<Elegible>> getResluts(ArrayList<Elegible> elegibles, Matrix votes) {
+		ArrayList<CompareUnitDouble<Elegible>> compareEligible = new ArrayList<CompareUnitDouble<Elegible>>();
+		ArrayList<Double> candidatVote = new ArrayList<Double>();
+		for (int y = 0; y < votes.sizeY; y++) {
+			for (int x = 0; x < votes.sizeX; x++)
+				candidatVote.add(votes.getValue(x, y));
+			candidatVote.sort(MathComparator.getByNameDouble("<"));
+			compareEligible.add(
+					new CompareUnitDouble<Elegible>(candidatVote.get((candidatVote.size() + 1) / 2), elegibles.get(y)));
 		}
-		int elect = -1;
-		double max = -1;
-		for(int x = 0; x < sx;x++){
-			if(judgments[x] > max)
-				max = judgments[x];
-				elect = x;
-		}
-	return elect;	
+		return compareEligible;
+	}
+
+	public static ArrayList<CompareUnitDouble<Elegible>> election(ArrayList<Elector> electors, ArrayList<Elegible> elegibles) {
+		Matrix votes = getVotes(electors, elegibles);
+		ArrayList<CompareUnitDouble<Elegible>> compareEligible = getResluts(elegibles, votes);
+		compareEligible.sort(MathUnitComparator.getByNameDouble("<"));
+		return compareEligible;
 	}
 }

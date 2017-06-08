@@ -2,8 +2,8 @@ package tools.ia.decition;
 
 import tools.math.Matrix;
 
-public class SigmoidDecition extends AbstractDecition{
-	public Matrix result(Matrix result){
+public class SigmoidDecision extends AbstractDecision{
+	public Matrix decide(Matrix result){
 		Matrix tmp = result;
 		for(int x = 0; x < result.sizeX;x++)
 			for(int y = 0; y < result.sizeY;y++)

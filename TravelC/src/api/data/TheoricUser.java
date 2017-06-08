@@ -1,10 +1,13 @@
 package api.data;
 
+import api.ia.IAManager;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
 import tools.math.Matrix;
+import tools.polls.Elector;
+import tools.polls.Elegible;
 
-public class TheoricUser {
+public class TheoricUser implements Elector{
 	private String userName;
 	private CoordinatesDouble position;
 	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
@@ -45,6 +48,10 @@ public class TheoricUser {
 
 	public String getUserName() {
 		return userName;
+	}
+
+	public double vote(Elegible elegible) {
+		return IAManager.electionVote((TheoricPlace)elegible);
 	}
 
 }
