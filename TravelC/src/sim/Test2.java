@@ -2,6 +2,8 @@ package sim;
 
 import java.util.ArrayList;
 
+import common.type.TypeConfiguration;
+import common.type.TypeSafeMemory;
 import model.Monument;
 import model.Utilisateur;
 import persistence.PersistenceData;
@@ -16,6 +18,7 @@ public class Test2 {
 		Utilisateur user = p.User(1);
 		
 		Propag.progation(user, monuments);*/
+		TypeConfiguration.getConfig(new TypeSafeMemory());
 		System.out.println(RandomInt.generate(340,1));
 	}
 }

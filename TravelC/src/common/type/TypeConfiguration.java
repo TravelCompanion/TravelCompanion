@@ -29,10 +29,28 @@ public class TypeConfiguration {
 		}
 		number = types.size();
 	}
+	
+	private TypeConfiguration(TypeSafeMemory typeSafeMemory) {
+		String cur;
+		for (int i = 0; i < typeSafeMemory.memory.length; i++) {
+			cur = typeSafeMemory.memory[i];
+			if (!hashTypes.containsKey(cur)) {
+				types.add(PlaceType.createType(cur, i));
+				hashTypes.put(cur, types.get(i));
+			}
+		}
+		number = types.size();
+	}
 
 	public static TypeConfiguration getConfig() {
 		/**get the this object or initialize if it's null*/
 		if(config == null) config = new TypeConfiguration();
+		return config;
+	}
+	
+	public static TypeConfiguration getConfig(TypeSafeMemory typeSafeMemory) {
+		/**get the this object or initialize if it's null*/
+		if(config == null) config = new TypeConfiguration(typeSafeMemory);
 		return config;
 	}
 

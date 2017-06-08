@@ -8,6 +8,7 @@ import java.util.List;
 
 import common.data.NoPlaceFoundException;
 import common.data.NoUserFoundException;
+import common.data.YouHaveNoFriendsExeption;
 import model.Message;
 import model.Monument;
 import model.Musee;
@@ -114,20 +115,21 @@ public class PersistenceData {
 
 	}
 
-	public List<Utilisateur> persisteAmis(int id) throws SQLException {
+	public List<Utilisateur> persisteAmis(int id) throws SQLException, YouHaveNoFriendsExeption {
 
 		ResultSet Res;
 		users.clear();
 		Res = db.executionQuery(
 				"select distinct userName,email from utilisateur,est_ami where utilisateur.id_user=est_ami.id_user_Utilisateur and est_ami.id_user='"
 						+ id + "'");
-
+		if(Res == null)throw new YouHaveNoFriendsExeption();
+		else{
 		while (Res.next()) {
 			Utilisateur u = new Utilisateur(Res.getString(1), Res.getString(2));
 
 			users.add(u);
 		}
-
+		}
 		return users;
 
 	}

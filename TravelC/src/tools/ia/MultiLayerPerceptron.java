@@ -4,34 +4,35 @@ import java.util.Random;
 
 import tools.ia.decition.AbstractDecision;
 import tools.ia.learning.MultiLayerPerceptronLearning;
+import tools.ia.learning.PerceptronLearning;
 import tools.math.Matrix;
 
-public class MultiLayerPerceptron extends NeuralNetwork{
+public class MultiLayerPerceptron extends NeuralNetwork {
 
 	public final int entrySize;
 	public final int numberLayer;
 	private Matrix[] weights;
-	
-	
-	
-	public MultiLayerPerceptron(int entrySize, int numberLayer, Matrix[] weights,AbstractDecision decition,double step) {
-		super(decition,new MultiLayerPerceptronLearning());
+
+	public MultiLayerPerceptron(int entrySize, int numberLayer, Matrix[] weights, AbstractDecision decition,
+			double step) {
+		super(decition, new MultiLayerPerceptronLearning());
 		this.entrySize = entrySize;
 		this.numberLayer = numberLayer;
 		this.weights = weights;
 		this.step = step;
 	}
 
-	public MultiLayerPerceptron(int[] layersSize,AbstractDecision decition,double step){
-		super(decition,new MultiLayerPerceptronLearning());
+	public MultiLayerPerceptron(int[] layersSize, AbstractDecision decition, double step) {
+		super(decition, new MultiLayerPerceptronLearning());
 		this.entrySize = layersSize[0];
 		this.numberLayer = layersSize.length;
-		this.weights = new Matrix[layersSize.length-1];
-		for(int i =0;i < weights.length;i++)
-			weights[i-1] = new Matrix(layersSize[i],layersSize[i-1],new Random(),1,0);
+		this.weights = new Matrix[numberLayer - 1];
+		Random rand = new Random();
+		for (int i = 0; i < weights.length; i++)
+			weights[i] = new Matrix(layersSize[i + 1], layersSize[i], rand, 1, 0);
 		this.step = step;
 	}
-	
+
 	public int getEntrySize() {
 		return entrySize;
 	}
@@ -44,27 +45,37 @@ public class MultiLayerPerceptron extends NeuralNetwork{
 		return weights;
 	}
 
+	public double getStep() {
+		return step;
+	}
+
 	public Matrix propagate(Matrix entry) {
 		Matrix tmp = entry;
-		for(int i = 0; i < weights.length;i++){
+		for (int i = 0; i < weights.length; i++) {
 			tmp = Matrix.mult(tmp, weights[i]);
 			tmp = decide.decide(tmp);
 		}
 		return tmp;
 	}
 
-	public Matrix[] propagateWithMemory(Matrix entry){
+	public Matrix[] propagateWithMemory(Matrix entry) {
 		Matrix[] memory = new Matrix[numberLayer];
 		memory[0] = entry;
-			for(int i = 1; i < weights.length;i++)
-				memory[i] = decide.decide(Matrix.mult(memory[i-1], weights[i]));
-			return memory;
+		for (int i = 0; i < weights.length; i++) 
+			memory[i+1] = decide.decide(Matrix.mult(memory[i], weights[i]));	
+		return memory;
 	}
 
-	@Override
-	public void learn() {
-		// TODO Auto-generated method stub
-		
+	public void configureLearning(Matrix entry, Matrix desired,Matrix[] memory){
+		((MultiLayerPerceptronLearning) learningUnit).getParameters(entry, desired,memory);
 	}
 	
+	public void learn() {
+		learningUnit.learn(this);
+	}
+
+	public void updateWeighs(int i, Matrix matrix) {
+		this.weights[i] = Matrix.add(matrix, this.weights[i]);
+	}
+
 }

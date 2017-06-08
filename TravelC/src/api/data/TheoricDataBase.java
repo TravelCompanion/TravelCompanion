@@ -8,6 +8,7 @@ import common.convertion.ia.bdd.TheoricPlaceConvertionDB;
 import common.convertion.ia.bdd.TheoricUserConvertionDB;
 import common.data.NoPlaceFoundException;
 import common.data.NoUserFoundException;
+import common.data.YouHaveNoFriendsExeption;
 import common.type.TypeConfiguration;
 import model.Monument;
 import model.Utilisateur;
@@ -22,13 +23,13 @@ public class TheoricDataBase {
 	private static TheoricDataBase dataBase;
 	private static double searchRange = 20;
 	public static TheoricMainUser mainUser;
-	/**this attribute represent the user currently logged*/
+	/** this attribute represent the user currently logged */
 	public static ArrayList<TheoricUser> friends = new ArrayList<TheoricUser>();
-	/**contains the list of the main users friends*/
+	/** contains the list of the main users friends */
 	private static HashMap<String, TheoricUser> hashFriends = new HashMap<String, TheoricUser>();
 
 	public static ArrayList<TheoricPlace> places = new ArrayList<TheoricPlace>();
-	/**contains the list of the places nearby the main user*/
+	/** contains the list of the places nearby the main user */
 	private static HashMap<CoordinatesDouble, TheoricPlace> hashPlaces = new HashMap<CoordinatesDouble, TheoricPlace>();
 	private static final TheoricUserConvertionDB USER_CONVERTER = new TheoricUserConvertionDB();
 	private static final TheoricPlaceConvertionDB MONUMENT_CONVERTER = new TheoricPlaceConvertionDB();
@@ -45,36 +46,40 @@ public class TheoricDataBase {
 	}
 
 	public static void restartDataBase() {
-		/**this method is for reinitialize the database*/
+		/** this method is for reinitialize the database */
 		dataBase = new TheoricDataBase();
 	}
-	
+
 	public static void requestMainUser(PersistenceData persistenceData, int id)
 			throws SQLException, NoUserFoundException {
-		/**request to load the data of user with the corresponding id to the database and set it as main user*/
+		/**
+		 * request to load the data of user with the corresponding id to the
+		 * database and set it as main user
+		 */
 		TheoricDataBase.getDataBase();
 		mainUser = USER_CONVERTER.convertFromToMainUser(persistenceData.loadUser(id));
 	}
 
 	public static void requestUpateMainUser(PersistenceData persistenceData) {
-		/**request for update the data of the main user in the database*/
+		/** request for update the data of the main user in the database */
 		Utilisateur utilisateur = USER_CONVERTER.convertTo(TheoricDataBase.mainUser);
 		persistenceData.updateUserPref(utilisateur);
 	}
 
-	public static void requestFriends() {
+	public static void requestFriends(PersistenceData persistenceData) throws SQLException, YouHaveNoFriendsExeption {
 		TheoricDataBase.getDataBase();
-		/*
-		 * friends.clear(); ArrayList<VirtualUser> virusers =
-		 * VirtualDataBase.requestFriends(); TheoricUser theoricUser; for
-		 * (VirtualUser user : virusers) { theoricUser = new
-		 * TheoricUser().fromVirtualUser(user); friends.add(theoricUser);
-		 * hashFriends.put(theoricUser.getId(), theoricUser); }
-		 */
+		friends.clear();
+		ArrayList<Utilisateur> datas = (ArrayList<Utilisateur>) persistenceData.persisteAmis(mainUser.getId());
+		TheoricUser theoricUser;
+		for (Utilisateur user : datas) {
+			theoricUser = USER_CONVERTER.convertFrom(user);
+			friends.add(theoricUser);
+			hashFriends.put(theoricUser.getUserName(), theoricUser);
+		}
 	}
 
 	public static void requestNearPlace(PersistenceData persistenceData) throws NoPlaceFoundException, SQLException {
-		/**request to get the places nearby the user*/
+		/** request to get the places nearby the user */
 		TheoricDataBase.getDataBase();
 		ArrayList<Monument> monuments = (ArrayList<Monument>) persistenceData
 				.loadMonument(mainUser.getPosition().getX(), mainUser.getPosition().getY(), searchRange);

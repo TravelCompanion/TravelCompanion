@@ -23,7 +23,7 @@ public class TheoricUserConvertionDB implements TheoricUserConverter<Utilisateur
 		ArrayList<String> lines = StringParser.sliceLine(data.getPreferences(), ',');
 		for (int i = 0; i < TypeConfiguration.number; i++)
 			pref.setValue(0, i, Double.parseDouble(lines.get(i)));
-		TheoricMainUser theoricMainUser = new TheoricMainUser(data.getUserName(), pref);
+		TheoricMainUser theoricMainUser = new TheoricMainUser(1,data.getUserName(), pref);
 		return theoricMainUser;
 	}
 

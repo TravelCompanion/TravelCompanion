@@ -8,6 +8,7 @@ import tools.polls.Elector;
 import tools.polls.Elegible;
 
 public class TheoricUser implements Elector{
+	private int id;
 	private String userName;
 	private CoordinatesDouble position;
 	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
@@ -17,7 +18,7 @@ public class TheoricUser implements Elector{
 
 	}
 
-	public TheoricUser(String userName, Matrix pref) {
+	public TheoricUser(int id,String userName, Matrix pref) {
 		this.userName = userName;
 		this.preferences = pref;
 	}
@@ -52,6 +53,10 @@ public class TheoricUser implements Elector{
 
 	public double vote(Elegible elegible) {
 		return IAManager.electionVote((TheoricPlace)elegible);
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }
