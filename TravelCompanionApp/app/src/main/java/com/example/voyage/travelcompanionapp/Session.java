@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.example.voyage.travelcompanionapp.model.ApliUser;
+
 public class Session {
     //cette classe est un singleton afin quel soit unique
         // Shared Preferences
@@ -14,8 +16,20 @@ public class Session {
         private static Session session;
         // Editor pour le Shared preferences
         Editor editor;
+    int PRIVATE_MODE = 0;
 
 
+    private static final String PREF_NAME = "PrefSession";
+
+    private static final String IS_LOGIN = "IsLoggedIn";
+
+
+    public static final String KEY_NAME = "name";
+
+    //je rends ces variables public afin qu'on puisse y acceder a l'exterieur
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_PREFUSER = "types_preferences";
+    public static ApliUser appuser;
 
     public  HashMap<String, String> userHashMap = new HashMap<String, String>();
 
@@ -28,20 +42,6 @@ public class Session {
         }
         return session;
     }
-
-    int PRIVATE_MODE = 0;
-
-
-        private static final String PREF_NAME = "PrefSession";
-
-        private static final String IS_LOGIN = "IsLoggedIn";
-
-
-        public static final String KEY_NAME = "name";
-
-        //je rends ces variables public afin qu'on puisse y acceder a l'exterieur
-        public static final String KEY_EMAIL = "email";
-        public static final String KEY_PREFUSER = "types_preferences";
 
 
     // Constructor
@@ -111,6 +111,7 @@ public class Session {
             editor.putString(KEY, val);
             editor.commit();
             userHashMap.put(KEY, sharedpreferences.getString(KEY, null));
+
         }
 
     }

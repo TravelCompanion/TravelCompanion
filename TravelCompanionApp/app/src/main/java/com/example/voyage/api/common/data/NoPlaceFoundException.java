@@ -1,4 +1,4 @@
-package com.example.voyage.api.gps;
+package com.example.voyage.api.common.data;
 
 public class NoPlaceFoundException extends Exception {
 	/**

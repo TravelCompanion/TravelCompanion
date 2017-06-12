@@ -5,7 +5,7 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Monument {
+public class ApliMonument {
 
     private int Id;
     private String name;

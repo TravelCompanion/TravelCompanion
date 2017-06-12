@@ -1,8 +1,6 @@
 package com.example.voyage.travelcompanionapp;
 
 
-import com.example.voyage.travelcompanionapp.model.Monument;
-
 import java.util.ArrayList;
 
 public class Note {

@@ -17,8 +17,7 @@ public class MajorityJudgmentManager {
 			}
 		
 		for(int x = 0; x < sx; x ++)
-            //noinspection Since15
-            votes[sx].sort(MathComparator.getByNameDouble("<"));
+				votes[sx].sort(MathComparator.getByNameDouble("<"));
 		double[] judgments  =  new double[sx];
 		for(int x = 0; x < sx; x++){
 			judgments[x] = votes[x].get(votes[x].size()/2);

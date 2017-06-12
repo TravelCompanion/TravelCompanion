@@ -31,7 +31,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.voyage.travelcompanionapp.model.Monument;
+import com.example.voyage.travelcompanionapp.model.ApliMonument;
+import com.example.voyage.travelcompanionapp.model.ApliUser;
 import com.example.voyage.travelcompanionapp.persistance.RecupMonument;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,7 +49,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.example.voyage.api.externalData.VirtualUser;
+//import com.example.voyage.api.externalData.VirtualUser;
 import com.example.voyage.api.tools.math.CoordinatesDouble;
 
 
@@ -67,11 +68,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String KEY_NAME_MONUMENT = "monument_name";
     public static final String KEY_ID_MONUMENT = "id";
     public static final String KEY_DIST_MONUMENT = "distance";
-    VirtualUser virtualuser = new VirtualUser();
+    ApliUser appliuser = new ApliUser();
+    private static final String PREF_NAME = "PrefDistance";
+
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
 
-    private static final String PREF_NAME = "PrefDistance";
     String emailname="";
     private DrawerLayout drawer;
     Toolbar toolbar;
@@ -176,6 +178,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                             location = locationManager.getLastKnownLocation(provider);
                             if (location != null) {
                                 Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
+                                appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
+                                Session.appuser = appliuser;
                             }
                         }
                     }
@@ -267,8 +271,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (location != null) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                     virtualuser = new VirtualUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
-//Session.newUser(User.toUser(virtualUser))
+                     appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
+                    Session.appuser = appliuser;
+//Session.newUser(ApliUser.toUser(virtualUser))
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
                 }
             }
@@ -362,11 +367,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<Monument> listlatlon){
+    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<ApliMonument> listlatlon){
         int i=0;
 
         ArrayList<MarkerOptions> marMonu = new ArrayList<MarkerOptions>();
-        for(Monument lalo : listlatlon  ){
+        for(ApliMonument lalo : listlatlon  ){
             MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
             marMonu.add(markerop);
             i++;
@@ -375,10 +380,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-       public ArrayList<Monument> placeMarker(ArrayList<MarkerOptions> markersO, CircleOptions circleP) {
-           ArrayList<Monument> markerselect = new ArrayList<Monument>();
+       public ArrayList<ApliMonument> placeMarker(ArrayList<MarkerOptions> markersO, CircleOptions circleP) {
+           ArrayList<ApliMonument> markerselect = new ArrayList<ApliMonument>();
            for (int i = 0; i <= markersO.size() - 1; i++) {
-               Monument monu = new Monument();
+               ApliMonument monu = new ApliMonument();
                monu.setGeoloc(markersO.get(i).getPosition());
                float[] distance = new float[2];
 
@@ -413,7 +418,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         return markerselect;
     }
 
-    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<Monument> keepMarkerMonument){
+    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<ApliMonument> keepMarkerApliMonument){
         ArrayAdapter<String> listadaptater;
         listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
         listV.setAdapter(listadaptater);
@@ -428,10 +433,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (position == i) {
                         //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
                         DecimalFormat df = new DecimalFormat("#");
-                        String elt = ""+df.format(keepMarkerMonument.get(i).getDistance()[0]);
-                        keepMarkerMonument.get(i).setId(i);
-                        String idMonument = String.valueOf(keepMarkerMonument.get(i).getId());
-                        String monument_name = keepMarkerMonument.get(i).getName();
+                        String elt = ""+df.format(keepMarkerApliMonument.get(i).getDistance()[0]);
+                        keepMarkerApliMonument.get(i).setId(i);
+                        String idMonument = String.valueOf(keepMarkerApliMonument.get(i).getId());
+                        String monument_name = keepMarkerApliMonument.get(i).getName();
 
                         editor.putString(KEY_DIST_MONUMENT, elt);
                         editor.putString(KEY_NAME_MONUMENT, monument_name);
