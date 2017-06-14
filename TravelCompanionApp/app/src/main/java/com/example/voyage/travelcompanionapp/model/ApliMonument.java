@@ -11,13 +11,24 @@ public class ApliMonument {
     private String name;
     private LatLng geoloc;
     private String description;
-    private float[] distance;
+    private Double[] distance;
+    private String ville;
+    private int note;
 
-    public float[] getDistance() {
+
+    public int getNote() {
+        return note;
+    }
+
+    public void setNote(int note) {
+        this.note = note;
+    }
+
+    public Double[] getDistance() {
         return distance;
     }
 
-    public void setDistance(float[] distance) {
+        public void setDistance(Double[] distance) {
         this.distance = distance;
     }
 
@@ -54,10 +65,25 @@ public class ApliMonument {
         return description;
     }
 
+    public String getVille() {
+        return ville;
+    }
 
-public float[] calculdistance (LatLng currentLocation,double latitude, double longitude){
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+
+public Double[] calculdistance (LatLng currentLocation,double latitude, double longitude){
     float[] dist= new float[2];
+    Double[] parsedist=new Double[2];
+    String parseSdist;
     Location.distanceBetween(currentLocation.latitude,currentLocation.longitude,latitude,longitude, dist);
-    return dist;
+    parseSdist=String.valueOf(dist[0]);
+    parsedist[0]=Double.valueOf(new Double(parseSdist));
+    parseSdist=String.valueOf(dist[1]);
+    parsedist[1]=Double.valueOf(new Double(parseSdist));
+
+    return parsedist;
 }
 }
