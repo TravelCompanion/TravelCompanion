@@ -2,10 +2,14 @@ package com.example.voyage.travelcompanionapp.model;
 
 
 import android.location.Location;
+import android.provider.CallLog;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class ApliMonument {
+import java.util.Comparator;
+
+public class ApliMonument implements Comparable<ApliMonument> {
 
     private int Id;
     private String name;
@@ -86,4 +90,17 @@ public Double[] calculdistance (LatLng currentLocation,double latitude, double l
 
     return parsedist;
 }
+
+    
+    public int compareTo(ApliMonument apliMonument) {
+        int resultat = 0;
+        if (this.getDistance()[0] > apliMonument.getDistance()[0])
+            resultat = 1;
+        if (this.getDistance()[0] < apliMonument.getDistance()[0])
+            resultat = -1;
+        if (this.getDistance()[0] == apliMonument.getDistance()[0])
+            resultat = 0;
+        return resultat;
+    }
+    
 }

@@ -42,6 +42,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         Configuration config = getResources().getConfiguration();
         int activity_select;
+        String description="aucune description";
 
         if (config.smallestScreenWidthDp >= 600)
         {
@@ -58,21 +59,16 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
         setActionbarBackable();
 
-
+        if(pref.getString("description",null)!=""){
+            description=pref.getString("description",null);
+        }
 
 
 
 
 
         TextView descMonu=(TextView)findViewById(R.id.textView_descmonu);
-        descMonu.setText("Le Lorem Ipsum est simplement du faux texte employé dans la composition " +
-                "et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de" +
-                " l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des" +
-                " morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait " +
-                "que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans" +
-                " que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la " +
-                "vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par " +
-                "son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.");
+        descMonu.setText(description);
         TextView distMonu=(TextView)findViewById(R.id.textView_distance);
         String distance=pref.getString("distance", null);
 
@@ -138,36 +134,25 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
             alertDialogBuilder
                     .setCancelable(false)
                     .setView(mView);
-            //.setView(inflater.inflate(R.layout.activity_rate, (ViewGroup) findViewById(R.id.layout_rate_bar) ));
 
             ratingBar = (RatingBar) mView.findViewById(R.id.ratingBar_note);
-
-
 
 
             alertDialogBuilder.setPositiveButton(R.string.note,new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
                             addListenerOnRatingBar(ratingBar);
 
-                            // if this button is clicked, close
-                            // current activity
-                            //Toast.makeText(MonumentActivity.this, "Note: "+String.valueOf(rating), Toast.LENGTH_SHORT).show();
-
                             MonumentActivity.this.finish();
                         }
                     })
                     .setNegativeButton(R.string.fermer,new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
                             dialog.cancel();
                         }
                     });
 
-            // create alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
 
-            // show it
             alertDialog.show();
 
         }
