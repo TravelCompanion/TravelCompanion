@@ -4,7 +4,6 @@ import java.util.Random;
 
 import tools.ia.decition.AbstractDecision;
 import tools.ia.learning.MultiLayerPerceptronLearning;
-import tools.ia.learning.PerceptronLearning;
 import tools.math.Matrix;
 
 public class MultiLayerPerceptron extends NeuralNetwork {

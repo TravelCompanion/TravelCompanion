@@ -33,6 +33,28 @@ public class Monument {
 		this.type = type;
 		this.distance = distance;
 	}
+	
+	
+
+	public Monument(int id_monument,String name_monument, String city, int note,
+			String description, Double distance) {
+	
+		this.id_monument = id_monument;
+		this.name_monument = name_monument;
+		this.city = city;
+		this.note = note;
+		this.description = description;
+		this.distance = distance;
+	}
+
+	
+	public Monument(int id, String name, String type, double note, double distance) {
+		this.id_monument = id;
+		this.name_monument = name;
+		this.type = type;
+		this.note = (int) note;
+		this.distance = distance;
+	}
 
 	public int getId_monument() {
 		return id_monument;
@@ -114,11 +136,4 @@ public class Monument {
 		this.distance = distance;
 	}
 
-	@Override
-	public String toString() {
-		return "Monument [id_monument=" + id_monument + ", name_monument=" + name_monument + ", city=" + city
-				+ ", region=" + region + ", note=" + note + ", latitude=" + latitude + ", longitude=" + longitude
-				+ ", description=" + description + ", type=" + type + ", distance=" + distance + "]";
-	}
-	
 }

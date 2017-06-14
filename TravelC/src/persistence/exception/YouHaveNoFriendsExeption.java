@@ -1,4 +1,4 @@
-package common.data;
+package persistence.exception;
 
 public class YouHaveNoFriendsExeption extends Exception {
 	/**

@@ -13,7 +13,11 @@ import tools.parse.StringParser;
 public class TheoricUserConvertionDB implements TheoricUserConverter<Utilisateur> {
 
 	public TheoricUser convertFrom(Utilisateur data) {
-		TheoricUser theoricUser = new TheoricUser(data.getUserName());
+		Matrix pref = new Matrix(1, TypeConfiguration.number);
+		ArrayList<String> lines = StringParser.sliceLine(data.getPreferences(), ',');
+		for (int i = 0; i < TypeConfiguration.number; i++)
+			pref.setValue(0, i, Double.parseDouble(lines.get(i)));
+		TheoricUser theoricUser = new TheoricUser(data.getId_user(),data.getUserName(),pref);
 		return theoricUser;
 	}
 
@@ -23,7 +27,7 @@ public class TheoricUserConvertionDB implements TheoricUserConverter<Utilisateur
 		ArrayList<String> lines = StringParser.sliceLine(data.getPreferences(), ',');
 		for (int i = 0; i < TypeConfiguration.number; i++)
 			pref.setValue(0, i, Double.parseDouble(lines.get(i)));
-		TheoricMainUser theoricMainUser = new TheoricMainUser(1,data.getUserName(), pref);
+		TheoricMainUser theoricMainUser = new TheoricMainUser(data.getId_user(),data.getUserName(), pref);
 		return theoricMainUser;
 	}
 
@@ -32,7 +36,7 @@ public class TheoricUserConvertionDB implements TheoricUserConverter<Utilisateur
 		String pref = "" + tmp.getValue(0, 0);
 		for (int i = 1; i < tmp.sizeY; i++)
 			pref += tmp.getValue(0, i) + ",";
-		return new Utilisateur("", data.getUserName(), pref);
+		return new Utilisateur(data.getId(),"",data.getUserName(),pref);
 	}
 	
 

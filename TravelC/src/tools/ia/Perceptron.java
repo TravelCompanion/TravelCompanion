@@ -44,7 +44,7 @@ public class Perceptron extends NeuralNetwork{
 	}
 	
 	public void updateWeights(Matrix matrix){
-		weights = Matrix.add(weights, matrix);
+		this.weights = Matrix.add(weights, matrix);
 	}
 	public Matrix getWeights() {
 		return weights;

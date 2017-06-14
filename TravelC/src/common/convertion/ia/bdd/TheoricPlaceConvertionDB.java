@@ -20,13 +20,16 @@ public class TheoricPlaceConvertionDB implements TheoricPlaceConverter<Monument>
 			typesMon.setValue(TypeConfiguration.get(line).getId(), 0, 1);
 			k++;
 		}
-		TheoricPlace theoricPlace = new TheoricPlace(monument.getName_monument(),typesMon,monument.getNote(),k);
+		TheoricPlace theoricPlace = new TheoricPlace(monument.getId_monument(),monument.getName_monument(),typesMon,monument.getNote(),monument.getDistance(),k);
 		return theoricPlace;
 	}
 
 	public Monument convertTo(TheoricPlace data) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String pref = ""+data.getTypes().getValue(0, 0);
+		for(int i = 1; i < data.getTypes().sizeX;i++)
+			pref += data.getTypes().getValue(i, 0);
+		return new Monument(data.getId(),data.getName(),pref,data.getNote(), data.getDistance());
 	}
 
 }

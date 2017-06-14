@@ -1,5 +1,7 @@
 package api.data;
 
+import java.util.ArrayList;
+
 import api.ia.IAManager;
 import tools.list.FileStruct;
 import tools.math.CoordinatesDouble;
@@ -8,10 +10,10 @@ import tools.polls.Elector;
 import tools.polls.Elegible;
 
 public class TheoricUser implements Elector{
-	private int id;
+	protected int id;
 	private String userName;
 	private CoordinatesDouble position;
-	private FileStruct<CoordinatesDouble> visitedRecently = new FileStruct<CoordinatesDouble>();
+	private ArrayList<TheoricPlace> visitedRecently = new ArrayList<TheoricPlace>();
 	protected Matrix preferences;
 
 	public TheoricUser() {
@@ -19,11 +21,17 @@ public class TheoricUser implements Elector{
 	}
 
 	public TheoricUser(int id,String userName, Matrix pref) {
+		this.id = id;
 		this.userName = userName;
 		this.preferences = pref;
 	}
 
 	public TheoricUser(String userName) {
+		this.userName = userName;
+	}
+
+	public TheoricUser(int id_user, String userName) {
+		this.id = id_user;
 		this.userName = userName;
 	}
 
@@ -35,7 +43,7 @@ public class TheoricUser implements Elector{
 		this.position = newPosistion;
 	}
 
-	public boolean hasVisited(CoordinatesDouble place) {
+	public boolean hasVisited(TheoricPlace place) {
 		return visitedRecently.contains(place);
 	}
 
@@ -43,6 +51,10 @@ public class TheoricUser implements Elector{
 		return "TheoricUser [position=" + position + ", preferences=" + preferences + "]";
 	}
 
+	public void updatePref(Matrix m){
+		this.preferences = m;
+	}
+	
 	public Matrix getPreferences() {
 		return preferences;
 	}
@@ -52,11 +64,15 @@ public class TheoricUser implements Elector{
 	}
 
 	public double vote(Elegible elegible) {
-		return IAManager.electionVote((TheoricPlace)elegible);
+		return IAManager.electionVote((TheoricPlace)elegible,this);
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public ArrayList<TheoricPlace> getVisitedRecently() {
+		return visitedRecently;
 	}
 
 }

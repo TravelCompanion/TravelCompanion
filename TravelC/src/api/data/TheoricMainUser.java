@@ -4,7 +4,6 @@ package api.data;
 import tools.math.Matrix;
 
 public class TheoricMainUser extends TheoricUser {
-	private int id;
 
 	public TheoricMainUser() {
 		// TODO Auto-generated constructor stub

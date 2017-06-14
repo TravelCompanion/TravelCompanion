@@ -103,8 +103,8 @@ public class MathTools {
 		return res;
 	}
 
-	public static double trunc(double val,int dec){
-		int ival = (int)(val * Math.pow(10,dec));
-		return (double)ival / Math.pow(10,dec);
+	public static double roundAt(double number, int n) {
+		return (double) ((int) (number * Math.pow(10, n) + .5)) / Math.pow(10, n);
 	}
+
 }
