@@ -1,7 +1,8 @@
 package com.example.voyage.api.tools.ia.decition;
 
+import com.example.voyage.api.tools.math.Matrix;
+
 public abstract class AbstractDecition {
-	public double result(double entry){
-		return 1 - entry;
-	}
+	public abstract Matrix result(Matrix result);
+	public abstract Matrix derived(Matrix result);
 }

@@ -11,11 +11,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,7 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.voyage.travelcompanionapp.callwebservice.ConnexionInternet;
+import com.example.voyage.api.tools.math.CoordinatesDouble;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
@@ -46,15 +46,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 //import com.example.voyage.api.externalData.VirtualUser;
-import com.example.voyage.api.tools.math.CoordinatesDouble;
 
 
-public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivitySuggest extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -85,7 +86,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_map);
+        setContentView(R.layout.activity_menu_map_suggest);
         list_monument = (ListView) findViewById(R.id.list_monuments);
         session = Session.getSession(getApplicationContext());
         session.checkLogin();
@@ -134,11 +135,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     //methode coordonnée gps
 
     public void getCoord() {
-        if (ContextCompat.checkSelfPermission(MapsActivity.this,
+        if (ContextCompat.checkSelfPermission(MapsActivitySuggest.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(MapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                || ContextCompat.checkSelfPermission(MapsActivitySuggest.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(MapsActivity.this, "permission accordée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsActivitySuggest.this, "permission accordée", Toast.LENGTH_SHORT).show();
 
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -198,13 +199,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                     location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
                 }
             } else {
-                Toast.makeText(MapsActivity.this, "Impossible de récupérer vos coordonnées", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivitySuggest.this, "Impossible de récupérer vos coordonnées", Toast.LENGTH_SHORT).show();
             }
         } else {
 
             Log.d("GPS", "permission refusée demande autorisation");
-            Toast.makeText(MapsActivity.this, "permission refusée", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(MapsActivity.this,
+            Toast.makeText(MapsActivitySuggest.this, "permission refusée", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(MapsActivitySuggest.this,
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
         }
 
@@ -249,7 +250,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         // Add a marker in Sydney and move the camera
         if (location != null) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MapsActivity.this,
+                ActivityCompat.requestPermissions(MapsActivitySuggest.this,
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
             }
 
@@ -282,15 +283,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
             RecupMonument AlistMonu=new RecupMonument();
-            ArrayList<MarkerOptions> marqueurmonus;
-            if(ConnexionInternet.isConnectedInternet(MapsActivity.this)){
-                marqueurmonus = listMarqueurMonu(AlistMonu.getWebServiceMonument());
-            }
-            else{
-                 marqueurmonus = listMarqueurMonu(AlistMonu.getAlistMonu());
-            }
 
-
+            ArrayList<MarkerOptions> marqueurmonus = listMarqueurMonu(AlistMonu.getAlistMonu());
             afficheListMarker(list_monument,keepMarker(marqueurmonus,circlePosition),placeMarker(marqueurmonus,circlePosition));
 
         }
@@ -329,14 +323,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         int id = item.getItemId();
 
         if (id == R.id.nav_room) {
-            Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+            Intent intent = new Intent(MapsActivitySuggest.this, MapsActivitySuggest.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_logout) {
             session.logoutUser();
 
         } else if (id == R.id.nav_profil) {
-            Intent intent = new Intent(MapsActivity.this, ProfilActivity.class);
+            Intent intent = new Intent(MapsActivitySuggest.this, ProfilActivity.class);
             startActivity(intent);
         }
 
@@ -392,11 +386,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
            for (int i = 0; i <= markersO.size() - 1; i++) {
                ApliMonument monu = new ApliMonument();
                monu.setGeoloc(markersO.get(i).getPosition());
-               //double[] distance = new double[2];
+               float[] distance = new float[2];
 
                monu.setDistance(monu.calculdistance(monu.getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
-               /*Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
-                       circleP.getCenter().latitude, circleP.getCenter().longitude, distance);*/
+               Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
+                       circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
 
                if (monu.getDistance()[0] < circleP.getRadius()) {
                    mMap.addMarker(markersO.get(i));
@@ -427,7 +421,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<ApliMonument> keepMarkerApliMonument){
         ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
+        listadaptater = new ArrayAdapter<String>(MapsActivitySuggest.this, android.R.layout.simple_list_item_1, keepMarker);
         listV.setAdapter(listadaptater);
 
 
@@ -441,7 +435,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                         //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
                         DecimalFormat df = new DecimalFormat("#");
                         String elt = ""+df.format(keepMarkerApliMonument.get(i).getDistance()[0]);
-                        //keepMarkerApliMonument.get(i).setId(i);
+                        keepMarkerApliMonument.get(i).setId(i);
                         String idMonument = String.valueOf(keepMarkerApliMonument.get(i).getId());
                         String monument_name = keepMarkerApliMonument.get(i).getName();
 
@@ -451,8 +445,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
                         editor.putString(KEY_ID_MONUMENT, idMonument);
 
-                        Log.d("Id monument",idMonument);
-                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
+
+                        Intent intent = new Intent(MapsActivitySuggest.this, MonumentActivity.class);
                         startActivity(intent);
 
                     }

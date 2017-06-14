@@ -1,0 +1,17 @@
+monument1
+monument2
+monument3
+église
+jardin
+parc
+immeuble
+musee
+socle
+chateau
+maison
+pavillon
+hôtel
+parc_attraction
+auberge
+villa
+caves

@@ -36,7 +36,7 @@
     <string name="title_popup_edit">Vous pouvez modifier</string>
 
 
-    <!-- Type de Monument -->
+    <!-- Type de ApliMonument -->
     <string name="type_musee">Musée</string>
     <string name="type_eglise">Eglise</string>
     <string name="type_parc_attraction">Parc D\'attraction</string>

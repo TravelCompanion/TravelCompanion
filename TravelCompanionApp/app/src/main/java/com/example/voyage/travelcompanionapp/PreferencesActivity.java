@@ -1,7 +1,9 @@
 package com.example.voyage.travelcompanionapp;
 
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -77,76 +79,72 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
 
     //quand on click sur le floating bouton il prend en compte les checkbox selectionnées(avec des 1) et les affecte à un tableau
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
         for (int i = 0; i <= 13; i++){
             choose_pref[i] ="0";
         }
 
-      if (v== bfa){
+      if (v== bfa) {
 
-            if (chkmusee.isChecked()) {
-                choose_pref[0] = "1";
-            }
-            if (chkeglise.isChecked()) {
-                choose_pref[1] = "1";
-            }
-            if (chkattraction.isChecked()) {
-                choose_pref[2] = "1";
-            }
-            if (chkjardin.isChecked()) {
-                choose_pref[3] = "1";
-            }
+          if (chkmusee.isChecked()) {
+              choose_pref[0] = "1";
+          }
+          if (chkeglise.isChecked()) {
+              choose_pref[1] = "1";
+          }
+          if (chkattraction.isChecked()) {
+              choose_pref[2] = "1";
+          }
+          if (chkjardin.isChecked()) {
+              choose_pref[3] = "1";
+          }
 
-            if (chkchateau.isChecked()) {
-                choose_pref[4] = "1";
-            }
+          if (chkchateau.isChecked()) {
+              choose_pref[4] = "1";
+          }
 
-            if (chkparc.isChecked()) {
-                choose_pref[5] = "1";
-            }
-            if (chkimmeuble.isChecked()) {
-                choose_pref[6] = "1";
-            }
-            if (chkhotel.isChecked()) {
-                choose_pref[7] = "1";
-            }
+          if (chkparc.isChecked()) {
+              choose_pref[5] = "1";
+          }
+          if (chkimmeuble.isChecked()) {
+              choose_pref[6] = "1";
+          }
+          if (chkhotel.isChecked()) {
+              choose_pref[7] = "1";
+          }
 
-            if (chkauberge.isChecked()) {
-                choose_pref[8] = "1";
-            }
-            if (chksocle.isChecked()) {
-                choose_pref[9] = "1";
-            }
+          if (chkauberge.isChecked()) {
+              choose_pref[8] = "1";
+          }
+          if (chksocle.isChecked()) {
+              choose_pref[9] = "1";
+          }
 
-            if (chkmaison.isChecked()) {
-                choose_pref[10] = "1";
-            }
-            if (chkcaves.isChecked()) {
-                choose_pref[11] = "1";
-            }
-            if (chkpavillon.isChecked()) {
-                choose_pref[12] = "1";
-            }
-            if (chkvilla.isChecked()) {
-                choose_pref[13] = "1";
-            }
-          elempref="";
+          if (chkmaison.isChecked()) {
+              choose_pref[10] = "1";
+          }
+          if (chkcaves.isChecked()) {
+              choose_pref[11] = "1";
+          }
+          if (chkpavillon.isChecked()) {
+              choose_pref[12] = "1";
+          }
+          if (chkvilla.isChecked()) {
+              choose_pref[13] = "1";
+          }
+          elempref = choose_pref[0] + "";
 
-                for (int j = 0; j<= choose_pref.length-1; j++) {
-                if (j != 0 || j!=choose_pref.length-1) {
-                        elempref += choose_pref[j] + ",";
-                    }
-
-                    if (j==choose_pref.length-1) {
-                        elempref += choose_pref[j] + "";
-                    }
-                }
-
+          for (int j = 1; j <= choose_pref.length - 1; j++) {
+              elempref += "," + choose_pref[j];
+          }
+      }
                 if(elempref!=""){
                     Log.d("listpref",elempref);
                     session.updateHashMapUserDetails("types_preferences",elempref);
                     Toast.makeText(PreferencesActivity.this,"preferences sauvegardés "+session.getUserHashMap().get(Session.KEY_PREFUSER), Toast.LENGTH_SHORT).show();
+                    Session.appuser.setPreferences(session.getUserHashMap().get(Session.KEY_PREFUSER));
                 }
                 else{
                     Log.d("listpref","pas d'element dans la liste");
@@ -156,7 +154,6 @@ public class PreferencesActivity extends AppCompatActivity implements View.OnCli
 
         }
 
-    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
