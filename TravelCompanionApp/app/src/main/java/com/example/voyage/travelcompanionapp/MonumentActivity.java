@@ -29,6 +29,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.voyage.api.data.TheoricPlace;
+import com.example.voyage.api.data.TheoricUser;
+import com.example.voyage.api.ia.IAManager;
+import com.example.voyage.api.model.Monument;
+import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
+import com.example.voyage.travelcompanionapp.model.ApliMonument;
+import com.example.voyage.travelcompanionapp.model.ApliUser;
+
+import java.util.ArrayList;
+
 public class MonumentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener  {
 
     private DrawerLayout drawer;
@@ -59,7 +69,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
         setActionbarBackable();
 
-        if(pref.getString("description",null)!=""){
+        if(pref.getString("description",null).equals("")){
             description=pref.getString("description",null);
         }
 
@@ -178,5 +188,22 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
 
 
+   /* public  static  void requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
+        TheoricUser tu = convertTo(ApliUser);
+        ArrayList<TheoricPlace> tps = new ArrayList<TheoricPlace>();
+        for(ApliMonument apliMonument : monuments)
+            tps.add(convertTo(apliMonument));
+        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(TheoricUser tu, ArrayList<TheoricPlace> tps);
+               //CompareUnitDouble<T>   CompareUnitDouble<TheoricPlace>
+               //        T element;         TheoricPlace element;
+               //        double value;      double value;
+               //TheoricPlace t = result.get(0).getElement();
+            //IAManager.selectPlace(0,result);
+        //IAManager.shortLearn(tu,tp);
+        //IAManager.learn(tu,tp,note);
+        //return result;
+        for(CompareUnitDouble<TheoricPlace> cud : result)
+            list.add(convertfrom(cud.getElement()));
+    }*/
 
 }

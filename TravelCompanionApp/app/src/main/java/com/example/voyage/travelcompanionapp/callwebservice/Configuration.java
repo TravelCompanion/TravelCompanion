@@ -18,4 +18,12 @@ public class Configuration {
 	public String sendData(){
 		return "";
 	}
+
+
+	public  static String getRestUser(String iduser){
+		return "/restfulltc/rest/user/"+iduser;
+	}
+
+	public static String getIdUser(String email,String mdp){
+		return "/restfulltc/rest/connexion/"+email+"/"+mdp;}
 }

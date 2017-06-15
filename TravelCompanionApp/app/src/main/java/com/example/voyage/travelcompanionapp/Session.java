@@ -121,6 +121,7 @@ public class Session {
          * */
         public void logoutUser(){
             // Clearing all data from Shared Preferences
+            session =null;
             editor.clear();
             editor.commit();
 

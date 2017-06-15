@@ -23,6 +23,41 @@ public class ApliUser {
     private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
     private ArrayList<ApliUser> friends = new ArrayList<ApliUser>();
 
+    public void setPosition(CoordinatesDouble position) {
+        this.position = position;
+    }
+
+    public void setPreferences(HashMap<PlaceType, Double> preferences) {
+        this.preferences = preferences;
+    }
+
+    public void setFriends(ArrayList<ApliUser> friends) {
+        this.friends = friends;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String username;
+    private String email;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public ApliUser(String id, CoordinatesDouble position) {
         this.id = id;
         this.position = position;
