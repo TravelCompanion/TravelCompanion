@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -32,6 +33,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.voyage.travelcompanionapp.callwebservice.RecupUser;
+import com.example.voyage.travelcompanionapp.model.ApliUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -358,11 +362,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onClick(View view) {
+        RecupUser Ruser=new RecupUser();
         if(view== mEmailSignInButton) {
                 if (mEmailView.getText().toString().trim().length()>0 && mPasswordView.getText().toString().trim().length()>0 ){
-                    if(mEmailView.getText().toString().equals("test")&&
-                            mPasswordView.getText().toString().equals("admin")){
+
+
+                    if((mEmailView.getText().toString().equals("test")&&
+                            mPasswordView.getText().toString().equals("admin"))|| Ruser.testUser(mEmailView.getText().toString(),mPasswordView.getText().toString())){
+                        ApliUser apliuser;
+                        apliuser=Ruser.getUser(mEmailView.getText().toString(),mPasswordView.getText().toString());
                         Log.d("Tag","connexion");
                         session.createLoginSession(mEmailView.getText().toString());
 

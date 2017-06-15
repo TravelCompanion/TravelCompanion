@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 //import com.example.voyage.api.externalData.VirtualUser;
@@ -69,6 +70,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String KEY_NAME_MONUMENT = "monument_name";
     public static final String KEY_ID_MONUMENT = "id";
     public static final String KEY_DIST_MONUMENT = "distance";
+    public static final String KEY_DESCRIP_MONUMENT = "description";
+
     ApliUser appliuser = new ApliUser();
     private static final String PREF_NAME = "PrefDistance";
 
@@ -106,7 +109,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportActionBar().setHomeButtonEnabled(true);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -116,9 +118,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
         getCoord();
-
-
-
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,10 +137,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(MapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(MapsActivity.this, "permission accordée", Toast.LENGTH_SHORT).show();
 
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
 
             if (locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
                 Criteria critere = new Criteria();
@@ -209,7 +206,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
     }
-
     private CircleOptions drawCircle(LatLng point){
 
         // Instantiating CircleOptions to draw a circle around the marker
@@ -233,7 +229,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -252,7 +247,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 ActivityCompat.requestPermissions(MapsActivity.this,
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
             }
-
 
             mMap.setMyLocationEnabled(true);
             LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
@@ -282,16 +276,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
             RecupMonument AlistMonu=new RecupMonument();
-            ArrayList<MarkerOptions> marqueurmonus;
             if(ConnexionInternet.isConnectedInternet(MapsActivity.this)){
-                marqueurmonus = listMarqueurMonu(AlistMonu.getWebServiceMonument());
+                //marqueurmonus = listMarqueurMonu(AlistMonu.getWebServiceMonument());
+                afficheListMarker(list_monument,AlistMonu.getWebServiceMonument(),circlePosition,mMap);
             }
             else{
-                 marqueurmonus = listMarqueurMonu(AlistMonu.getAlistMonu());
+                afficheListMarker(list_monument,AlistMonu.getAlistMonu(),circlePosition,mMap);
             }
-
-
-            afficheListMarker(list_monument,keepMarker(marqueurmonus,circlePosition),placeMarker(marqueurmonus,circlePosition));
 
         }
     }
@@ -374,80 +365,68 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-    public ArrayList<MarkerOptions> listMarqueurMonu(ArrayList<ApliMonument> listlatlon){
-        int i=0;
+    public void placeMarker(ArrayList<ApliMonument> listlatlon, GoogleMap googleMap) {
+            for(ApliMonument lalo: listlatlon) {
+                MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
 
-        ArrayList<MarkerOptions> marMonu = new ArrayList<MarkerOptions>();
-        for(ApliMonument lalo : listlatlon  ){
-            MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
-            marMonu.add(markerop);
-            i++;
-        }
-        return marMonu;
+                googleMap.addMarker(markerop);
+            }
+
     }
 
 
-       public ArrayList<ApliMonument> placeMarker(ArrayList<MarkerOptions> markersO, CircleOptions circleP) {
-           ArrayList<ApliMonument> markerselect = new ArrayList<ApliMonument>();
-           for (int i = 0; i <= markersO.size() - 1; i++) {
-               ApliMonument monu = new ApliMonument();
-               monu.setGeoloc(markersO.get(i).getPosition());
-               //double[] distance = new double[2];
-
-               monu.setDistance(monu.calculdistance(monu.getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
-               /*Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
-                       circleP.getCenter().latitude, circleP.getCenter().longitude, distance);*/
-
-               if (monu.getDistance()[0] < circleP.getRadius()) {
-                   mMap.addMarker(markersO.get(i));
-
-                    monu.setName(markersO.get(i).getTitle());
-                   markerselect.add(monu);
-
-
-               }
-           }
-           return markerselect;
-       }
-
-
-    public ArrayList<String> keepMarker(ArrayList<MarkerOptions> markersO,CircleOptions circleP) {
+        public ArrayList<String> nameFilterMonu(ArrayList<ApliMonument>listmonu){
         ArrayList<String> markerselect = new ArrayList<String>();
-        for (int i = 0; i <= markersO.size() - 1; i++) {
-            float[] distance = new float[2];
-            Location.distanceBetween(markersO.get(i).getPosition().latitude, markersO.get(i).getPosition().longitude,
-                    circleP.getCenter().latitude, circleP.getCenter().longitude, distance);
+        for(ApliMonument monument : listmonu  ){
 
-            if (distance[0] < circleP.getRadius()) {
-                markerselect.add(markersO.get(i).getTitle());
-            }
+                markerselect.add(monument.getName());
+
         }
         return markerselect;
     }
 
-    public void afficheListMarker(ListView listV, final ArrayList<String> keepMarker,final ArrayList<ApliMonument> keepMarkerApliMonument){
-        ArrayAdapter<String> listadaptater;
-        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, keepMarker);
-        listV.setAdapter(listadaptater);
+    public ArrayList<ApliMonument> filterMonu(ArrayList<ApliMonument>listmonu,CircleOptions circleP){
+        ArrayList<ApliMonument> markerselect = new ArrayList<ApliMonument>();
+        for(ApliMonument monument : listmonu  ){
+            monument.setDistance(monument.calculdistance(monument.getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
 
+
+            if (monument.getDistance()[0] < circleP.getRadius()) {
+                markerselect.add(monument);
+
+            }
+
+        }
+        Collections.sort(markerselect);
+        return markerselect;
+    }
+
+    public void afficheListMarker(ListView listV, final ArrayList<ApliMonument> keepMarkerApliMonument, final CircleOptions circleP, final GoogleMap googleMap){
+        ArrayAdapter<String> listadaptater;
+        final ArrayList<ApliMonument>filtermonu=filterMonu(keepMarkerApliMonument,circleP);
+        ArrayList<String> namemonufilter=nameFilterMonu(filtermonu);
+
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, namemonufilter);
+        listV.setAdapter(listadaptater);
+        placeMarker(filtermonu,googleMap);
 
         listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
                 editor = preferences.edit();
-                for (int i = 0; i < keepMarker.size(); i++) {
+                for (int i = 0; i < filtermonu.size(); i++) {
+                    filtermonu.get(i).setDistance(filtermonu.get(i).calculdistance(filtermonu.get(i).getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
+
                     if (position == i) {
-                        //Toast.makeText(MapsActivity.this, keepMarker.get(i).toString(), Toast.LENGTH_SHORT).show();
                         DecimalFormat df = new DecimalFormat("#");
-                        String elt = ""+df.format(keepMarkerApliMonument.get(i).getDistance()[0]);
-                        //keepMarkerApliMonument.get(i).setId(i);
-                        String idMonument = String.valueOf(keepMarkerApliMonument.get(i).getId());
-                        String monument_name = keepMarkerApliMonument.get(i).getName();
+                        String elt = ""+df.format(filtermonu.get(i).getDistance()[0]);
+                        String idMonument = String.valueOf(filtermonu.get(i).getId());
+                        String monument_name = filtermonu.get(i).getName();
 
                         editor.putString(KEY_DIST_MONUMENT, elt);
                         editor.putString(KEY_NAME_MONUMENT, monument_name);
-
+                        editor.putString(KEY_DESCRIP_MONUMENT,String.valueOf(filtermonu.get(i).getDescription()));
 
                         editor.putString(KEY_ID_MONUMENT, idMonument);
 
