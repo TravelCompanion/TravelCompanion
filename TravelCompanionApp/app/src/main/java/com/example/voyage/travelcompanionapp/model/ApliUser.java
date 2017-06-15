@@ -7,8 +7,7 @@ import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.example.voyage.api.common.type.ConfType;
+import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.common.type.TypeConfiguration;
 import com.example.voyage.api.common.type.PlaceType;
 import com.example.voyage.api.tools.math.CoordinatesDouble;
@@ -83,7 +82,7 @@ public class ApliUser {
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setPreferences(String pref) {
-        TypeConfiguration.getConfig(new ConfType());
+        TypeConfiguration.getConfig(new TypeSafeMemory());
         ArrayList<String> lines = StringParser.sliceLine(pref,',');
         for(int i = 0; i < lines.size();i++)preferences.put(TypeConfiguration.get(i),Double.parseDouble(lines.get(i)));
 

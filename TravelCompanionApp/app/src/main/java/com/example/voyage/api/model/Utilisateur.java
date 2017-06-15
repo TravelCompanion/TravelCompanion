@@ -2,6 +2,7 @@ package com.example.voyage.api.model;
 
 public class Utilisateur {
 
+	private int id_user;
 	private String email;
 	private String userName;
 	private String password;
@@ -10,21 +11,35 @@ public class Utilisateur {
 	public Utilisateur() {
 	}
 
-	
-	
-	public Utilisateur(String email, String userName) {
-		super();
+	public Utilisateur(int id_user, String email, String userName) {
+
+		this.id_user = id_user;
 		this.email = email;
 		this.userName = userName;
 	}
 
-	public Utilisateur(String email, String userName, String preferences) {
-		super();
+	public Utilisateur(int id_user, String email, String userName,
+			String preferences) {
+		this.id_user = id_user;
 		this.email = email;
 		this.userName = userName;
 		this.preferences = preferences;
 	}
 
+	public Utilisateur(String email, String userName, String password,
+			String preferences) {
+
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.preferences = preferences;
+	}
+
+	public Utilisateur(int id_user, String userName) {
+
+		this.id_user = id_user;
+		this.userName = userName;
+	}
 
 	public String getEmail() {
 		return email;
@@ -58,11 +73,12 @@ public class Utilisateur {
 		this.preferences = preferences;
 	}
 
-	@Override
-	public String toString() {
-		return "Utilisateur [email=" + email + ", userName=" + userName + ", password=" + password + ", preferences="
-				+ preferences + "]";
+	public int getId_user() {
+		return id_user;
 	}
 
-	
+	public void setId_user(int id_user) {
+		this.id_user = id_user;
+	}
+
 }

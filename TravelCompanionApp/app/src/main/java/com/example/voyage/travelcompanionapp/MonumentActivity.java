@@ -29,9 +29,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.voyage.api.data.TheoricPlace;
-import com.example.voyage.api.data.TheoricUser;
-import com.example.voyage.api.ia.IAManager;
+import com.example.voyage.api.api.data.TheoricPlace;
+import com.example.voyage.api.api.data.TheoricUser;
+import com.example.voyage.api.api.ia.IAManager;
 import com.example.voyage.api.model.Monument;
 import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
@@ -52,7 +52,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         Configuration config = getResources().getConfiguration();
         int activity_select;
-        String description="aucune description";
+        String description;
 
         if (config.smallestScreenWidthDp >= 600)
         {
@@ -68,14 +68,10 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         visite = (Button) findViewById(R.id.button_visite);
 
         setActionbarBackable();
-
-        if(pref.getString("description",null).equals("")){
-            description=pref.getString("description",null);
+        description=pref.getString("description",null);
+        if("".equals(pref.getString("description",null))){
+            description="aucune description";
         }
-
-
-
-
 
         TextView descMonu=(TextView)findViewById(R.id.textView_descmonu);
         descMonu.setText(description);

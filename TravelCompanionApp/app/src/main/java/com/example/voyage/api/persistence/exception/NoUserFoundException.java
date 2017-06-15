@@ -1,4 +1,4 @@
-package com.example.voyage.api.common.data;
+package com.example.voyage.api.persistence.exception;
 
 public class NoUserFoundException extends Exception {
 

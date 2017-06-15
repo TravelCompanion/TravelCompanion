@@ -22,9 +22,23 @@ public class RecupUser {
             String output = null;
             JsonParser jsonParser=new JsonParser();
             output = jsonParser.execute(Configuration.IpDevice() + Configuration.getIdUser(email, mdp)).get();
+            if (output!=null) {
+                String dataoutput="";
 
-            if (!(output.equals("-1"))){
-                result=true;
+                JSONArray joutput = null;
+                try {
+                    joutput = new JSONArray("[" + output + "]");
+
+                    for (int j = 0; j < joutput.length(); j++) {
+                        JSONObject json_datavaleur = joutput.getJSONObject(j);
+                        dataoutput = json_datavaleur.getString("id");
+                    }
+                    if (!(dataoutput.equals("-1"))) {
+                        result = true;
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
