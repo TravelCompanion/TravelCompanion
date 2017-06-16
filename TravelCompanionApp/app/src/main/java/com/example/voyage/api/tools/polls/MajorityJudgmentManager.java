@@ -23,7 +23,8 @@ public class MajorityJudgmentManager {
 		for (int y = 0; y < votes.sizeY; y++) {
 			for (int x = 0; x < votes.sizeX; x++)
 				candidatVote.add(votes.getValue(x, y));
-			candidatVote.sort(MathComparator.getByNameDouble("<"));
+            //noinspection Since15
+            candidatVote.sort(MathComparator.getByNameDouble("<"));
 			compareEligible.add(
 					new CompareUnitDouble<Elegible>(candidatVote.get((candidatVote.size() + 1) / 2), elegibles.get(y)));
 		}
@@ -33,7 +34,8 @@ public class MajorityJudgmentManager {
 	public static ArrayList<CompareUnitDouble<Elegible>> election(ArrayList<Elector> electors, ArrayList<Elegible> elegibles) {
 		Matrix votes = getVotes(electors, elegibles);
 		ArrayList<CompareUnitDouble<Elegible>> compareEligible = getResluts(elegibles, votes);
-		compareEligible.sort(MathUnitComparator.getByNameDouble("<"));
+        //noinspection Since15
+        compareEligible.sort(MathUnitComparator.getByNameDouble("<"));
 		return compareEligible;
 	}
 }

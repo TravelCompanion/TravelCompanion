@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -84,6 +85,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -132,6 +134,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
     //methode coordonnée gps
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void getCoord() {
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -176,7 +179,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                             location = locationManager.getLastKnownLocation(provider);
                             if (location != null) {
                                 Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
-                                appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
+                                appliuser = new ApliUser (Session.appuser.getId(),new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}),Session.appuser.getPreferences());
                                 Session.appuser = appliuser;
                             }
                         }
@@ -266,8 +269,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (location != null) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                     appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
-                    Session.appuser = appliuser;
+                     //appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
+
+                    //Session.appuser = appliuser;
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
                 }
             }
@@ -278,7 +282,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             RecupMonument AlistMonu=new RecupMonument();
             if(ConnexionInternet.isConnectedInternet(MapsActivity.this)){
                 //marqueurmonus = listMarqueurMonu(AlistMonu.getWebServiceMonument());
+                ArrayList<ApliMonument> monu1;
+                ArrayList<ApliMonument> monu2;
                 afficheListMarker(list_monument,AlistMonu.getWebServiceMonument(),circlePosition,mMap);
+                //Suggestion
+                monu1=MonumentActivity.requestSuggest(Session.appuser,AlistMonu.getWebServiceMonument());
+                Log.d("succes",monu1.toString());
             }
             else{
                 afficheListMarker(list_monument,AlistMonu.getAlistMonu(),circlePosition,mMap);

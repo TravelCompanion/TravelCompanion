@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.voyage.api.model.Monument;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import org.json.XML;
@@ -31,8 +33,7 @@ public class RecupMonument {
 
     public InputStream istream;
     public String uri;
-    JsonParser jsonParser=new JsonParser();
-
+    public static HashMap<Integer,ApliMonument> monumentHashMap = new HashMap<Integer, ApliMonument>();
 
 
     public ArrayList<ApliMonument> getAlistMonu() {
@@ -77,6 +78,7 @@ public class RecupMonument {
     }
 
     public ArrayList<ApliMonument> getWebServiceMonument() {
+        monumentHashMap.clear();
 
         ArrayList<ApliMonument>AlistMonu=new ArrayList<ApliMonument>();
 
@@ -88,7 +90,10 @@ public class RecupMonument {
         LatLng geoloc;
 
         try {
-            String output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument()).get();
+            String output = null;
+            JsonParser jsonParser=new JsonParser();
+
+            output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument()).get();
             Log.d("xml",output);
 
             if (output!=null) {
@@ -120,9 +125,10 @@ public class RecupMonument {
                         monu.setNote(note);
                         monu.setGeoloc(geoloc);
                         monu.setVille(ville);
+                        monu.setType(type);
 
                         AlistMonu.add(monu);
-
+                        monumentHashMap.put(monu.getId(),monu);
 
                     }
                 }

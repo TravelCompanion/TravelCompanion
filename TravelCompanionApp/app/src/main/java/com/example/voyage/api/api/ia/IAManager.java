@@ -1,6 +1,8 @@
 package com.example.voyage.api.api.ia;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.example.voyage.api.api.data.TheoricDataBase;
 import com.example.voyage.api.api.data.TheoricPlace;
@@ -39,7 +41,11 @@ public class IAManager {
 					ia.propagate(Matrix.mult(m, place.getNote())).getValue(0, 0), place));
 		}
 
-		tmpList.sort(MathUnitComparator.getByNameDouble("<"));
+		//Comparator compare = MathUnitComparator.getByNameDouble("<");
+		//noinspection Since15
+		//tmpList.sort(compare);
+		Collections.sort(tmpList);
+		//tmpList.sort(MathUnitComparator.getByNameDouble("<"));
 		return tmpList;
 	}
 

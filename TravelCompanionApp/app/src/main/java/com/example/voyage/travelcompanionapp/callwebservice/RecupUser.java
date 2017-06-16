@@ -69,7 +69,7 @@ public class RecupUser {
                             JSONObject json_datavaleur = joutput.getJSONObject(j);
                             dataoutput=json_datavaleur.getString("id");
                         }
-
+                appuser.setId(dataoutput);
                 String user=jsonParser2.execute(Configuration.IpDevice()+Configuration.getRestUser(dataoutput)).get();
                 JSONArray jArray = new JSONArray("[" + user + "]");
 

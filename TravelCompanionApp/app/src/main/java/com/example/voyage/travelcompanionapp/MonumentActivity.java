@@ -29,11 +29,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.voyage.api.api.data.TheoricMainUser;
 import com.example.voyage.api.api.data.TheoricPlace;
 import com.example.voyage.api.api.data.TheoricUser;
 import com.example.voyage.api.api.ia.IAManager;
+import com.example.voyage.api.common.type.TypeConfiguration;
+import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.model.Monument;
 import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
+import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricPlaceConvertionApli;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricUserConvertionApli;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 
@@ -184,22 +190,26 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
 
 
-   /* public  static  void requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
-        TheoricUser tu = convertTo(ApliUser);
-        ArrayList<TheoricPlace> tps = new ArrayList<TheoricPlace>();
+    public  static   ArrayList<ApliMonument> requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
+        TypeConfiguration.getConfig(new TypeSafeMemory());
+        TheoricUserConvertionApli userConvertionApli = new TheoricUserConvertionApli();
+        TheoricPlaceConvertionApli placeConvertionApli = new TheoricPlaceConvertionApli();
+
+        TheoricUser theoricUser = userConvertionApli.convertFrom(apliUser);
+        ArrayList<TheoricPlace> places = new ArrayList<TheoricPlace>();
         for(ApliMonument apliMonument : monuments)
-            tps.add(convertTo(apliMonument));
-        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(TheoricUser tu, ArrayList<TheoricPlace> tps);
-               //CompareUnitDouble<T>   CompareUnitDouble<TheoricPlace>
-               //        T element;         TheoricPlace element;
-               //        double value;      double value;
-               //TheoricPlace t = result.get(0).getElement();
-            //IAManager.selectPlace(0,result);
-        //IAManager.shortLearn(tu,tp);
-        //IAManager.learn(tu,tp,note);
-        //return result;
+            places.add(placeConvertionApli.convertFrom(apliMonument));
+
+        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(theoricUser, places);
+        ArrayList<ApliMonument> apliMonuments = new ArrayList<ApliMonument>();
+
         for(CompareUnitDouble<TheoricPlace> cud : result)
-            list.add(convertfrom(cud.getElement()));
-    }*/
+            apliMonuments.add(placeConvertionApli.convertTo(cud.getElement()));
+        for(ApliMonument monument : apliMonuments) {
+            monument.setDescription(RecupMonument.monumentHashMap.get(monument.getId()).getDescription());
+            monument.setGeoloc(RecupMonument.monumentHashMap.get(monument.getId()).getGeoloc());
+        }
+        return apliMonuments;
+    }
 
 }

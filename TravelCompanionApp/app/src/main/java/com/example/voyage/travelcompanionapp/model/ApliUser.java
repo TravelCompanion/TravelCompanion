@@ -22,6 +22,12 @@ public class ApliUser {
     private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
     private ArrayList<ApliUser> friends = new ArrayList<ApliUser>();
 
+    public ApliUser(int id, String userName, HashMap<PlaceType, Double> pref) {
+        this.id = ""+id;
+        this.username = userName;
+        this.preferences =pref;
+    }
+
     public void setPosition(CoordinatesDouble position) {
         this.position = position;
     }

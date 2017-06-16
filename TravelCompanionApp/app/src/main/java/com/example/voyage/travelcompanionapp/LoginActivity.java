@@ -377,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         Log.d("Tag","connexionWeservice");
                         session.createLoginSession(mEmailView.getText().toString());
-
+                        session.appuser=apliuser;
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
