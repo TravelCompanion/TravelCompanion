@@ -1,6 +1,6 @@
 package tools.math.compare;
 
-public class CompareUnitDouble<T> {
+public class CompareUnitDouble<T> implements Comparable<CompareUnitDouble<T>>{
 	private double value;
 	private T element;
 	
@@ -17,9 +17,12 @@ public class CompareUnitDouble<T> {
 		return element;
 	}
 
-	@Override
 	public String toString() {
 		return "CompareUnitDouble [value=" + value + ", element=" + element + "]";
+	}
+
+	public int compareTo(CompareUnitDouble<T> o) {
+		return this.value < o.value ? 1 : this.value == o.value ? 0 :-1;
 	}
 	
 	

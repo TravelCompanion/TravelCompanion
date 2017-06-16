@@ -1,6 +1,7 @@
 package api.ia;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import api.data.TheoricDataBase;
 import api.data.TheoricPlace;
@@ -14,7 +15,6 @@ import tools.ia.learning.PerceptronLearning;
 import tools.math.MathTools;
 import tools.math.Matrix;
 import tools.math.compare.CompareUnitDouble;
-import tools.math.compare.MathUnitComparator;
 import tools.polls.Elector;
 import tools.polls.Elegible;
 import tools.polls.MajorityJudgmentManager;
@@ -41,7 +41,8 @@ public class IAManager {
 					ia.propagate(Matrix.mult(m, place.getNote())).getValue(0, 0), place));
 		}
 
-		tmpList.sort(MathUnitComparator.getByNameDouble("<"));
+		//tmpList.sort(MathUnitComparator.getByNameDouble("<"));
+		Collections.sort(tmpList);
 		return tmpList;
 	}
 
@@ -66,7 +67,7 @@ public class IAManager {
 			m = normalise(m, place.getNumberOfTypes());
 			tmpList.add(new CompareUnitDouble<TheoricPlace>(ia.propagate(m).getValue(0, 0), place));
 		}
-
+		Collections.sort(tmpList);
 		return tmpList;
 	}
 

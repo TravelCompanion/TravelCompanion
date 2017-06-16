@@ -1,11 +1,11 @@
 package tools.polls;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import tools.math.Matrix;
 import tools.math.compare.CompareUnitDouble;
 import tools.math.compare.MathComparator;
-import tools.math.compare.MathUnitComparator;
 
 public class MajorityJudgmentManager {
 
@@ -33,7 +33,8 @@ public class MajorityJudgmentManager {
 	public static ArrayList<CompareUnitDouble<Elegible>> election(ArrayList<Elector> electors, ArrayList<Elegible> elegibles) {
 		Matrix votes = getVotes(electors, elegibles);
 		ArrayList<CompareUnitDouble<Elegible>> compareEligible = getResluts(elegibles, votes);
-		compareEligible.sort(MathUnitComparator.getByNameDouble("<"));
+		//compareEligible.sort(MathUnitComparator.getByNameDouble("<"));
+		Collections.sort(compareEligible);
 		return compareEligible;
 	}
 }
