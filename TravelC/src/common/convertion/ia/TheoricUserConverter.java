@@ -1,6 +1,7 @@
 package common.convertion.ia;
 
 import api.data.TheoricUser;
+
 import common.convertion.generic.Converter;
 
 public interface TheoricUserConverter<T2> extends Converter<TheoricUser,T2> {

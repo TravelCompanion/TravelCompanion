@@ -1,6 +1,7 @@
 package common.convertion.ia;
 
 import api.data.TheoricPlace;
+
 import common.convertion.generic.Converter;
 
 public interface TheoricPlaceConverter<T2> extends Converter<TheoricPlace, T2>{

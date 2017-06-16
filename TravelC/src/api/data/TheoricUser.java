@@ -3,7 +3,7 @@ package api.data;
 import java.util.ArrayList;
 
 import api.ia.IAManager;
-import tools.list.FileStruct;
+
 import tools.math.CoordinatesDouble;
 import tools.math.Matrix;
 import tools.polls.Elector;

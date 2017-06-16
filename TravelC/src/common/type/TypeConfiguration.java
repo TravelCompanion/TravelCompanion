@@ -3,6 +3,7 @@ package common.type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import tools.math.Matrix;
 import tools.parse.StringParser;
 
 public class TypeConfiguration {
@@ -16,7 +17,7 @@ public class TypeConfiguration {
 	/**number of types*/
 	public static ArrayList<PlaceType> types = new ArrayList<PlaceType>();
 	/**list of types*/
-
+	//public static Matrix typeRelation;
 	private TypeConfiguration() {
 		ArrayList<String> lines = StringParser.readData(PATH);
 		String cur;

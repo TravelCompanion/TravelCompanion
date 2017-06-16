@@ -253,20 +253,33 @@ public class PersistenceData {
 		return m;
 
 	}
-	
+
 	public CoordinatesDouble positionMonument(int id) throws SQLException {
 
 		ResultSet Res;
 		CoordinatesDouble coordinatesDouble = null;
-		Res = db.executionQuery(
-				"select id_monument,latitude,longitude from monument where id_monument="+id);
+		Res = db.executionQuery("select id_monument,latitude,longitude from monument where id_monument=" + id);
 
 		while (Res.next()) {
-			coordinatesDouble = new CoordinatesDouble(new double[]{Res.getDouble(2),Res.getDouble(3)});
+			coordinatesDouble = new CoordinatesDouble(new double[] { Res.getDouble(2), Res.getDouble(3) });
 
 		}
 
 		return coordinatesDouble;
+
+	}
+
+	public ArrayList<String> allMonumentType() throws SQLException {
+
+		ResultSet Res;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		Res = db.executionQuery("select id_monument,type from monument");
+
+		while (Res.next()) {
+			arrayList.add(Res.getString(2));
+		}
+
+		return arrayList;
 
 	}
 

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import api.data.TheoricMainUser;
 import api.data.TheoricUser;
+
 import common.convertion.ia.TheoricUserConverter;
 import common.type.TypeConfiguration;
+
 import model.Utilisateur;
+
 import tools.math.Matrix;
 import tools.parse.StringParser;
 

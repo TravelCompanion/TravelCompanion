@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import api.data.TheoricDataBase;
 import api.data.TheoricPlace;
 import api.data.TheoricUser;
+
 import common.type.TypeConfiguration;
+
 import tools.ia.Perceptron;
 import tools.ia.decition.SigmoidDecision;
 import tools.ia.learning.PerceptronLearning;

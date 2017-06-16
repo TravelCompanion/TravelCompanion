@@ -26,8 +26,8 @@ public class SigmoidDecision extends AbstractDecision {
 		double tmpval;
 		for (int x = 0; x < result.sizeX; x++)
 			for (int y = 0; y < result.sizeY; y++) {
-				tmpval = tmp.getMatrix()[x][y];
-				tmp.getMatrix()[x][y] = curve*tmpval * (1 - tmpval);
+				tmpval = tmp.getValue(x, y);
+				tmp.setValue(x, y, curve*tmpval * (1 - tmpval)); 
 			}
 		return tmp;
 	}

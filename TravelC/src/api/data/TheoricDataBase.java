@@ -1,6 +1,7 @@
 package api.data;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,12 +9,15 @@ import common.convertion.ia.bdd.TheoricPlaceConvertionDB;
 import common.convertion.ia.bdd.TheoricUserConvertionDB;
 import common.type.TypeConfiguration;
 import common.type.TypeSafeMemory;
+
 import model.Monument;
 import model.Utilisateur;
+
 import persistence.PersistenceData;
 import persistence.exception.NoPlaceFoundException;
 import persistence.exception.NoUserFoundException;
 import persistence.exception.YouHaveNoFriendsExeption;
+
 import tools.math.CoordinatesDouble;
 
 public class TheoricDataBase {
