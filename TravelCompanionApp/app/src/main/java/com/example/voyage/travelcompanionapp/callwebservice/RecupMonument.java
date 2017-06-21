@@ -77,7 +77,7 @@ public class RecupMonument {
 
     }
 
-    public ArrayList<ApliMonument> getWebServiceMonument() {
+    public ArrayList<ApliMonument> getWebServiceMonument(String lat, String lon) {
         monumentHashMap.clear();
 
         ArrayList<ApliMonument>AlistMonu=new ArrayList<ApliMonument>();
@@ -85,7 +85,7 @@ public class RecupMonument {
         String descrip="aucune description";
         String name,ville,type;
         int id,note;
-        double lat,lon;
+        double latmonu,lonmonu;
         Double[]dist = new Double[2];
         LatLng geoloc;
 
@@ -93,7 +93,7 @@ public class RecupMonument {
             String output = null;
             JsonParser jsonParser=new JsonParser();
 
-            output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument()).get();
+            output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument(lat,lon)).get();
             Log.d("xml",output);
 
             if (output!=null) {
@@ -111,13 +111,13 @@ public class RecupMonument {
                         descrip = array.getJSONObject(k).getString("description");
                         name = array.getJSONObject(k).getString("name_monument");
                         id = array.getJSONObject(k).getInt("id_monument");
-                        lat = array.getJSONObject(k).getDouble("latitude");
-                        lon = array.getJSONObject(k).getDouble("longitude");
+                        latmonu = array.getJSONObject(k).getDouble("latitude");
+                        lonmonu = array.getJSONObject(k).getDouble("longitude");
                         dist[0] = array.getJSONObject(k).getDouble("distance");
                         type = array.getJSONObject(k).getString("type");
                         note = array.getJSONObject(k).getInt("note");
                         ville= array.getJSONObject(k).getString("city");
-                        geoloc= new LatLng(lat,lon);
+                        geoloc= new LatLng(latmonu,lonmonu);
                         monu.setName(name);
                         monu.setDescription(descrip);
                         monu.setDistance(dist);

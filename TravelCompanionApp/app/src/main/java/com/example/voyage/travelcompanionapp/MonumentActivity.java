@@ -52,11 +52,16 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
     Bundle savedInstanceState;
     final Context context = this;
     RatingBar ratingBar;
+    Session session;
+
+    public Note note_monu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("PrefDistance", 0);
         super.onCreate(savedInstanceState);
         Configuration config = getResources().getConfiguration();
+        session = Session.getSession(getApplicationContext());
+
         int activity_select;
         String description;
 
@@ -67,10 +72,11 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         else{
             activity_select= R.layout.content_monument;
         }
+
+
         setContentView(activity_select);
         Toolbar bar_monument_info=(Toolbar)findViewById(R.id.toolbar_monumentActivity);
         setSupportActionBar(bar_monument_info);
-        setActionbarBackable();
         visite = (Button) findViewById(R.id.button_visite);
 
         setActionbarBackable();
@@ -172,7 +178,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
     public void addListenerOnRatingBar(RatingBar r) {
 
-        Note note_monu = new Note();
+        note_monu = new Note();
         String rate;
 
         rate=String.valueOf(Integer.valueOf((int) r.getRating()));
@@ -182,10 +188,28 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
             public void onRatingChanged(RatingBar ratingB, float rating,
                                         boolean fromUser) {
 
-                Log.d("user_Note",String.valueOf(rating));
+                Log.d("user_Notes",String.valueOf(rating));
 
             }
         });
+        TheoricUser testlearn=testlearn(session.USER_CONVERTION_APLI.convertFrom(session.appuser),note_monu.getNote());
+        Log.d("user_class_note",String.valueOf(note_monu.getNote()));
+        //Log.d("IAuserPreference_user",Session.appuser.getUsername());
+        ApliUser appuserIa=session.USER_CONVERTION_APLI.convertTo(testlearn);
+        appuserIa.setEmail(session.appuser.getEmail());
+        appuserIa.setId(session.appuser.getId());
+        appuserIa.setPosition(session.appuser.getPosition());
+        appuserIa.setPass(session.appuser.getPass());
+        appuserIa.setFriends(session.appuser.getFriends());
+        session.appuser=appuserIa;
+        Log.d("IAuserPreference_user",String.valueOf(Session.appuser.getPreferences()));
+        //Session.appuser.set
+    }
+
+    public TheoricUser testlearn(TheoricUser theoricUser,double note){
+        TheoricUser resultIa=IAManager.learn(theoricUser,note);
+        return resultIa;
+
     }
 
 

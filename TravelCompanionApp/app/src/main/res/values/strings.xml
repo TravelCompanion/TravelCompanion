@@ -22,12 +22,20 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_retour">retour</string>
+    <string name="title_switch_proximité"> Voici les monuments à proximités</string>
+    <string name="title_switch_suggestion">Voici les monuments qu\'on vous suggère</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_menu">Menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_profile">profil</string>
     <string name="title_activity_settings">Settings</string>
     <string name="error_connection">login ou le mot de passe est incorrect</string>
+    <string name="mot_de_pass_non_identique">Les mots de passe saisis ne sont pas identiques</string>
+    <string name="not_email">le champs email n\'est pas valide</string>
+
+    <string name="mail_exite">ce mail existe deja</string>
+
+
     <string name="user">Utilisateur</string>
     <string name="note">Noter</string>
     <string name="fermer">Fermer</string>

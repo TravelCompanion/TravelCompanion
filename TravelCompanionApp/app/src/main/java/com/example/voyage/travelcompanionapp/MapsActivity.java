@@ -19,23 +19,30 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.voyage.api.api.ia.IAManager;
 import com.example.voyage.travelcompanionapp.callwebservice.ConnexionInternet;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -54,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 //import com.example.voyage.api.externalData.VirtualUser;
 import com.example.voyage.api.tools.math.CoordinatesDouble;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -82,6 +90,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     String emailname="";
     private DrawerLayout drawer;
     Toolbar toolbar;
+    Switch switcha;
+    CircleOptions circlePosition;
 
 
 
@@ -97,7 +107,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         HashMap<String, String> userSession = session.getUserDetails();
         // emailname
-        emailname = userSession.get(Session.KEY_EMAIL);
+        emailname = userSession.get(session.KEY_EMAIL);
 
         Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -109,6 +119,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        switcha = (Switch)findViewById(R.id.switchAB);
+        switcha.setText(R.string.title_switch_proximité);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (mGoogleApiClient == null) {
@@ -179,8 +192,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                             location = locationManager.getLastKnownLocation(provider);
                             if (location != null) {
                                 Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
-                                appliuser = new ApliUser (Session.appuser.getId(),new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}),Session.appuser.getPreferences());
-                                Session.appuser = appliuser;
+                                appliuser = new ApliUser (session.appuser.getId(),new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}),session.appuser.getPreferences());
+                                session.appuser = appliuser;
                             }
                         }
                     }
@@ -254,7 +267,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             mMap.setMyLocationEnabled(true);
             LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
-            CircleOptions circlePosition = drawCircle(position);
+            circlePosition = drawCircle(position);
             mMap.addCircle(circlePosition);
 
             LocationAvailability locationAvailability =
@@ -269,17 +282,37 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (location != null) {
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                     //appliuser = new ApliUser (emailname,new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}));
-
-                    //Session.appuser = appliuser;
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
                 }
             }
 
             mMap.getUiSettings().setZoomControlsEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
+            switcha.setChecked(false);
             RecupMonument AlistMonu=new RecupMonument();
+            afficheListMarker(list_monument,AlistMonu.getWebServiceMonument(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude())),circlePosition,mMap);
+            /*String currentafficheLocation=String.valueOf(location.getLatitude())+"/"+String.valueOf(location.getLongitude());
+            Toast.makeText(getApplicationContext(),currentafficheLocation , Toast.LENGTH_LONG).show();*/
+
+            switcha.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        RecupMonument AlistMonu=new RecupMonument();
+                        afficheListMarkerSuggestion(list_monument,MonumentActivity.requestSuggest(session.appuser,AlistMonu.getWebServiceMonument(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()))),circlePosition,mMap);
+                        switcha.setText(R.string.title_switch_suggestion);
+
+                    }
+                    if (isChecked==false){
+                        RecupMonument AlistMonu=new RecupMonument();
+                        afficheListMarker(list_monument,AlistMonu.getWebServiceMonument(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude())),circlePosition,mMap);
+                        switcha.setText(R.string.title_switch_proximité);
+
+                    }
+                }
+            });
+            /*RecupMonument AlistMonu=new RecupMonument();
             if(ConnexionInternet.isConnectedInternet(MapsActivity.this)){
                 //marqueurmonus = listMarqueurMonu(AlistMonu.getWebServiceMonument());
                 ArrayList<ApliMonument> monu1;
@@ -291,7 +324,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             else{
                 afficheListMarker(list_monument,AlistMonu.getAlistMonu(),circlePosition,mMap);
-            }
+            }*/
 
         }
     }
@@ -307,8 +340,28 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        /*getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.myswitch);
+        menuItem.setActionView(R.layout.switch_button_layout);
+        switcha = (Switch)menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.switchAB);
+        switcha.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Toast.makeText(getApplicationContext(), "bouton check " , Toast.LENGTH_LONG).show();
+
+                }
+                if(isChecked==false){
+                    Toast.makeText(getApplicationContext(), "bouton uncheck " , Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });*/
+
+
         return true;
+
     }
 
     @Override
@@ -375,13 +428,33 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
     public void placeMarker(ArrayList<ApliMonument> listlatlon, GoogleMap googleMap) {
+            googleMap.clear();
             for(ApliMonument lalo: listlatlon) {
                 MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
-
                 googleMap.addMarker(markerop);
             }
 
     }
+
+    public void placeMarkerLine(ArrayList<ApliMonument> listlatlon, GoogleMap googleMap, LatLng currentl) {
+        googleMap.clear();
+        ArrayList<LatLng> points= new ArrayList<LatLng>();
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.color(Color.argb(Color.alpha(Color.BLUE), Color.BLUE,Color.GREEN,Color.GRAY));
+        polylineOptions.width(2);
+        points.add(currentl);
+        for(ApliMonument lalo: listlatlon) {
+            MarkerOptions markerop = new MarkerOptions().position(lalo.getGeoloc()).title(lalo.getName());
+            points.add(lalo.getGeoloc());
+            googleMap.addMarker(markerop);
+        }
+        polylineOptions.addAll(points);
+        googleMap.addPolyline(polylineOptions);
+
+    }
+
+
 
 
         public ArrayList<String> nameFilterMonu(ArrayList<ApliMonument>listmonu){
@@ -438,6 +511,49 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                         editor.putString(KEY_DESCRIP_MONUMENT,String.valueOf(filtermonu.get(i).getDescription()));
 
                         editor.putString(KEY_ID_MONUMENT, idMonument);
+                        Log.d("Id monument",idMonument);
+                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
+                        startActivity(intent);
+
+                    }
+                }
+                editor.commit();
+            }
+        });
+
+    }
+
+    public void afficheListMarkerSuggestion(ListView listV, final ArrayList<ApliMonument> keepMarkerApliMonument, final CircleOptions circleP, final GoogleMap googleMap){
+        ArrayAdapter<String> listadaptater;
+        ArrayList<String> namemonu=nameFilterMonu(keepMarkerApliMonument);
+
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, namemonu);
+        listV.setAdapter(listadaptater);
+        LatLng currentlocation=new LatLng(location.getLatitude(),location.getLongitude());
+        placeMarker(keepMarkerApliMonument,googleMap);
+
+        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                editor = preferences.edit();
+                for (int i = 0; i < keepMarkerApliMonument.size(); i++) {
+                    keepMarkerApliMonument.get(i).setDistance(keepMarkerApliMonument.get(i).calculdistance(keepMarkerApliMonument.get(i).getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
+
+                    if (position == i) {
+                        DecimalFormat df = new DecimalFormat("#");
+                        String elt = ""+df.format(keepMarkerApliMonument.get(i).getDistance()[0]);
+                        String idMonument = String.valueOf(keepMarkerApliMonument.get(i).getId());
+                        String monument_name = keepMarkerApliMonument.get(i).getName();
+
+                        editor.putString(KEY_DIST_MONUMENT, elt);
+                        editor.putString(KEY_NAME_MONUMENT, monument_name);
+                        editor.putString(KEY_DESCRIP_MONUMENT,String.valueOf(keepMarkerApliMonument.get(i).getDescription()));
+
+                        editor.putString(KEY_ID_MONUMENT, idMonument);
+                        //A modifier pour apprentissage
+                        IAManager.selectPlace(position,IAManager.results);
+                        //IAManager.shortLearn(session.USER_CONVERTION_APLI.convertFrom(Session.appuser),session.PLACE_CONVERTION_APLI.convertFrom(keepMarkerApliMonument.get(i)));
 
                         Log.d("Id monument",idMonument);
                         Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);

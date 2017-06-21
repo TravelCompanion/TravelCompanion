@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecupUser {
 
@@ -97,4 +99,28 @@ public class RecupUser {
         }
         return appuser;
 }
+public boolean inscription(String mail, String mdp){
+    boolean repinscript=false;
+    if (this.testUser(mail,mdp)){
+
+
+    }
+
+    return repinscript;
+}
+
+    public boolean validateEmail(String mail) {
+        boolean result=false;
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern p = Pattern.compile(EMAIL_PATTERN);
+        Matcher m = p.matcher(mail);
+        if (m.matches()) {
+            result=true;
+        }
+
+      return result;
+    }
+
 }

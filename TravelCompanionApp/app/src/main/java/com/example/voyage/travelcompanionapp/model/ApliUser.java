@@ -16,8 +16,12 @@ import com.example.voyage.api.tools.parse.StringParser;
 public class ApliUser {
 
     public ApliUser(){}
-
+    private String username;
+    private String email;
     private String id;
+    private String pass;
+
+
     private CoordinatesDouble position;
     private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
     private ArrayList<ApliUser> friends = new ArrayList<ApliUser>();
@@ -34,6 +38,10 @@ public class ApliUser {
 
     public void setPreferences(HashMap<PlaceType, Double> preferences) {
         this.preferences = preferences;
+    }
+    public ApliUser(String username, String pass){
+        this.username=username;
+        this.pass=pass;
     }
 
     public void setFriends(ArrayList<ApliUser> friends) {
@@ -56,8 +64,6 @@ public class ApliUser {
         this.email = email;
     }
 
-    private String username;
-    private String email;
 
     public void setId(String id) {
         this.id = id;
@@ -109,4 +115,13 @@ public class ApliUser {
     public ArrayList<ApliUser> getFriends() {
         return friends;
     }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
 }

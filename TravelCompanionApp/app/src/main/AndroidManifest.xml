@@ -75,6 +75,13 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.voyage.travelcompanionapp.MapsActivity" />
     </activity>
+
+        <activity
+            android:name=".PreferencesInscriptionActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="com.example.voyage.travelcompanionapp.InscriptionActivity" >
+        </activity>
         <activity
             android:name=".PreferencesActivity"
             android:label="@string/title_activity_preferences"

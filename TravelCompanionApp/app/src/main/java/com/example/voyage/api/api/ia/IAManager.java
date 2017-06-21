@@ -25,8 +25,10 @@ public class IAManager {
 	public static final double PERCEPTRON_CURVE = 0.1;                                                                              
 	public static Perceptron ia = new Perceptron(new SigmoidDecision(PERCEPTRON_CURVE), new PerceptronLearning());
 	private static double lastResult;
+	private static int choice;
+	public static ArrayList<CompareUnitDouble<TheoricPlace>> results;
 
-	public static ArrayList<CompareUnitDouble<TheoricPlace>> choosePlaces() {
+    public static ArrayList<CompareUnitDouble<TheoricPlace>> choosePlaces() {
 		return choosePlaces(TheoricDataBase.mainUser, TheoricDataBase.places);
 	}
 
@@ -44,6 +46,7 @@ public class IAManager {
 		//Comparator compare = MathUnitComparator.getByNameDouble("<");
 		//noinspection Since15
 		//tmpList.sort(compare);
+		results = tmpList;
 		Collections.sort(tmpList);
 		//tmpList.sort(MathUnitComparator.getByNameDouble("<"));
 		return tmpList;
@@ -74,9 +77,24 @@ public class IAManager {
 		return tmpList;
 	}
 
+	public static void selectPlace(int place){
+		choice = place;
+	}
+
 	public static TheoricPlace selectPlace(int posPlace, ArrayList<CompareUnitDouble<TheoricPlace>> list) {
 		lastResult = list.get(posPlace).getValue();
 		return list.get(posPlace).getElement();
+	}
+
+	public static TheoricUser learn(TheoricUser theoricUser, double note) {
+		note = note / 5;
+		TheoricPlace place = results.get(choice).getElement();
+		ia.configureLearning(place.getTypes(), results.get(choice).getValue(), note);
+		ia.learn();
+		for (int i = 0; i < ia.numberWeights; i++)
+			ia.getWeights().setValue(0, i, MathTools.roundAt(ia.getWeights().getValue(0, i), 3));
+		theoricUser.updatePref(ia.getWeights());
+		return theoricUser;
 	}
 
 	public static void learn(TheoricUser theoricUser, TheoricPlace place, double note) {
@@ -88,12 +106,13 @@ public class IAManager {
 		theoricUser.updatePref(ia.getWeights());
 	}
 
-	public static void shortLearn(TheoricUser theoricUser, TheoricPlace place) {
+	public static TheoricUser shortLearn(TheoricUser theoricUser, TheoricPlace place) {
 		ia.configureLearning(place.getTypes(), 0, 0.1);
 		ia.learn();
 		for (int i = 0; i < ia.numberWeights; i++)
 			ia.getWeights().setValue(0, i, MathTools.roundAt(ia.getWeights().getValue(0, i), 3));
 		theoricUser.updatePref(ia.getWeights());
+		return  theoricUser;
 	}
 
 	private static Matrix normalise(Matrix type, int numberOfType) {
