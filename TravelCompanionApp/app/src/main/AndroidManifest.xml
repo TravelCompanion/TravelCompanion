@@ -52,7 +52,9 @@
         <activity
             android:name=".ParametreActivity"
             android:label="@string/title_compte"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="com.example.voyage.travelcompanionapp.ProfilActivity"/>
+
         <activity
             android:name=".ProfilActivity"
             android:label="@string/title_profil"

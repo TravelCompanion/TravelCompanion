@@ -109,7 +109,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         // emailname
         emailname = userSession.get(session.KEY_EMAIL);
 
-        Toast.makeText(getApplicationContext(), "vous etes connecté: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+        Log.d("RéponseConnexion","vous etes connecté: " + session.isLoggedIn());
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -193,6 +193,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                             if (location != null) {
                                 Log.d("GPS Activé", "Latitude " + location.getLatitude() + " et longitude " + location.getLongitude());
                                 appliuser = new ApliUser (session.appuser.getId(),new CoordinatesDouble(new double[]{location.getLatitude(),location.getLongitude()}),session.appuser.getPreferences());
+                                appliuser.setEmail(session.appuser.getEmail());
+                                appliuser.setUsername(session.appuser.getUsername());
+
                                 session.appuser = appliuser;
                             }
                         }

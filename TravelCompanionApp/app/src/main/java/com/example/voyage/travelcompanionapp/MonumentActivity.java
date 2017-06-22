@@ -202,7 +202,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         appuserIa.setPass(session.appuser.getPass());
         appuserIa.setFriends(session.appuser.getFriends());
         session.appuser=appuserIa;
-        Log.d("IAuserPreference_user",String.valueOf(Session.appuser.getPreferences()));
+        Log.d("IAuserPreference_user",String.valueOf(session.appuser.getPreferences()));
         //Session.appuser.set
     }
 
