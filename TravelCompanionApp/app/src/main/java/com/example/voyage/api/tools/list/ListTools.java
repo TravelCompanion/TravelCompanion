@@ -40,7 +40,8 @@ public class ListTools {
 	
 	public static <T> ArrayList<T> sortCompareUnitDoubleListAsc(ArrayList<CompareUnitDouble<T>> list){
 		ArrayList<T> sortList = new ArrayList<T>();
-		list.sort(MathUnitComparator.getByNameDouble("<"));
+        //noinspection Since15
+        list.sort(MathUnitComparator.getByNameDouble("<"));
 		for(CompareUnitDouble<T> elt : list)
 			sortList.add(elt.getElement());
 		return sortList;

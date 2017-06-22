@@ -6,17 +6,18 @@ public class MathUnitComparator<T1> {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Comparator<T> getByNameDouble(String symb) {
+		Comparator<T> result = null;
 		switch (symb) {
 		case "<":
-			return (Comparator<T>) MathUnitComparator.InferiorUnitDouble.get();
+			 result = (Comparator<T>) InferiorUnitDouble.get();
 		case ">":
-			return (Comparator<T>) MathUnitComparator.SuperiorUnitDouble.get();
+			result = (Comparator<T>) MathUnitComparator.SuperiorUnitDouble.get();
 		case "<=":
-			return (Comparator<T>) MathUnitComparator.InferiorEqualUnitDouble.get();
+			result = (Comparator<T>) MathUnitComparator.InferiorEqualUnitDouble.get();
 		case ">=":
-			return (Comparator<T>) MathUnitComparator.SuperiorEqualUnitDouble.get();
+			result = (Comparator<T>) MathUnitComparator.SuperiorEqualUnitDouble.get();
 		default:
-			return null;
+			return result;
 		}
 	}
 

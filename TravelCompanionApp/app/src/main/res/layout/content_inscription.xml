@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/name_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,8 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <AutoCompleteTextView
-                android:id="@+id/email_user"
+            <EditText
+                android:id="@+id/email_inscription_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/inscription_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/entrer_mot_de_passe"
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/password_rep"
+            android:id="@+id/inscription_password_rep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/entrer_rep_mot_de_passe"

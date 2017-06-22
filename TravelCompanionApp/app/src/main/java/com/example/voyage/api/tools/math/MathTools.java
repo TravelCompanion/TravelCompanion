@@ -94,10 +94,6 @@ public class MathTools {
 			tab2[i] = tab[i];
 		return tab2;
 	}
-	
-	public static double learn(double actual, double learnStep, double wanted, double globalValue, double localValue) {
-		return actual + ((globalValue - localValue) * learnStep * localValue);
-	}
 
 	public static double integrate(double[] tab) {
 		double res = 0;
@@ -105,6 +101,10 @@ public class MathTools {
 			res += (tab[i] + tab[i + 1]) / 2;
 		}
 		return res;
+	}
+
+	public static double roundAt(double number, int n) {
+		return (double) ((int) (number * Math.pow(10, n) + .5)) / Math.pow(10, n);
 	}
 
 }

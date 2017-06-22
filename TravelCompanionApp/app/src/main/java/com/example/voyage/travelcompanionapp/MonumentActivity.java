@@ -29,11 +29,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.voyage.api.data.TheoricPlace;
-import com.example.voyage.api.data.TheoricUser;
-import com.example.voyage.api.ia.IAManager;
+import com.example.voyage.api.api.data.TheoricMainUser;
+import com.example.voyage.api.api.data.TheoricPlace;
+import com.example.voyage.api.api.data.TheoricUser;
+import com.example.voyage.api.api.ia.IAManager;
+import com.example.voyage.api.common.type.TypeConfiguration;
+import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.model.Monument;
 import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
+import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricPlaceConvertionApli;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricUserConvertionApli;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 
@@ -46,13 +52,18 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
     Bundle savedInstanceState;
     final Context context = this;
     RatingBar ratingBar;
+    Session session;
+
+    public Note note_monu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("PrefDistance", 0);
         super.onCreate(savedInstanceState);
         Configuration config = getResources().getConfiguration();
+        session = Session.getSession(getApplicationContext());
+
         int activity_select;
-        String description="aucune description";
+        String description;
 
         if (config.smallestScreenWidthDp >= 600)
         {
@@ -61,21 +72,18 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
         else{
             activity_select= R.layout.content_monument;
         }
+
+
         setContentView(activity_select);
         Toolbar bar_monument_info=(Toolbar)findViewById(R.id.toolbar_monumentActivity);
         setSupportActionBar(bar_monument_info);
-        setActionbarBackable();
         visite = (Button) findViewById(R.id.button_visite);
 
         setActionbarBackable();
-
-        if(pref.getString("description",null).equals("")){
-            description=pref.getString("description",null);
+        description=pref.getString("description",null);
+        if("".equals(pref.getString("description",null))){
+            description="aucune description";
         }
-
-
-
-
 
         TextView descMonu=(TextView)findViewById(R.id.textView_descmonu);
         descMonu.setText(description);
@@ -170,7 +178,7 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
     public void addListenerOnRatingBar(RatingBar r) {
 
-        Note note_monu = new Note();
+        note_monu = new Note();
         String rate;
 
         rate=String.valueOf(Integer.valueOf((int) r.getRating()));
@@ -180,30 +188,52 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
             public void onRatingChanged(RatingBar ratingB, float rating,
                                         boolean fromUser) {
 
-                Log.d("user_Note",String.valueOf(rating));
+                Log.d("user_Notes",String.valueOf(rating));
 
             }
         });
+        TheoricUser testlearn=testlearn(session.USER_CONVERTION_APLI.convertFrom(session.appuser),note_monu.getNote());
+        Log.d("user_class_note",String.valueOf(note_monu.getNote()));
+        //Log.d("IAuserPreference_user",Session.appuser.getUsername());
+        ApliUser appuserIa=session.USER_CONVERTION_APLI.convertTo(testlearn);
+        appuserIa.setEmail(session.appuser.getEmail());
+        appuserIa.setId(session.appuser.getId());
+        appuserIa.setPosition(session.appuser.getPosition());
+        appuserIa.setPass(session.appuser.getPass());
+        appuserIa.setFriends(session.appuser.getFriends());
+        session.appuser=appuserIa;
+        Log.d("IAuserPreference_user",String.valueOf(session.appuser.getPreferences()));
+        //Session.appuser.set
+    }
+
+    public TheoricUser testlearn(TheoricUser theoricUser,double note){
+        TheoricUser resultIa=IAManager.learn(theoricUser,note);
+        return resultIa;
+
     }
 
 
 
-   /* public  static  void requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
-        TheoricUser tu = convertTo(ApliUser);
-        ArrayList<TheoricPlace> tps = new ArrayList<TheoricPlace>();
+    public  static   ArrayList<ApliMonument> requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
+        TypeConfiguration.getConfig(new TypeSafeMemory());
+        TheoricUserConvertionApli userConvertionApli = new TheoricUserConvertionApli();
+        TheoricPlaceConvertionApli placeConvertionApli = new TheoricPlaceConvertionApli();
+
+        TheoricUser theoricUser = userConvertionApli.convertFrom(apliUser);
+        ArrayList<TheoricPlace> places = new ArrayList<TheoricPlace>();
         for(ApliMonument apliMonument : monuments)
-            tps.add(convertTo(apliMonument));
-        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(TheoricUser tu, ArrayList<TheoricPlace> tps);
-               //CompareUnitDouble<T>   CompareUnitDouble<TheoricPlace>
-               //        T element;         TheoricPlace element;
-               //        double value;      double value;
-               //TheoricPlace t = result.get(0).getElement();
-            //IAManager.selectPlace(0,result);
-        //IAManager.shortLearn(tu,tp);
-        //IAManager.learn(tu,tp,note);
-        //return result;
+            places.add(placeConvertionApli.convertFrom(apliMonument));
+
+        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(theoricUser, places);
+        ArrayList<ApliMonument> apliMonuments = new ArrayList<ApliMonument>();
+
         for(CompareUnitDouble<TheoricPlace> cud : result)
-            list.add(convertfrom(cud.getElement()));
-    }*/
+            apliMonuments.add(placeConvertionApli.convertTo(cud.getElement()));
+        for(ApliMonument monument : apliMonuments) {
+            monument.setDescription(RecupMonument.monumentHashMap.get(monument.getId()).getDescription());
+            monument.setGeoloc(RecupMonument.monumentHashMap.get(monument.getId()).getGeoloc());
+        }
+        return apliMonuments;
+    }
 
 }

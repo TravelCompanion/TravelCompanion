@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricPlaceConvertionApli;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricUserConvertionApli;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 
 public class Session {
@@ -17,7 +19,8 @@ public class Session {
         // Editor pour le Shared preferences
         Editor editor;
     int PRIVATE_MODE = 0;
-
+    public static final TheoricUserConvertionApli USER_CONVERTION_APLI = new TheoricUserConvertionApli();
+    public static final TheoricPlaceConvertionApli PLACE_CONVERTION_APLI = new TheoricPlaceConvertionApli();
 
     private static final String PREF_NAME = "PrefSession";
 

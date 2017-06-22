@@ -62,14 +62,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    //private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    Session session;
+
     Button mEmailSignInButton;
     Button inscription;
 
@@ -81,10 +81,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-        session = Session.getSession(getApplicationContext());
         inscription = (Button) findViewById(R.id.login_sign_up);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+       /* mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
                 return false;
             }
-        });
+        });*/
 
          mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         if (mEmailSignInButton != null) {
@@ -155,10 +154,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
-        /*if (mAuthTask != null) {
+   /* private void attemptLogin() {
+        if (mAuthTask != null) {
             return;
-        }*/
+        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -200,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
-    }
+    }*/
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -306,7 +305,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+   /* public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
@@ -360,7 +359,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
-    }
+    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onClick(View view) {
@@ -368,12 +367,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(view== mEmailSignInButton) {
                 if (mEmailView.getText().toString().trim().length()>0 && mPasswordView.getText().toString().trim().length()>0 ){
 
+                    if(Ruser.testUser(mEmailView.getText().toString(),mPasswordView.getText().toString())==true){
+                        Session session;
+                        session = Session.getSession(getApplicationContext());
 
-                    if((mEmailView.getText().toString().equals("test")&&
-                            mPasswordView.getText().toString().equals("admin"))|| Ruser.testUser(mEmailView.getText().toString(),mPasswordView.getText().toString())){
                         ApliUser apliuser;
+
                         apliuser=Ruser.getUser(mEmailView.getText().toString(),mPasswordView.getText().toString());
+
+                        Log.d("Tag","connexionWeservice");
+                        session.createLoginSession(mEmailView.getText().toString());
+                        session.appuser=apliuser;
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                    else if((mEmailView.getText().toString().equals("test")&&
+                            mPasswordView.getText().toString().equals("admin"))){
                         Log.d("Tag","connexion");
+                        Session session;
+                        session = Session.getSession(getApplicationContext());
                         session.createLoginSession(mEmailView.getText().toString());
 
 

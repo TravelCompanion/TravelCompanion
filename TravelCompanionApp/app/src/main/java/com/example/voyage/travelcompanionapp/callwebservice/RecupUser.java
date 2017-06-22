@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecupUser {
 
@@ -22,9 +24,23 @@ public class RecupUser {
             String output = null;
             JsonParser jsonParser=new JsonParser();
             output = jsonParser.execute(Configuration.IpDevice() + Configuration.getIdUser(email, mdp)).get();
+            if (output!=null) {
+                String dataoutput="";
 
-            if (!(output.equals("-1"))){
-                result=true;
+                JSONArray joutput = null;
+                try {
+                    joutput = new JSONArray("[" + output + "]");
+
+                    for (int j = 0; j < joutput.length(); j++) {
+                        JSONObject json_datavaleur = joutput.getJSONObject(j);
+                        dataoutput = json_datavaleur.getString("id");
+                    }
+                    if (!(dataoutput.equals("-1"))) {
+                        result = true;
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -55,7 +71,7 @@ public class RecupUser {
                             JSONObject json_datavaleur = joutput.getJSONObject(j);
                             dataoutput=json_datavaleur.getString("id");
                         }
-
+                appuser.setId(dataoutput);
                 String user=jsonParser2.execute(Configuration.IpDevice()+Configuration.getRestUser(dataoutput)).get();
                 JSONArray jArray = new JSONArray("[" + user + "]");
 
@@ -83,4 +99,28 @@ public class RecupUser {
         }
         return appuser;
 }
+public boolean inscription(String mail, String mdp){
+    boolean repinscript=false;
+    if (this.testUser(mail,mdp)){
+
+
+    }
+
+    return repinscript;
+}
+
+    public boolean validateEmail(String mail) {
+        boolean result=false;
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern p = Pattern.compile(EMAIL_PATTERN);
+        Matcher m = p.matcher(mail);
+        if (m.matches()) {
+            result=true;
+        }
+
+      return result;
+    }
+
 }
