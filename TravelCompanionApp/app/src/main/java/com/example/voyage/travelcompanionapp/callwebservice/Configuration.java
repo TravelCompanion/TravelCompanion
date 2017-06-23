@@ -32,4 +32,10 @@ public class Configuration {
 	public static String inscription(String username, String email, String mdp, String type) {
 		return "/restfulltc/rest/inscription/" + username + "/" + email + "/" + mdp + "/" + type;
 	}
+
+	public static String updateuser(int id,String pref) {
+		return "/restfulltc/rest/updatepreferencesuser/"+ id + "/" +pref;
+	}
+
+
 }

@@ -101,6 +101,8 @@ public class InscriptionActivity extends AppCompatActivity implements View.OnCli
                                 ApliUser appuser = new ApliUser(iEmailView.getText().toString().trim(), iPassViewRep.getText().toString().trim());
                                 session.createLoginSession(iEmailView.getText().toString().trim());
                                 session.appuser = appuser;
+                                session.appuser.setEmail(iEmailView.getText().toString().trim());
+                                session.appuser.setUsername(iUserNameView.getText().toString());
                                 Intent intent = new Intent(InscriptionActivity.this, PreferencesInscriptionActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -122,7 +124,6 @@ public class InscriptionActivity extends AppCompatActivity implements View.OnCli
                     break;
                 }
 
-                //.... etc
             }
         }
 

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
@@ -38,12 +39,16 @@ import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.model.Monument;
 import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
 import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
+import com.example.voyage.travelcompanionapp.callwebservice.RecupUser;
 import com.example.voyage.travelcompanionapp.conversionapi.TheoricPlaceConvertionApli;
 import com.example.voyage.travelcompanionapp.conversionapi.TheoricUserConvertionApli;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.example.voyage.travelcompanionapp.model.ApliUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 
 public class MonumentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener  {
 
@@ -192,18 +197,27 @@ public class MonumentActivity extends AppCompatActivity implements NavigationVie
 
             }
         });
-        TheoricUser testlearn=testlearn(session.USER_CONVERTION_APLI.convertFrom(session.appuser),note_monu.getNote());
-        Log.d("user_class_note",String.valueOf(note_monu.getNote()));
-        //Log.d("IAuserPreference_user",Session.appuser.getUsername());
-        ApliUser appuserIa=session.USER_CONVERTION_APLI.convertTo(testlearn);
-        appuserIa.setEmail(session.appuser.getEmail());
-        appuserIa.setId(session.appuser.getId());
-        appuserIa.setPosition(session.appuser.getPosition());
-        appuserIa.setPass(session.appuser.getPass());
-        appuserIa.setFriends(session.appuser.getFriends());
-        session.appuser=appuserIa;
-        Log.d("IAuserPreference_user",String.valueOf(session.appuser.getPreferences()));
-        //Session.appuser.set
+        if (session.refpage==true){
+            TheoricUser testlearn = testlearn(session.USER_CONVERTION_APLI.convertFrom(session.appuser), note_monu.getNote());
+            Log.d("user_class_note", String.valueOf(note_monu.getNote()));
+            ApliUser appuserIa = session.USER_CONVERTION_APLI.convertTo(testlearn);
+            appuserIa.setEmail(session.appuser.getEmail());
+            appuserIa.setId(session.appuser.getId());
+            appuserIa.setPosition(session.appuser.getPosition());
+            appuserIa.setPass(session.appuser.getPass());
+            appuserIa.setFriends(session.appuser.getFriends());
+            session.appuser = appuserIa;
+            Log.d("IAuserPreferen_user", session.appuser.getPreferences().values().toString());
+            String listprefuseria = session.appuser.getPreferences().values().toString().replaceAll("\\[|\\]", "");
+            Log.d("IAuserPreference_user", listprefuseria);
+            RecupUser user = new RecupUser();
+            boolean result;
+            result=user.updateuser(Integer.valueOf(session.appuser.getId()), listprefuseria);
+            Log.d("result",String.valueOf(result));
+        }
+
+
+
     }
 
     public TheoricUser testlearn(TheoricUser theoricUser,double note){

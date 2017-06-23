@@ -92,6 +92,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     Toolbar toolbar;
     Switch switcha;
     CircleOptions circlePosition;
+    ArrayList<ApliMonument> listmonushort;
 
 
 
@@ -303,7 +304,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
                         RecupMonument AlistMonu=new RecupMonument();
-                        afficheListMarkerSuggestion(list_monument,MonumentActivity.requestSuggest(session.appuser,AlistMonu.getWebServiceMonument(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()))),circlePosition,mMap);
+                        afficheListMarkerSuggestionfiltre(list_monument,ApliUser.requestSuggest(session.appuser,AlistMonu.getWebServiceMonument(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()))),circlePosition,mMap);
                         switcha.setText(R.string.title_switch_suggestion);
 
                     }
@@ -439,6 +440,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+    public void placeMarkerfiltre(ArrayList<ApliMonument> listlatlon, GoogleMap googleMap) {
+        googleMap.clear();
+        for (int i = 0; i < 5; i++) {
+            MarkerOptions markerop = new MarkerOptions().position(listlatlon.get(i).getGeoloc()).title(listlatlon.get(i).getName());
+            googleMap.addMarker(markerop);
+        }
+
+    }
+
     public void placeMarkerLine(ArrayList<ApliMonument> listlatlon, GoogleMap googleMap, LatLng currentl) {
         googleMap.clear();
         ArrayList<LatLng> points= new ArrayList<LatLng>();
@@ -526,6 +536,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+
+
+
     public void afficheListMarkerSuggestion(ListView listV, final ArrayList<ApliMonument> keepMarkerApliMonument, final CircleOptions circleP, final GoogleMap googleMap){
         ArrayAdapter<String> listadaptater;
         ArrayList<String> namemonu=nameFilterMonu(keepMarkerApliMonument);
@@ -567,6 +580,57 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 editor.commit();
             }
         });
+
+    }
+
+    public void afficheListMarkerSuggestionfiltre(ListView listV, final ArrayList<ApliMonument> keepMarkerApliMonument, final CircleOptions circleP, final GoogleMap googleMap){
+        ArrayAdapter<String> listadaptater;
+         listmonushort= new ArrayList<ApliMonument>();
+        for (int k = 0; k < 5; k++) {
+            listmonushort.add(keepMarkerApliMonument.get(k));
+        }
+
+        session.refpage=true;
+        ArrayList<String> namemonu=nameFilterMonu(listmonushort);
+
+        listadaptater = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, namemonu);
+        listV.setAdapter(listadaptater);
+        LatLng currentlocation=new LatLng(location.getLatitude(),location.getLongitude());
+        placeMarkerfiltre(listmonushort,googleMap);
+
+        listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                preferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                editor = preferences.edit();
+                for (int i = 0; i < listmonushort.size(); i++) {
+                    listmonushort.get(i).setDistance(listmonushort.get(i).calculdistance(listmonushort.get(i).getGeoloc(), circleP.getCenter().latitude, circleP.getCenter().longitude));
+
+                    if (position == i) {
+                        DecimalFormat df = new DecimalFormat("#");
+                        String elt = ""+df.format(listmonushort.get(i).getDistance()[0]);
+                        String idMonument = String.valueOf(listmonushort.get(i).getId());
+                        String monument_name = listmonushort.get(i).getName();
+
+                        editor.putString(KEY_DIST_MONUMENT, elt);
+                        editor.putString(KEY_NAME_MONUMENT, monument_name);
+                        editor.putString(KEY_DESCRIP_MONUMENT,String.valueOf(listmonushort.get(i).getDescription()));
+
+                        editor.putString(KEY_ID_MONUMENT, idMonument);
+                        //A modifier pour apprentissage
+                        IAManager.selectPlace(position,IAManager.results);
+                        //IAManager.shortLearn(session.USER_CONVERTION_APLI.convertFrom(Session.appuser),session.PLACE_CONVERTION_APLI.convertFrom(keepMarkerApliMonument.get(i)));
+
+                        Log.d("Id monument",idMonument);
+                        Intent intent = new Intent(MapsActivity.this, MonumentActivity.class);
+                        startActivity(intent);
+
+                    }
+                }
+                editor.commit();
+            }
+        });
+
 
     }
 
