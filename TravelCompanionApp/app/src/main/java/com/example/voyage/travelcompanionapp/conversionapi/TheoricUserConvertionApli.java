@@ -14,9 +14,6 @@ import com.example.voyage.travelcompanionapp.model.ApliUser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by stanley on 16/06/2017.
- */
 
 public class TheoricUserConvertionApli implements TheoricUserConverter<ApliUser>{
 
@@ -40,7 +37,7 @@ public class TheoricUserConvertionApli implements TheoricUserConverter<ApliUser>
     public ApliUser convertTo(TheoricUser data) {
         Matrix tmp = data.getPreferences();
         HashMap<PlaceType,Double> pref = new HashMap<PlaceType, Double>();
-        for (int i = 1; i < tmp.sizeY; i++)
+        for (int i = 0; i < tmp.sizeY; i++)
             pref.put(TypeConfiguration.get(i),tmp.getValue(0,i));
         return new ApliUser(data.getId(),data.getUserName(),pref);
     }

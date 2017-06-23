@@ -7,11 +7,19 @@ import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.example.voyage.api.api.data.TheoricPlace;
+import com.example.voyage.api.api.data.TheoricUser;
+import com.example.voyage.api.api.ia.IAManager;
 import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.common.type.TypeConfiguration;
 import com.example.voyage.api.common.type.PlaceType;
 import com.example.voyage.api.tools.math.CoordinatesDouble;
+import com.example.voyage.api.tools.math.compare.CompareUnitDouble;
 import com.example.voyage.api.tools.parse.StringParser;
+import com.example.voyage.travelcompanionapp.callwebservice.RecupMonument;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricPlaceConvertionApli;
+import com.example.voyage.travelcompanionapp.conversionapi.TheoricUserConvertionApli;
 
 public class ApliUser {
 
@@ -124,4 +132,27 @@ public class ApliUser {
         this.pass = pass;
     }
 
+    public  static   ArrayList<ApliMonument> requestSuggest(ApliUser apliUser, ArrayList<ApliMonument> monuments){
+        TypeConfiguration.getConfig(new TypeSafeMemory());
+        TheoricUserConvertionApli userConvertionApli = new TheoricUserConvertionApli();
+        TheoricPlaceConvertionApli placeConvertionApli = new TheoricPlaceConvertionApli();
+
+        TheoricUser theoricUser = userConvertionApli.convertFrom(apliUser);
+        ArrayList<TheoricPlace> places = new ArrayList<TheoricPlace>();
+        for(ApliMonument apliMonument : monuments)
+            places.add(placeConvertionApli.convertFrom(apliMonument));
+
+        ArrayList<CompareUnitDouble<TheoricPlace>> result = IAManager.choosePlaces(theoricUser, places);
+        ArrayList<ApliMonument> apliMonuments = new ArrayList<ApliMonument>();
+
+        for(CompareUnitDouble<TheoricPlace> cud : result)
+            apliMonuments.add(placeConvertionApli.convertTo(cud.getElement()));
+        for(ApliMonument monument : apliMonuments) {
+            monument.setDescription(RecupMonument.monumentHashMap.get(monument.getId()).getDescription());
+            monument.setGeoloc(RecupMonument.monumentHashMap.get(monument.getId()).getGeoloc());
+        }
+        return apliMonuments;
+    }
+
 }
+

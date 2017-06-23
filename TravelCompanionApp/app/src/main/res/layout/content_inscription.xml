@@ -119,8 +119,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connexion"
-        android:layout_alignBottom="@+id/imageview_profile"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/imageview_profile"
+        android:layout_alignRight="@+id/imageview_profile"
+        android:layout_alignEnd="@+id/imageview_profile"
+        android:layout_marginTop="27dp" />
 
 </RelativeLayout>

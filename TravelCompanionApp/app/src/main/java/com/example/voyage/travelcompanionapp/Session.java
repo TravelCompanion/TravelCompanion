@@ -21,6 +21,7 @@ public class Session {
     int PRIVATE_MODE = 0;
     public static final TheoricUserConvertionApli USER_CONVERTION_APLI = new TheoricUserConvertionApli();
     public static final TheoricPlaceConvertionApli PLACE_CONVERTION_APLI = new TheoricPlaceConvertionApli();
+    public static boolean refpage=false;
 
     private static final String PREF_NAME = "PrefSession";
 

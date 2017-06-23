@@ -15,6 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.voyage.travelcompanionapp.callwebservice.RecupUser;
+
 public class PreferencesInscriptionActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
      CheckBox chkmusee;
      CheckBox chkmaison;
@@ -142,7 +144,11 @@ public class PreferencesInscriptionActivity extends AppCompatActivity implements
                     Log.d("listpref",elempref);
                     session.updateHashMapUserDetails("types_preferences",elempref);
                     Toast.makeText(PreferencesInscriptionActivity.this,"preferences sauvegardés "+session.getUserHashMap().get(Session.KEY_PREFUSER), Toast.LENGTH_SHORT).show();
-                    Session.appuser.setPreferences(session.getUserHashMap().get(Session.KEY_PREFUSER));
+                    session.appuser.setPreferences(session.getUserHashMap().get(Session.KEY_PREFUSER));
+                    RecupUser user2 = new RecupUser();
+                    user2.inscription(session.appuser.getUsername(),session.appuser.getEmail(),session.appuser.getPass(),elempref);
+
+
                 }
                 else{
                     Log.d("listpref","pas d'element dans la liste");

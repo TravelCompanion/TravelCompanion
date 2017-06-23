@@ -18,14 +18,14 @@ import java.util.regex.Pattern;
 public class RecupUser {
 
 
-    public boolean testUser(String email, String mdp){
-        boolean result= false;
+    public boolean testUser(String email, String mdp) {
+        boolean result = false;
         try {
             String output = null;
-            JsonParser jsonParser=new JsonParser();
+            JsonParser jsonParser = new JsonParser();
             output = jsonParser.execute(Configuration.IpDevice() + Configuration.getIdUser(email, mdp)).get();
-            if (output!=null) {
-                String dataoutput="";
+            if (output != null) {
+                String dataoutput = "";
 
                 JSONArray joutput = null;
                 try {
@@ -38,56 +38,52 @@ public class RecupUser {
                     if (!(dataoutput.equals("-1"))) {
                         result = true;
                     }
-                }catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-
-
-        catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
         return result;
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public ApliUser getUser(String email, String mdp){
+    public ApliUser getUser(String email, String mdp) {
 
-        ApliUser appuser= new ApliUser();
-        JsonParser jsonParser1=new JsonParser();
-        JsonParser jsonParser2=new JsonParser();
+        ApliUser appuser = new ApliUser();
+        JsonParser jsonParser1 = new JsonParser();
+        JsonParser jsonParser2 = new JsonParser();
 
-        try{
-                    if (this.testUser(email,mdp)){
-                        String dataoutput="";
-               String output = jsonParser1.execute(Configuration.IpDevice() + Configuration.getIdUser(email, mdp)).get();
-                        JSONArray joutput = new JSONArray("[" + output + "]");
-                        for (int j = 0; j < joutput.length(); j++) {
-                            JSONObject json_datavaleur = joutput.getJSONObject(j);
-                            dataoutput=json_datavaleur.getString("id");
-                        }
+        try {
+            if (this.testUser(email, mdp)) {
+                String dataoutput = "";
+                String output = jsonParser1.execute(Configuration.IpDevice() + Configuration.getIdUser(email, mdp)).get();
+                JSONArray joutput = new JSONArray("[" + output + "]");
+                for (int j = 0; j < joutput.length(); j++) {
+                    JSONObject json_datavaleur = joutput.getJSONObject(j);
+                    dataoutput = json_datavaleur.getString("id");
+                }
                 appuser.setId(dataoutput);
-                String user=jsonParser2.execute(Configuration.IpDevice()+Configuration.getRestUser(dataoutput)).get();
+                String user = jsonParser2.execute(Configuration.IpDevice() + Configuration.getRestUser(dataoutput)).get();
                 JSONArray jArray = new JSONArray("[" + user + "]");
 
-                        for(int k = 0 ; k < jArray.length() ; k++) {
-                            JSONObject json_datatable = jArray.getJSONObject(k);
-                            String datalist=json_datatable.getString("list");
-                            JSONArray array = new JSONArray("["+datalist+"]");
-                            for (int j = 0; j < array.length(); j++) {
-                                JSONObject json_datavaleur = array.getJSONObject(j);
-                                Log.d("utilisateur",json_datavaleur.getString("email"));
-                                appuser.setEmail(json_datavaleur.getString("email"));
-                                appuser.setPreferences(json_datavaleur.getString("preferences"));
-                                appuser.setUsername(json_datavaleur.getString("userName"));
+                for (int k = 0; k < jArray.length(); k++) {
+                    JSONObject json_datatable = jArray.getJSONObject(k);
+                    String datalist = json_datatable.getString("list");
+                    JSONArray array = new JSONArray("[" + datalist + "]");
+                    for (int j = 0; j < array.length(); j++) {
+                        JSONObject json_datavaleur = array.getJSONObject(j);
+                        Log.d("utilisateur", json_datavaleur.getString("email"));
+                        appuser.setEmail(json_datavaleur.getString("email"));
+                        appuser.setPreferences(json_datavaleur.getString("preferences"));
+                        appuser.setUsername(json_datavaleur.getString("userName"));
 
-                            }
-                        }
+                    }
+                }
             }
 
         } catch (InterruptedException e) {
@@ -95,32 +91,90 @@ public class RecupUser {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e1) {
-        e1.printStackTrace();
+            e1.printStackTrace();
         }
         return appuser;
-}
-public boolean inscription(String mail, String mdp){
-    boolean repinscript=false;
-    if (this.testUser(mail,mdp)){
+    }
+
+    public boolean inscription(String username,String mail, String mdp,String typepref) {
+        boolean repinscript = false;
+
+            boolean result = false;
+            try {
+                String outputupdate = null;
+                JsonParser callwebservice = new JsonParser();
+                String urlcall=Configuration.IpDevice() + Configuration.inscription(username,mail,mdp,typepref);
+                outputupdate = callwebservice.execute(urlcall).get();
+                if (outputupdate != null) {
+                    String dataoutput = "";
+                    JSONArray joutput = null;
+                    joutput = new JSONArray("[" + outputupdate + "]");
+                    for (int j = 0; j < joutput.length(); j++) {
+                        JSONObject json_datavaleur = joutput.getJSONObject(j);
+                        dataoutput = json_datavaleur.getString("result");
+                    }
+                    if (dataoutput.equals("true")) {
+                        result = true;
+                    }
+
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return result;
+
 
 
     }
 
-    return repinscript;
-}
 
     public boolean validateEmail(String mail) {
-        boolean result=false;
+        boolean result = false;
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         Pattern p = Pattern.compile(EMAIL_PATTERN);
         Matcher m = p.matcher(mail);
         if (m.matches()) {
-            result=true;
+            result = true;
         }
 
-      return result;
+        return result;
     }
 
+
+    public boolean updateuser(int id, String pref) {
+        boolean result = false;
+        try {
+            String outputupdate = null;
+            JsonParser callwebservice = new JsonParser();
+            String urlcall=Configuration.IpDevice() + Configuration.updateuser(id, pref);
+            outputupdate = callwebservice.execute(Configuration.IpDevice() + Configuration.updateuser(id, pref)).get();
+            if (outputupdate != null) {
+                String dataoutput = "";
+                JSONArray joutput = null;
+                    joutput = new JSONArray("[" + outputupdate + "]");
+                    for (int j = 0; j < joutput.length(); j++) {
+                        JSONObject json_datavaleur = joutput.getJSONObject(j);
+                        dataoutput = json_datavaleur.getString("result");
+                    }
+                    if (dataoutput.equals("true")) {
+                        result = true;
+                    }
+
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
+

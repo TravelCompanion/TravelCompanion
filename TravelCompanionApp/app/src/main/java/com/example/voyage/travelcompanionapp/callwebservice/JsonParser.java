@@ -120,5 +120,38 @@ public class JsonParser extends AsyncTask<String, Integer, String> {
 
 	}
 
+	public InputStream httpClient(InputStream is,String phpClass)
+			throws IllegalStateException, IOException {
+		Configuration config = new Configuration();
+		URL urlObj = new URL(config.IpDevice()+phpClass);
+		// commandes httpClient
+		//HttpClient httpclient = new DefaultHttpClient();
+		HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
+
+		//HttpPost httppost = new HttpPost(config.IpDevice() + phpClass);
+		//httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		//HttpResponse response = httpclient.execute(httppost);
+
+		//HttpEntity entity = response.getEntity();
+		return is = urlConnection.getInputStream();
+
+	}
+
+	public StringBuilder Buffer(InputStream is) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is,
+				"UTF-8"));
+
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
+
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+
+		is.close();
+		return sb;
+	}
+
 
 }
