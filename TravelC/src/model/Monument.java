@@ -136,4 +136,13 @@ public class Monument {
 		this.distance = distance;
 	}
 
+	@Override
+	public String toString() {
+		return "Monument [id_monument=" + id_monument + ", name_monument=" + name_monument + ", city=" + city
+				+ ", region=" + region + ", note=" + note + ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", description=" + description + ", type=" + type + ", distance=" + distance + "]";
+	}
+
+	
+	
 }
