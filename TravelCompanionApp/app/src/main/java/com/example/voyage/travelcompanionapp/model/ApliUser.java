@@ -7,8 +7,7 @@ import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.example.voyage.api.common.type.ConfType;
+import com.example.voyage.api.common.type.TypeSafeMemory;
 import com.example.voyage.api.common.type.TypeConfiguration;
 import com.example.voyage.api.common.type.PlaceType;
 import com.example.voyage.api.tools.math.CoordinatesDouble;
@@ -17,11 +16,21 @@ import com.example.voyage.api.tools.parse.StringParser;
 public class ApliUser {
 
     public ApliUser(){}
-
+    private String username;
+    private String email;
     private String id;
+    private String pass;
+
+
     private CoordinatesDouble position;
     private HashMap<PlaceType, Double> preferences = new HashMap<PlaceType, Double>();
     private ArrayList<ApliUser> friends = new ArrayList<ApliUser>();
+
+    public ApliUser(int id, String userName, HashMap<PlaceType, Double> pref) {
+        this.id = ""+id;
+        this.username = userName;
+        this.preferences =pref;
+    }
 
     public void setPosition(CoordinatesDouble position) {
         this.position = position;
@@ -29,6 +38,10 @@ public class ApliUser {
 
     public void setPreferences(HashMap<PlaceType, Double> preferences) {
         this.preferences = preferences;
+    }
+    public ApliUser(String username, String pass){
+        this.username=username;
+        this.pass=pass;
     }
 
     public void setFriends(ArrayList<ApliUser> friends) {
@@ -51,8 +64,6 @@ public class ApliUser {
         this.email = email;
     }
 
-    private String username;
-    private String email;
 
     public void setId(String id) {
         this.id = id;
@@ -83,7 +94,7 @@ public class ApliUser {
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setPreferences(String pref) {
-        TypeConfiguration.getConfig(new ConfType());
+        TypeConfiguration.getConfig(new TypeSafeMemory());
         ArrayList<String> lines = StringParser.sliceLine(pref,',');
         for(int i = 0; i < lines.size();i++)preferences.put(TypeConfiguration.get(i),Double.parseDouble(lines.get(i)));
 
@@ -104,4 +115,13 @@ public class ApliUser {
     public ArrayList<ApliUser> getFriends() {
         return friends;
     }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
 }

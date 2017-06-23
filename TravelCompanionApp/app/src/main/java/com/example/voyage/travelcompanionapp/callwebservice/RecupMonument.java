@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.voyage.api.model.Monument;
 import com.example.voyage.travelcompanionapp.model.ApliMonument;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import org.json.XML;
@@ -31,8 +33,7 @@ public class RecupMonument {
 
     public InputStream istream;
     public String uri;
-    JsonParser jsonParser=new JsonParser();
-
+    public static HashMap<Integer,ApliMonument> monumentHashMap = new HashMap<Integer, ApliMonument>();
 
 
     public ArrayList<ApliMonument> getAlistMonu() {
@@ -76,19 +77,23 @@ public class RecupMonument {
 
     }
 
-    public ArrayList<ApliMonument> getWebServiceMonument() {
+    public ArrayList<ApliMonument> getWebServiceMonument(String lat, String lon) {
+        monumentHashMap.clear();
 
         ArrayList<ApliMonument>AlistMonu=new ArrayList<ApliMonument>();
 
         String descrip="aucune description";
         String name,ville,type;
         int id,note;
-        double lat,lon;
+        double latmonu,lonmonu;
         Double[]dist = new Double[2];
         LatLng geoloc;
 
         try {
-            String output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument()).get();
+            String output = null;
+            JsonParser jsonParser=new JsonParser();
+
+            output=  jsonParser.execute(Configuration.IpDevice()+Configuration.getRestListMonument(lat,lon)).get();
             Log.d("xml",output);
 
             if (output!=null) {
@@ -106,13 +111,13 @@ public class RecupMonument {
                         descrip = array.getJSONObject(k).getString("description");
                         name = array.getJSONObject(k).getString("name_monument");
                         id = array.getJSONObject(k).getInt("id_monument");
-                        lat = array.getJSONObject(k).getDouble("latitude");
-                        lon = array.getJSONObject(k).getDouble("longitude");
+                        latmonu = array.getJSONObject(k).getDouble("latitude");
+                        lonmonu = array.getJSONObject(k).getDouble("longitude");
                         dist[0] = array.getJSONObject(k).getDouble("distance");
                         type = array.getJSONObject(k).getString("type");
                         note = array.getJSONObject(k).getInt("note");
                         ville= array.getJSONObject(k).getString("city");
-                        geoloc= new LatLng(lat,lon);
+                        geoloc= new LatLng(latmonu,lonmonu);
                         monu.setName(name);
                         monu.setDescription(descrip);
                         monu.setDistance(dist);
@@ -120,9 +125,10 @@ public class RecupMonument {
                         monu.setNote(note);
                         monu.setGeoloc(geoloc);
                         monu.setVille(ville);
+                        monu.setType(type);
 
                         AlistMonu.add(monu);
-
+                        monumentHashMap.put(monu.getId(),monu);
 
                     }
                 }

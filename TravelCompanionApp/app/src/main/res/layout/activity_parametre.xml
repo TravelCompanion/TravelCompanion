@@ -9,6 +9,14 @@
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_parametre_compte"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#2196F3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.Toolbar>
+
     <TextView
         android:id="@+id/nom_edit_user"
         android:layout_width="match_parent"

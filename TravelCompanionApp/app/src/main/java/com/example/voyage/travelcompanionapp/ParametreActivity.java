@@ -3,8 +3,10 @@ package com.example.voyage.travelcompanionapp;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ public class ParametreActivity extends AppCompatActivity implements View.OnClick
     TextView text_email;
     TextView text_nom;
     TextView text_mdp;
+    Toolbar toolbar;
+
 
 
 
@@ -27,9 +31,16 @@ public class ParametreActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_parametre);
         text_email = (TextView) findViewById(R.id.email_edit_user);
         text_nom= (TextView) findViewById(R.id.nom_edit_user);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_parametre_compte);
+
 
         text_email.setOnClickListener(ParametreActivity.this);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
+
 
     @Override
     public void onClick(View v) {

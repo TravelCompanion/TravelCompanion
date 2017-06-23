@@ -2,22 +2,29 @@ package com.example.voyage.travelcompanionapp.model;
 
 
 import android.location.Location;
-import android.provider.CallLog;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Comparator;
-
 public class ApliMonument implements Comparable<ApliMonument> {
 
-    private int Id;
+    private int id;
     private String name;
     private LatLng geoloc;
     private String description;
     private Double[] distance;
     private String ville;
     private int note;
+    private String type;
+
+    public ApliMonument() {
+     }
+    public ApliMonument(int id, String name, String type, double note, double distance) {
+        this.id = id;
+        this.name =name;
+        this.type =type;
+        this.note =(int)note;
+        this.distance = new Double[]{distance};
+    }
 
 
     public int getNote() {
@@ -37,7 +44,7 @@ public class ApliMonument implements Comparable<ApliMonument> {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -54,7 +61,7 @@ public class ApliMonument implements Comparable<ApliMonument> {
 
     public int getId() {
 
-        return Id;
+        return id;
     }
 
     public String getName() {
@@ -102,5 +109,12 @@ public Double[] calculdistance (LatLng currentLocation,double latitude, double l
             resultat = 0;
         return resultat;
     }
-    
+
+    public String getType(){
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.voyage.api.tools.math.compare;
 
-public class CompareUnitDouble<T> {
+import android.support.annotation.NonNull;
+
+public class CompareUnitDouble<T> implements  Comparable<CompareUnitDouble<T>>{
 	private double value;
 	private T element;
 	
@@ -21,6 +23,10 @@ public class CompareUnitDouble<T> {
 	public String toString() {
 		return "CompareUnitDouble [value=" + value + ", element=" + element + "]";
 	}
-	
-	
+
+
+	@Override
+	public int compareTo(CompareUnitDouble<T> comp) {
+		return this.value <  comp.value ? 1 : this.value == comp.value ? 0 : -1;
+	}
 }

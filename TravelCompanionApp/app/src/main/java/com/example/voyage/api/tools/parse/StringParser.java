@@ -1,23 +1,15 @@
 package com.example.voyage.api.tools.parse;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StringParser {
-	static Context context;
 	/**
 	 * Class for parse a String, convert it into object,read file, convert
 	 * object into String, write file
@@ -144,19 +136,13 @@ public class StringParser {
 		return words;
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	public static ArrayList<String> readData(String fileName) {
-		InputStream input;
-		AssetManager assetManager=context.getAssets();
 		/**
 		 * Read the file and place each lines of the text in an
 		 * ArrayList<String>
 		 */
 		ArrayList<String> lines = new ArrayList<String>();
-
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-			input=assetManager.open(fileName);
-			InputStreamReader isr = new InputStreamReader(input);
 
 			String sCurrentLine;
 

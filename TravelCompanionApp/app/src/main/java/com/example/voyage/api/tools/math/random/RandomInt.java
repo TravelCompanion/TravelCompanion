@@ -15,14 +15,14 @@ public class RandomInt {
 		Random rnd = new Random();
 		int r = rnd.nextInt();
 		r = r < 0 ? -r : r;
-		return rnd.nextInt() % (max + 1);
+		return r % (max + 1);
 	}
 
 	public static int generate(int max, int min) {
 		Random rnd = new Random();
 		int r = rnd.nextInt();
 		r = r < 0 ? -r : r;
-		return (rnd.nextInt() % ((max + 1) - min)) + min;
+		return (r% ((max + 1) - min)) + min;
 	}
 
 	public static int generate(Random rnd) {
